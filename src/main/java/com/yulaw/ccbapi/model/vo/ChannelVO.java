@@ -1,8 +1,9 @@
-package com.yulaw.ccbapi.model.pojo;
+package com.yulaw.ccbapi.model.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Channel {
+public class ChannelVO implements Serializable {
     private Long id;
 
     private String channelName;
@@ -12,10 +13,6 @@ public class Channel {
     private String content;
 
     private String image;
-
-    private Date createTime;
-
-    private Date updateTime;
 
     private Integer status;
 
@@ -59,22 +56,6 @@ public class Channel {
 
     public void setImage(String image) {
         this.image = image == null ? null : image.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public Integer getStatus() {

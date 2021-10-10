@@ -6,6 +6,7 @@ package com.yulaw.ccbapi.exception;
 public enum CcbExceptionEnum {
     //业务异常
     NEED_PARM(10001,"参数不能为空"),
+    DATA_NOT_FOUND(10002,"未找到该数据"),
 
     //系统异常
     SYSTEM_ERROR(20000,"系统异常");
