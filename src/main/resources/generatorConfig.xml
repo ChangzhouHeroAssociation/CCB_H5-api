@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--A.配置mysql驱动路径  -->
+    <classPathEntry
+            location="C:\Users\刘宇\.m2\repository\mysql\mysql-connector-java\8.0.20\mysql-connector-java-8.0.20.jar"/>
+    <!-- B.配置信息 -->
+    <context id="my" targetRuntime="MyBatis3">
+        <property name="autoDelimitKeywords" value="true"/>
+        <!--1. value="true"去掉注释  ，如果不去掉注释的时候，
+                第二次生成的时候不会再后面追加内容，但是去掉注释的时候，
+                在第二次以后需要生成文件的时候先把它删掉，再生成，
+                否则就会在原来的文件后面追加内容-->
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!--2.加载连接数据库信息  -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/ccb?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=UTF-8"
+                        userId="root"
+                        password="010116" />
+
+        <!--3.生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="com.yulaw.ccbapi.model.pojo"
+                            targetProject="src/main/java">
+            <!--targetProject=  指定包所在的位置，只需要到src/man/java  -->
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <!--如果包不存在，创建一个  -->
+            <property name="immutable" value="false"/>
+        </javaModelGenerator>
+
+        <!--4.生成映射文件包名和位置 -->
+        <sqlMapGenerator targetPackage="mappers"
+                         targetProject="src/main/resources"><!-- 指定包的位置 -->
+            <property name="enableSubPackages" value="true"/><!--如果包不存在创建一个  -->
+        </sqlMapGenerator>
+
+        <!--5.生成dao层的包和位置  -->
+        <javaClientGenerator targetPackage="com.yulaw.ccbapi.model.dao" type="XMLMAPPER"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--6. 我要生成的表  可以一次性生成多张表 tableName是表名   domainObjectName是实体名 -->
+        <table tableName="advertisement" domainObjectName="Advertisement"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="answer" domainObjectName="Answer"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="banner" domainObjectName="Banner"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="category" domainObjectName="Category"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="channel" domainObjectName="Channel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="channel_video_relation" domainObjectName="ChannelAndVideo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="home_page" domainObjectName="HomePage"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="question" domainObjectName="Question"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="teacher" domainObjectName="Teacher"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="video" domainObjectName="Video"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="video_category_relation" domainObjectName="VideoAndCategory"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="video_teacher_relation" domainObjectName="VideoAndTeacher"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+
+    </context>
+</generatorConfiguration>

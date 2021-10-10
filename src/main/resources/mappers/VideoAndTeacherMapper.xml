@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yulaw.ccbapi.model.dao.VideoAndTeacherMapper">
+  <resultMap id="BaseResultMap" type="com.yulaw.ccbapi.model.pojo.VideoAndTeacher">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="video_id" jdbcType="BIGINT" property="videoId" />
+    <result column="teacher_id" jdbcType="BIGINT" property="teacherId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, video_id, teacher_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from video_teacher_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from video_teacher_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yulaw.ccbapi.model.pojo.VideoAndTeacher">
+    update video_teacher_relation
+    <set>
+      <if test="videoId != null">
+        video_id = #{videoId,jdbcType=BIGINT},
+      </if>
+      <if test="teacherId != null">
+        teacher_id = #{teacherId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yulaw.ccbapi.model.pojo.VideoAndTeacher">
+    update video_teacher_relation
+    set video_id = #{videoId,jdbcType=BIGINT},
+      teacher_id = #{teacherId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

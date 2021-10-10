@@ -1,0 +1,72 @@
+01:01:07.904 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 24644 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+01:01:07.930 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+01:01:08.664 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8080"]
+01:01:08.665 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+01:01:08.665 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+01:01:08.742 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+01:01:09.211 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting ProtocolHandler ["http-nio-8080"]
+01:01:09.220 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Pausing ProtocolHandler ["http-nio-8080"]
+01:01:09.221 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping service [Tomcat]
+01:01:09.223 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping ProtocolHandler ["http-nio-8080"]
+01:01:09.224 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Destroying ProtocolHandler ["http-nio-8080"]
+01:02:30.808 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 18128 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+01:02:30.837 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+01:02:31.598 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8080"]
+01:02:31.598 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+01:02:31.599 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+01:02:31.681 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+01:02:32.169 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting ProtocolHandler ["http-nio-8080"]
+01:02:32.179 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Pausing ProtocolHandler ["http-nio-8080"]
+01:02:32.180 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping service [Tomcat]
+01:02:32.182 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping ProtocolHandler ["http-nio-8080"]
+01:02:32.183 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Destroying ProtocolHandler ["http-nio-8080"]
+01:06:59.403 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 31060 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+01:06:59.430 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+01:07:00.101 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8080"]
+01:07:00.101 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+01:07:00.102 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+01:07:00.170 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+01:07:00.570 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting ProtocolHandler ["http-nio-8080"]
+01:07:00.579 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Pausing ProtocolHandler ["http-nio-8080"]
+01:07:00.579 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping service [Tomcat]
+01:07:00.582 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping ProtocolHandler ["http-nio-8080"]
+01:07:00.582 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Destroying ProtocolHandler ["http-nio-8080"]
+01:13:36.881 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 28052 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+01:13:36.910 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+01:13:37.620 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8081"]
+01:13:37.621 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+01:13:37.621 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+01:13:37.700 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+01:13:38.115 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting ProtocolHandler ["http-nio-8081"]
+01:13:38.133 INFO  springframework.boot.StartupInfoLogger.logStarted()/61 - Started CcbApiApplication in 1.478 seconds (JVM running for 6.069)
+01:14:17.993 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+01:14:18.039 INFO  zaxxer.hikari.HikariDataSource.getConnection()/110 - HikariPool-1 - Starting...
+01:14:18.304 INFO  zaxxer.hikari.HikariDataSource.getConnection()/123 - HikariPool-1 - Start completed.
+01:16:34.021 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 19432 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+01:16:34.048 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+01:16:34.753 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8081"]
+01:16:34.754 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+01:16:34.755 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+01:16:34.827 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+01:16:35.230 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting ProtocolHandler ["http-nio-8081"]
+01:16:35.247 INFO  springframework.boot.StartupInfoLogger.logStarted()/61 - Started CcbApiApplication in 1.447 seconds (JVM running for 5.879)
+01:16:47.030 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+01:16:47.071 INFO  zaxxer.hikari.HikariDataSource.getConnection()/110 - HikariPool-1 - Starting...
+01:16:47.309 INFO  zaxxer.hikari.HikariDataSource.getConnection()/123 - HikariPool-1 - Start completed.
+01:53:57.989 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 25456 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+01:53:57.996 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+01:53:58.922 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8081"]
+01:53:58.923 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+01:53:58.924 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+01:53:59.001 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+01:53:59.593 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting ProtocolHandler ["http-nio-8081"]
+01:53:59.615 INFO  springframework.boot.StartupInfoLogger.logStarted()/61 - Started CcbApiApplication in 1.886 seconds (JVM running for 7.993)
+01:54:29.465 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+01:54:29.505 INFO  yulaw.ccbapi.filter.WebLogAspect.doBefore()/36 - URL : http://localhost:8081/banner
+01:54:29.505 INFO  yulaw.ccbapi.filter.WebLogAspect.doBefore()/37 - HTTP_METHOD : GET
+01:54:29.505 INFO  yulaw.ccbapi.filter.WebLogAspect.doBefore()/38 - IP : 0:0:0:0:0:0:0:1
+01:54:29.507 INFO  yulaw.ccbapi.filter.WebLogAspect.doBefore()/39 - ClASS_METHOD : com.yulaw.ccbapi.controller.TestController.banner
+01:54:29.507 INFO  yulaw.ccbapi.filter.WebLogAspect.doBefore()/41 - ARGS : [1]
+01:54:29.530 INFO  zaxxer.hikari.HikariDataSource.getConnection()/110 - HikariPool-1 - Starting...
+01:54:29.802 INFO  zaxxer.hikari.HikariDataSource.getConnection()/123 - HikariPool-1 - Start completed.
+01:54:29.848 INFO  yulaw.ccbapi.filter.WebLogAspect.doAfterReturning()/47 - RESPONSE : "Banner{id=1, bannerName='首页banner', url='www.baidu.com', order=0, createTime=Mon Sep 27 10:24:04 CST 2021, updateTime=Mon Sep 27 10:24:06 CST 2021}"

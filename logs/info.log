@@ -1,0 +1,28 @@
+22:16:28.027 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 4728 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+22:16:28.065 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+22:16:28.904 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8081"]
+22:16:28.905 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+22:16:28.905 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+22:16:28.978 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+22:16:29.262 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping service [Tomcat]
+22:17:12.082 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 18816 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+22:17:12.114 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+22:17:12.936 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8081"]
+22:17:12.936 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+22:17:12.937 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+22:17:13.011 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+22:17:13.282 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping service [Tomcat]
+22:17:44.262 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 13368 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+22:17:44.295 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+22:17:45.212 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8081"]
+22:17:45.212 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+22:17:45.213 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+22:17:45.286 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+22:17:45.580 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping service [Tomcat]
+22:18:57.583 INFO  springframework.boot.StartupInfoLogger.logStarting()/55 - Starting CcbApiApplication on DESKTOP-G4DL7VM with PID 15600 (started by 刘宇 in C:\Users\刘宇\Desktop\CCB_H5-api)
+22:18:57.616 INFO  springframework.boot.SpringApplication.logStartupProfileInfo()/651 - No active profile set, falling back to default profiles: default
+22:18:58.441 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing ProtocolHandler ["http-nio-8085"]
+22:18:58.442 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting service [Tomcat]
+22:18:58.442 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+22:18:58.512 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Initializing Spring embedded WebApplicationContext
+22:18:58.783 INFO  apache.juli.logging.DirectJDKLog.log()/173 - Stopping service [Tomcat]
