@@ -12,13 +12,18 @@
     <result column="weight" jdbcType="INTEGER" property="weight" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, "option", channel_id, category, create_time, update_time, weight
+    id, title, `option`, channel_id, category, create_time, update_time, weight
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from question
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findAll" resultType="com.yulaw.ccbapi.model.pojo.Question">
+    select
+    <include refid="Base_Column_List"/>
+    from question
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from question

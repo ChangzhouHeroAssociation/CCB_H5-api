@@ -14,7 +14,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, video_title, description, views, url, "status", enjoy_count, share_count, create_time, 
+    id, video_title, description, views, url, status, enjoy_count, share_count, create_time,
     update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -22,6 +22,11 @@
     <include refid="Base_Column_List" />
     from video
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findAll" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+    <include refid="Base_Column_List"/>
+    from video
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from video

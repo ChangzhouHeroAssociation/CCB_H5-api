@@ -11,13 +11,18 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, teacher_name, description, teacher_photo, "status", create_time, update_time
+    id, teacher_name, description, teacher_photo, status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from teacher
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findAll" resultType="com.yulaw.ccbapi.model.pojo.Teacher">
+    select
+    <include refid="Base_Column_List"/>
+    from teacher
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from teacher

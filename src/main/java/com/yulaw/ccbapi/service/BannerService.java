@@ -7,5 +7,6 @@ import com.yulaw.ccbapi.model.vo.BannerVO;
 import java.util.List;
 
 public interface BannerService {
+
     List<BannerVO> getBannerList();
 }
