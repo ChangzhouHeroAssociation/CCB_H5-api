@@ -43,4 +43,13 @@ public class ChannelServiceImpl implements ChannelService {
         BeanUtils.copyProperties(channel,channelVO);
         return channelVO;
     }
+
+    @Override
+    public Channel getChannelByName(String name) {
+        Channel channel = channelMapper.selectByName(name);
+        if(channel == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
+        return channel;
+    }
 }

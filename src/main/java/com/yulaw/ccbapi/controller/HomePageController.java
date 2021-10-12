@@ -18,7 +18,6 @@ public class HomePageController {
     @GetMapping("/homePage")
     @ResponseBody
     public ApiRestResponse getHomePage() throws CcbException {
-        //throw new CcbException(111,"111");
         HomePage homePage = homePageService.getHomePage();
         return ApiRestResponse.success(homePage);
 

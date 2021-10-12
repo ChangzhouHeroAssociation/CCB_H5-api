@@ -1,5 +1,7 @@
 package com.yulaw.ccbapi.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.model.dao.TeacherMapper;
 import com.yulaw.ccbapi.model.dao.VideoMapper;
 import com.yulaw.ccbapi.model.pojo.Teacher;
@@ -32,5 +34,19 @@ public class VideoServiceImpl implements VideoService {
             resultList.add(videoVO);
         }
         return resultList;
+    }
+
+    @Override
+    public PageInfo listForAdmin(Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize,"views");
+        List<Video> videoList = videoMapper.findAll();
+        List<VideoVO> resultList = new ArrayList<>();
+        for (Video video : videoList) {
+            VideoVO videoVO = new VideoVO();
+            BeanUtils.copyProperties(video,videoVO);
+            resultList.add(videoVO);
+        }
+        PageInfo pageInfo = new PageInfo(resultList);
+        return pageInfo;
     }
 }

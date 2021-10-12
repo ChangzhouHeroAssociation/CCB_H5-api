@@ -17,4 +17,6 @@ public interface QuestionMapper {
     int updateByPrimaryKey(Question record);
 
     List<Question> findAll();
+
+    Question selectByChannelId(Long channelId);
 }

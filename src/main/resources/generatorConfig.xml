@@ -55,7 +55,7 @@
         <table tableName="answer" domainObjectName="Answer"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
-               enableInsert="false"/>
+               enableInsert="True"/>
         <table tableName="banner" domainObjectName="Banner"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"

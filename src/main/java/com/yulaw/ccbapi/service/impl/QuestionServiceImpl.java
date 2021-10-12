@@ -1,6 +1,8 @@
 package com.yulaw.ccbapi.service.impl;
 
+import com.yulaw.ccbapi.model.dao.ChannelMapper;
 import com.yulaw.ccbapi.model.dao.QuestionMapper;
+import com.yulaw.ccbapi.model.pojo.Channel;
 import com.yulaw.ccbapi.model.pojo.Question;
 import com.yulaw.ccbapi.model.vo.QuestionVO;
 import com.yulaw.ccbapi.service.QuestionService;
@@ -17,6 +19,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     QuestionMapper questionMapper;
+    @Autowired
+    ChannelMapper channelMapper;
 
     @Override
     @Cacheable(value = "getQuestionList")
@@ -29,5 +33,13 @@ public class QuestionServiceImpl implements QuestionService {
             resultList.add(questionVO);
         }
         return resultList;
+    }
+
+    @Override
+    public Question selectByChannelName(String name) {
+        Channel channel = channelMapper.selectByName(name);
+        Question question = questionMapper.selectByChannelId(channel.getId());
+        return question;
+
     }
 }

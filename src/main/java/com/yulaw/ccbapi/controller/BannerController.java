@@ -20,7 +20,7 @@ public class BannerController {
     @Autowired
     BannerService bannerService;
 
-    @GetMapping("/bannerList")
+    @GetMapping("/banner/list")
     @ResponseBody
     public ApiRestResponse getBannerList() throws CcbException {
 

@@ -18,7 +18,7 @@ public class AdvertisementController {
     @Autowired
     AdvertisementService advertisementService;
 
-    @GetMapping("/advertisementList")
+    @GetMapping("/advertisement/list")
     @ResponseBody
     public ApiRestResponse getAdvertisementList() throws CcbException {
         List<AdvertisementVO> advList = advertisementService.getAdvertisementList();

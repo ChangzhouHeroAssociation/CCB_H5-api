@@ -10,7 +10,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, question_id, "result", channel_id, create_time, update_time
+    id, question_id, `result`, channel_id, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -29,7 +29,7 @@
         question_id = #{questionId,jdbcType=BIGINT},
       </if>
       <if test="result != null">
-        "result" = #{result,jdbcType=VARCHAR},
+        `result` = #{result,jdbcType=VARCHAR},
       </if>
       <if test="channelId != null">
         channel_id = #{channelId,jdbcType=BIGINT},
@@ -46,10 +46,54 @@
   <update id="updateByPrimaryKey" parameterType="com.yulaw.ccbapi.model.pojo.Answer">
     update answer
     set question_id = #{questionId,jdbcType=BIGINT},
-      "result" = #{result,jdbcType=VARCHAR},
+      `result` = #{result,jdbcType=VARCHAR},
       channel_id = #{channelId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <insert id="insertSelective" parameterType="com.yulaw.ccbapi.model.pojo.Answer" >
+    insert into answer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="questionId != null" >
+        question_id,
+      </if>
+      <if test="result != null" >
+        `result`,
+      </if>
+      <if test="channelId != null" >
+        channel_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null" >
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
 </mapper>

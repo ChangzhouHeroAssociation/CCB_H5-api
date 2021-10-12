@@ -17,7 +17,7 @@ public class TeacherController {
     @Autowired
     TeacherService teacherService;
 
-    @GetMapping("/teacherList")
+    @GetMapping("/teacher/list")
     @ResponseBody
     public ApiRestResponse getTeacherList() throws CcbException {
         List<TeacherVO> resultList = teacherService.getTeacherList();

@@ -26,6 +26,12 @@
     <include refid="Base_Column_List"/>
     from channel
   </select>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from channel
+    where channel_name = #{name,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from channel
     where id = #{id,jdbcType=BIGINT}
