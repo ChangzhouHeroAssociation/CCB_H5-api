@@ -1,11 +1,13 @@
 package com.yulaw.ccbapi.model.request;
 
+import javax.validation.constraints.NotNull;
+
 public class AddAnswerReq {
-
+    @NotNull(message = "questionId不能为null")
     private Long questionId;
-
+    @NotNull(message = "result不能为null")
     private String result;
-
+    @NotNull(message = "channelId不能为null")
     private Long channelId;
 
     public Long getQuestionId() {

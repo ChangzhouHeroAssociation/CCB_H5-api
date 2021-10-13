@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
+
 @Controller
 public class AnswerController {
 
@@ -18,10 +20,8 @@ public class AnswerController {
 
     @PostMapping("/answer/submit")
     @ResponseBody
-    public ApiRestResponse submitAnswer(@RequestBody AddAnswerReq addAnswerReq){
-        if(addAnswerReq.getQuestionId() == null){
-            return ApiRestResponse.error(CcbExceptionEnum.NEED_PARM);
-        }
+    public ApiRestResponse submitAnswer(@Valid @RequestBody AddAnswerReq addAnswerReq){
+
         answerService.add(addAnswerReq);
         return ApiRestResponse.success();
     }
