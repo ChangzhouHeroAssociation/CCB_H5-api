@@ -9,5 +9,5 @@ public interface VideoService {
 
     List<VideoVO> getVideoList();
 
-    PageInfo listForAdmin(Integer pageNum, Integer pageSize);
+    PageInfo listForAdmin(Integer pageNum, Integer pageSize, String orderBy);
 }

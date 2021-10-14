@@ -15,6 +15,18 @@
     from video_teacher_relation
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectByVideoId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from video_teacher_relation
+    where video_id = #{videoId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByTeacherId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from video_teacher_relation
+    where teacher_id = #{teacherId,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from video_teacher_relation
     where id = #{id,jdbcType=BIGINT}

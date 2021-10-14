@@ -1,5 +1,7 @@
 package com.yulaw.ccbapi.model.vo;
 
+import com.yulaw.ccbapi.model.pojo.Teacher;
+
 import java.io.Serializable;
 
 public class VideoVO implements Serializable {
@@ -18,6 +20,8 @@ public class VideoVO implements Serializable {
     private Integer enjoyCount;
 
     private Integer shareCount;
+
+    private Teacher teacher;
 
     public Long getId() {
         return id;
@@ -83,4 +87,11 @@ public class VideoVO implements Serializable {
         this.shareCount = shareCount;
     }
 
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 }

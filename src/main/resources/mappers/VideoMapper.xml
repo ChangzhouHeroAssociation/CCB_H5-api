@@ -28,6 +28,12 @@
     <include refid="Base_Column_List"/>
     from video
   </select>
+  <select id="selectAllOrderByViews" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+    <include refid="Base_Column_List"/>
+    from video
+    ORDER BY views
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from video
     where id = #{id,jdbcType=BIGINT}

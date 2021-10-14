@@ -11,7 +11,7 @@ public class Teacher {
 
     private String teacherPhoto;
 
-    private Byte status;
+    private Integer status;
 
     private Date createTime;
 
@@ -49,11 +49,11 @@ public class Teacher {
         this.teacherPhoto = teacherPhoto == null ? null : teacherPhoto.trim();
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

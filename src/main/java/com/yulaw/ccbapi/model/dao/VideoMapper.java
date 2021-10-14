@@ -17,4 +17,6 @@ public interface VideoMapper {
     int updateByPrimaryKey(Video record);
 
     List<Video> findAll();
+
+    List<Video> selectAllOrderByViews();
 }

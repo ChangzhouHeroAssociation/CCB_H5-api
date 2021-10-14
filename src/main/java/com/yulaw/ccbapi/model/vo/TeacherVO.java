@@ -1,7 +1,10 @@
 package com.yulaw.ccbapi.model.vo;
 
+import com.yulaw.ccbapi.model.pojo.Video;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TeacherVO implements Serializable {
     private Long id;
@@ -12,7 +15,9 @@ public class TeacherVO implements Serializable {
 
     private String teacherPhoto;
 
-    private Byte status;
+    private Integer status;
+
+    private List<Video> videos;
 
     public Long getId() {
         return id;
@@ -46,13 +51,19 @@ public class TeacherVO implements Serializable {
         this.teacherPhoto = teacherPhoto == null ? null : teacherPhoto.trim();
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
+    public List<Video> getVideos() {
+        return videos;
+    }
 
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
+    }
 }

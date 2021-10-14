@@ -1,7 +1,10 @@
 package com.yulaw.ccbapi.model.vo;
 
+import com.yulaw.ccbapi.model.pojo.Video;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class ChannelVO implements Serializable {
     private Long id;
@@ -17,6 +20,8 @@ public class ChannelVO implements Serializable {
     private Integer status;
 
     private Integer enabled;
+
+    private List<Video> videos;
 
     public Long getId() {
         return id;
@@ -72,5 +77,13 @@ public class ChannelVO implements Serializable {
 
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
+    }
+
+    public List<Video> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
     }
 }

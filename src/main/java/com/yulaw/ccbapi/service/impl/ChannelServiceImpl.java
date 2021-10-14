@@ -2,8 +2,12 @@ package com.yulaw.ccbapi.service.impl;
 
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
+import com.yulaw.ccbapi.model.dao.ChannelAndVideoMapper;
 import com.yulaw.ccbapi.model.dao.ChannelMapper;
+import com.yulaw.ccbapi.model.dao.VideoMapper;
 import com.yulaw.ccbapi.model.pojo.Channel;
+import com.yulaw.ccbapi.model.pojo.ChannelAndVideo;
+import com.yulaw.ccbapi.model.pojo.Video;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
 import com.yulaw.ccbapi.service.ChannelService;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +23,12 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Autowired
     ChannelMapper channelMapper;
+
+    @Autowired
+    ChannelAndVideoMapper channelAndVideoMapper;
+
+    @Autowired
+    VideoMapper videoMapper;
 
     @Override
     @Cacheable(value = "getChannelList")
@@ -41,6 +51,13 @@ public class ChannelServiceImpl implements ChannelService {
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         BeanUtils.copyProperties(channel,channelVO);
+        ArrayList<Video> videos = new ArrayList<>();
+        List<ChannelAndVideo> channelAndVideos = channelAndVideoMapper.selectByChannelId(channelVO.getId());
+        for (ChannelAndVideo channelAndVideo : channelAndVideos) {
+            Video video = videoMapper.selectByPrimaryKey(channelAndVideo.getVideoId());
+            videos.add(video);
+        }
+        channelVO.setVideos(videos);
         return channelVO;
     }
 
