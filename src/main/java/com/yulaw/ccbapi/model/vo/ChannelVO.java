@@ -17,11 +17,7 @@ public class ChannelVO implements Serializable {
 
     private String image;
 
-    private Integer status;
-
-    private Integer enabled;
-
-    private List<Video> videos;
+    private List<HotVideoVO> hotVideoVOList;
 
     public Long getId() {
         return id;
@@ -63,27 +59,11 @@ public class ChannelVO implements Serializable {
         this.image = image == null ? null : image.trim();
     }
 
-    public Integer getStatus() {
-        return status;
+    public List<HotVideoVO> getHotVideoVOList() {
+        return hotVideoVOList;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Integer enabled) {
-        this.enabled = enabled;
-    }
-
-    public List<Video> getVideos() {
-        return videos;
-    }
-
-    public void setVideos(List<Video> videos) {
-        this.videos = videos;
+    public void setHotVideoVOList(List<HotVideoVO> hotVideoVOList) {
+        this.hotVideoVOList = hotVideoVOList;
     }
 }

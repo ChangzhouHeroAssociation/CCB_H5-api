@@ -2,14 +2,9 @@ package com.yulaw.ccbapi.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yulaw.ccbapi.model.dao.TeacherMapper;
-import com.yulaw.ccbapi.model.dao.VideoAndTeacherMapper;
-import com.yulaw.ccbapi.model.dao.VideoMapper;
-import com.yulaw.ccbapi.model.pojo.Teacher;
-import com.yulaw.ccbapi.model.pojo.Video;
-import com.yulaw.ccbapi.model.pojo.VideoAndTeacher;
-import com.yulaw.ccbapi.model.vo.TeacherVO;
-import com.yulaw.ccbapi.model.vo.VideoVO;
+import com.yulaw.ccbapi.model.dao.*;
+import com.yulaw.ccbapi.model.pojo.*;
+import com.yulaw.ccbapi.model.vo.*;
 import com.yulaw.ccbapi.service.VideoService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -28,10 +23,20 @@ public class VideoServiceImpl implements VideoService {
     VideoMapper videoMapper;
 
     @Autowired
+    TeacherMapper teacherMapper;
+
+    @Autowired
+    ChannelMapper channelMapper;
+
+    @Autowired
+    AdvertisementMapper advertisementMapper;
+
+    @Autowired
     VideoAndTeacherMapper videoAndTeacherMapper;
 
     @Autowired
-    TeacherMapper teacherMapper;
+    ChannelAndVideoMapper channelAndVideoMapper;
+
 
     @Override
     @Cacheable(value = "getVideoList")
@@ -50,23 +55,75 @@ public class VideoServiceImpl implements VideoService {
     public PageInfo listForAdmin(Integer pageNum, Integer pageSize, String orderBy){
         PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
         List<Video> videoList = videoMapper.findAll();
-        List<VideoVO> resultList = new ArrayList<>();
+        List<HotVideoVO> resultList = new ArrayList<>();
         for (Video video : videoList) {
-            VideoVO videoVO = new VideoVO();
-            BeanUtils.copyProperties(video,videoVO);
+            HotVideoVO hotVideoVO = new HotVideoVO();
+            BeanUtils.copyProperties(video,hotVideoVO);
             try{
-                VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(videoVO.getId());
+                VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
                 if(videoAndTeacher != null){
                     Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
-                    videoVO.setTeacher(teacher);
+                    hotVideoVO.setTeacher(teacher.getTeacherName());
                 }
-                resultList.add(videoVO);
+                ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
+                if(channelAndVideo != null){
+                    Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
+                    hotVideoVO.setChannelIcon(channel.getIcon());
+                }
+                resultList.add(hotVideoVO);
             }catch (MyBatisSystemException e){
                 throw e;
             }
         }
         PageInfo pageInfo = new PageInfo(resultList);
         return pageInfo;
+    }
+
+    @Override
+    public NewVideoVO getNew(){
+        Video video = videoMapper.selectNew();
+        NewVideoVO newVideoVO = new NewVideoVO();
+        BeanUtils.copyProperties(video,newVideoVO);
+        return newVideoVO;
+    }
+
+    @Override
+    public List<HotVideoVO> getHotVideoVO(){
+        List<Video> videos = videoMapper.selectHotByView();
+        ArrayList<HotVideoVO> hotVideoVOS = new ArrayList<>();
+        for (Video video : videos) {
+            HotVideoVO hotVideoVO = new HotVideoVO();
+            BeanUtils.copyProperties(video,hotVideoVO);
+            VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
+            Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
+            hotVideoVO.setTeacher(teacher.getTeacherName());
+            ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
+            Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
+            hotVideoVO.setChannelIcon(channel.getIcon());
+            hotVideoVOS.add(hotVideoVO);
+
+        }
+        return hotVideoVOS;
+    }
+
+    @Override
+    public VideoVO getVideoById(Long id) {
+        Video video = videoMapper.selectByPrimaryKey(id);
+        VideoVO videoVO = new VideoVO();
+        BeanUtils.copyProperties(video, videoVO);
+        VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(videoVO.getId());
+        Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
+        TeacherForVideoVO teacherForVideoVO = new TeacherForVideoVO();
+        BeanUtils.copyProperties(teacher,teacherForVideoVO);
+        videoVO.setTeacher(teacherForVideoVO);
+        videoVO.setChannelId(channelAndVideoMapper.selectByVideoId(videoVO.getId()).getChannelId());
+        Advertisement advertisement = advertisementMapper.selectByChannelId(videoVO.getChannelId());
+        if(advertisement != null){
+            AdvertisementVO advertisementVO = new AdvertisementVO();
+            BeanUtils.copyProperties(advertisement, advertisementVO);
+            videoVO.setAdvertisement(advertisementVO);
+        }
+        return videoVO;
     }
 
 }

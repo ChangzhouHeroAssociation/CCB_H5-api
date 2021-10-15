@@ -17,4 +17,6 @@ public interface BannerMapper {
     int updateByPrimaryKey(Banner record);
 
     List<Banner> findAll();
+
+    List<Banner> selectForHome();
 }

@@ -19,4 +19,8 @@ public interface VideoMapper {
     List<Video> findAll();
 
     List<Video> selectAllOrderByViews();
+
+    Video selectNew();
+
+    List<Video> selectHotByView();
 }

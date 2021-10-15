@@ -1,12 +1,8 @@
 package com.yulaw.ccbapi.model.vo;
 
-import com.yulaw.ccbapi.model.pojo.Video;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
-public class TeacherVO implements Serializable {
+public class TeacherForVideoVO {
     private Long id;
 
     private String teacherName;
@@ -14,8 +10,6 @@ public class TeacherVO implements Serializable {
     private String description;
 
     private String teacherPhoto;
-
-    private List<HotVideoVO> hotVideoVOList;
 
     public Long getId() {
         return id;
@@ -30,7 +24,7 @@ public class TeacherVO implements Serializable {
     }
 
     public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName == null ? null : teacherName.trim();
+        this.teacherName = teacherName;
     }
 
     public String getDescription() {
@@ -38,7 +32,7 @@ public class TeacherVO implements Serializable {
     }
 
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
     }
 
     public String getTeacherPhoto() {
@@ -46,14 +40,6 @@ public class TeacherVO implements Serializable {
     }
 
     public void setTeacherPhoto(String teacherPhoto) {
-        this.teacherPhoto = teacherPhoto == null ? null : teacherPhoto.trim();
-    }
-
-    public List<HotVideoVO> getHotVideoVOList() {
-        return hotVideoVOList;
-    }
-
-    public void setHotVideoVOList(List<HotVideoVO> hotVideoVOList) {
-        this.hotVideoVOList = hotVideoVOList;
+        this.teacherPhoto = teacherPhoto;
     }
 }

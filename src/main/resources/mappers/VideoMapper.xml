@@ -34,6 +34,20 @@
     from video
     ORDER BY views
   </select>
+  <select id="selectNew" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+    <include refid="Base_Column_List"/>
+    from video
+    ORDER BY create_time desc
+    LIMIT 1
+  </select>
+  <select id="selectHotByView" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+    <include refid="Base_Column_List"/>
+    from video
+    ORDER BY views desc
+    LIMIT 3
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from video
     where id = #{id,jdbcType=BIGINT}

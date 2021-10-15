@@ -1,16 +1,8 @@
 package com.yulaw.ccbapi.service.impl;
 
-import com.yulaw.ccbapi.model.dao.ChannelMapper;
-import com.yulaw.ccbapi.model.dao.TeacherMapper;
-import com.yulaw.ccbapi.model.dao.VideoAndTeacherMapper;
-import com.yulaw.ccbapi.model.dao.VideoMapper;
-import com.yulaw.ccbapi.model.pojo.Channel;
-import com.yulaw.ccbapi.model.pojo.Teacher;
-import com.yulaw.ccbapi.model.pojo.Video;
-import com.yulaw.ccbapi.model.pojo.VideoAndTeacher;
-import com.yulaw.ccbapi.model.vo.ChannelVO;
-import com.yulaw.ccbapi.model.vo.TeacherVO;
-import com.yulaw.ccbapi.model.vo.VideoVO;
+import com.yulaw.ccbapi.model.dao.*;
+import com.yulaw.ccbapi.model.pojo.*;
+import com.yulaw.ccbapi.model.vo.*;
 import com.yulaw.ccbapi.service.TeacherService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +24,47 @@ public class TeacherServiceImpl implements TeacherService {
     @Autowired
     VideoMapper videoMapper;
 
+    @Autowired
+    ChannelMapper channelMapper;
+
+    @Autowired
+    ChannelAndVideoMapper channelAndVideoMapper;
+
+
+
     @Override
-    //@Cacheable(value = "getTeacherList")
-    public List<TeacherVO> getTeacherList() {
-        List<Teacher> teacherAll = teacherMapper.findAll();
-        List<TeacherVO> resultList = new ArrayList<>();
-        for (Teacher teacher : teacherAll) {
-            TeacherVO teacherVO = new TeacherVO();
-            BeanUtils.copyProperties(teacher,teacherVO);
-            ArrayList<Video> videos = new ArrayList<>();
-            List<VideoAndTeacher> videoAndTeachers = videoAndTeacherMapper.selectByTeacherId(teacherVO.getId());
-            for (VideoAndTeacher videoAndTeacher : videoAndTeachers) {
-                Video video = videoMapper.selectByPrimaryKey(videoAndTeacher.getVideoId());
-                videos.add(video);
-            }
-            teacherVO.setVideos(videos);
-            resultList.add(teacherVO);
+    public List<TeacherForHomeVO> getTeacherListForHome(){
+        List<Teacher> teachers = teacherMapper.selectForHome();
+        ArrayList<TeacherForHomeVO> teacherForHomeVOs = new ArrayList<>();
+        for (Teacher teacher : teachers) {
+            TeacherForHomeVO teacherForHomeVO = new TeacherForHomeVO();
+            BeanUtils.copyProperties(teacher,teacherForHomeVO);
+            teacherForHomeVOs.add(teacherForHomeVO);
         }
-        return resultList;
+        return teacherForHomeVOs;
+
+    }
+
+    @Override
+    public TeacherVO getTeacherById(Long id) {
+        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
+        TeacherVO teacherVO = new TeacherVO();
+        BeanUtils.copyProperties(teacher, teacherVO);
+        ArrayList<HotVideoVO> hotVideoVOS = new ArrayList<>();
+        List<VideoAndTeacher> videoAndTeachers = videoAndTeacherMapper.selectByTeacherId(teacherVO.getId());
+        for (VideoAndTeacher videoAndTeacher : videoAndTeachers) {
+            Video video = videoMapper.selectByPrimaryKey(videoAndTeacher.getVideoId());
+            HotVideoVO hotVideoVO = new HotVideoVO();
+            BeanUtils.copyProperties(video,hotVideoVO);
+            hotVideoVO.setTeacher(teacherVO.getTeacherName());
+            ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
+            Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
+            hotVideoVO.setChannelIcon(channel.getIcon());
+            hotVideoVOS.add(hotVideoVO);
+        }
+        teacherVO.setHotVideoVOList(hotVideoVOS);
+        return teacherVO;
+
+
     }
 }

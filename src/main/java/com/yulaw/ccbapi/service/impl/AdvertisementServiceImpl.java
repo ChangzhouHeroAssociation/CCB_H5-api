@@ -30,4 +30,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
         return advList;
     }
+
+    @Override
+    public AdvertisementVO selectByChannelId(Long id) {
+        Advertisement advertisement = advertisementMapper.selectByChannelId(id);
+        AdvertisementVO advertisementVO = new AdvertisementVO();
+        BeanUtils.copyProperties(advertisement,advertisementVO);
+        return advertisementVO;
+    }
 }

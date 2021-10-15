@@ -16,4 +16,6 @@ public interface AdvertisementMapper {
     int updateByPrimaryKey(Advertisement record);
 
     List<Advertisement> findAll();
+
+    Advertisement selectByChannelId(Long channelId);
 }

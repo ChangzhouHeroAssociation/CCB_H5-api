@@ -2,13 +2,11 @@ package com.yulaw.ccbapi.service.impl;
 
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
-import com.yulaw.ccbapi.model.dao.ChannelAndVideoMapper;
-import com.yulaw.ccbapi.model.dao.ChannelMapper;
-import com.yulaw.ccbapi.model.dao.VideoMapper;
-import com.yulaw.ccbapi.model.pojo.Channel;
-import com.yulaw.ccbapi.model.pojo.ChannelAndVideo;
-import com.yulaw.ccbapi.model.pojo.Video;
+import com.yulaw.ccbapi.model.dao.*;
+import com.yulaw.ccbapi.model.pojo.*;
+import com.yulaw.ccbapi.model.vo.ChannelForHomeVO;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
+import com.yulaw.ccbapi.model.vo.HotVideoVO;
 import com.yulaw.ccbapi.service.ChannelService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +26,23 @@ public class ChannelServiceImpl implements ChannelService {
     ChannelAndVideoMapper channelAndVideoMapper;
 
     @Autowired
+    VideoAndTeacherMapper videoAndTeacherMapper;
+
+    @Autowired
     VideoMapper videoMapper;
+
+    @Autowired
+    TeacherMapper teacherMapper;
 
     @Override
     @Cacheable(value = "getChannelList")
-    public List<ChannelVO> getChannelList() {
+    public List<ChannelForHomeVO> getChannelList() {
         List<Channel> channelAll = channelMapper.findChannelAll();
-        List<ChannelVO> channelList = new ArrayList<>();
+        List<ChannelForHomeVO> channelList = new ArrayList<>();
         for (Channel channel : channelAll) {
-            ChannelVO channelVO = new ChannelVO();
-            BeanUtils.copyProperties(channel,channelVO);
-            channelList.add(channelVO);
+            ChannelForHomeVO channelForHomeVO = new ChannelForHomeVO();
+            BeanUtils.copyProperties(channel,channelForHomeVO);
+            channelList.add(channelForHomeVO);
         }
         return channelList;
     }
@@ -51,13 +55,19 @@ public class ChannelServiceImpl implements ChannelService {
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         BeanUtils.copyProperties(channel,channelVO);
-        ArrayList<Video> videos = new ArrayList<>();
+        ArrayList<HotVideoVO> videos = new ArrayList<>();
         List<ChannelAndVideo> channelAndVideos = channelAndVideoMapper.selectByChannelId(channelVO.getId());
         for (ChannelAndVideo channelAndVideo : channelAndVideos) {
             Video video = videoMapper.selectByPrimaryKey(channelAndVideo.getVideoId());
-            videos.add(video);
+            HotVideoVO hotVideoVO = new HotVideoVO();
+            BeanUtils.copyProperties(video,hotVideoVO);
+            hotVideoVO.setChannelIcon(channelVO.getIcon());
+            VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
+            Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
+            hotVideoVO.setTeacher(teacher.getTeacherName());
+            videos.add(hotVideoVO);
         }
-        channelVO.setVideos(videos);
+        channelVO.setHotVideoVOList(videos);
         return channelVO;
     }
 

@@ -10,8 +10,6 @@ public class AdvertisementVO implements Serializable {
 
     private String targetUrl;
 
-    private Long channelId;
-
     public Long getId() {
         return id;
     }
@@ -36,11 +34,4 @@ public class AdvertisementVO implements Serializable {
         this.targetUrl = targetUrl == null ? null : targetUrl.trim();
     }
 
-    public Long getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Long channelId) {
-        this.channelId = channelId;
-    }
 }

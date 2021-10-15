@@ -16,4 +16,6 @@ public interface ChannelAndVideoMapper {
     int updateByPrimaryKey(ChannelAndVideo record);
 
     List<ChannelAndVideo> selectByChannelId(Long channelId);
+
+    ChannelAndVideo selectByVideoId(Long videoId);
 }

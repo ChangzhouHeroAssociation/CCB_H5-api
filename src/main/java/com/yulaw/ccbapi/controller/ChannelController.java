@@ -3,6 +3,7 @@ package com.yulaw.ccbapi.controller;
 import com.yulaw.ccbapi.common.ApiRestResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.model.pojo.Channel;
+import com.yulaw.ccbapi.model.vo.ChannelForHomeVO;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
 import com.yulaw.ccbapi.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ChannelController {
     @GetMapping("/channel/list")
     @ResponseBody
     public ApiRestResponse getChannelList() throws CcbException {
-        List<ChannelVO> channelList = channelService.getChannelList();
+        List<ChannelForHomeVO> channelList = channelService.getChannelList();
         return ApiRestResponse.success(channelList);
 
     }

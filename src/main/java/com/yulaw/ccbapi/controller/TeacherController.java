@@ -7,6 +7,7 @@ import com.yulaw.ccbapi.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -17,11 +18,11 @@ public class TeacherController {
     @Autowired
     TeacherService teacherService;
 
-    @GetMapping("/teacher/list")
+    @GetMapping("/teacher")
     @ResponseBody
-    public ApiRestResponse getTeacherList() throws CcbException {
-        List<TeacherVO> resultList = teacherService.getTeacherList();
-        return ApiRestResponse.success(resultList);
+    public ApiRestResponse getTeacherById(@RequestParam Long id){
+        TeacherVO teacher = teacherService.getTeacherById(id);
+        return ApiRestResponse.success(teacher);
 
     }
 }

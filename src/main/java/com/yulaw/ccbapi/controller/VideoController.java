@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
+import com.yulaw.ccbapi.model.vo.ChannelVO;
 import com.yulaw.ccbapi.model.vo.VideoVO;
 import com.yulaw.ccbapi.service.VideoService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -45,6 +46,14 @@ public class VideoController {
         }catch (MyBatisSystemException e){
             return ApiRestResponse.error(CcbExceptionEnum.RESULT_NOT_ONLY);
         }
+
+    }
+
+    @GetMapping("/video")
+    @ResponseBody
+    public ApiRestResponse getVideoById(@RequestParam Long id){
+        VideoVO video = videoService.getVideoById(id);
+        return ApiRestResponse.success(video);
 
     }
 }

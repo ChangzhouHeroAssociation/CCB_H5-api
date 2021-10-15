@@ -16,4 +16,6 @@ public interface TeacherMapper {
     int updateByPrimaryKey(Teacher record);
 
     List<Teacher> findAll();
+
+    List<Teacher> selectForHome();
 }

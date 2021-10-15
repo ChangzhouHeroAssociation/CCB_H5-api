@@ -18,6 +18,12 @@
     from advertisement
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectByChannelId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from advertisement
+    where channel_id = #{channelId,jdbcType=BIGINT}
+  </select>
   <select id="findAll" resultType="com.yulaw.ccbapi.model.pojo.Advertisement">
     select
     <include refid="Base_Column_List"/>

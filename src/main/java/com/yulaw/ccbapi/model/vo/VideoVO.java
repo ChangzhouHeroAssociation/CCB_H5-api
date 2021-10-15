@@ -15,13 +15,15 @@ public class VideoVO implements Serializable {
 
     private String url;
 
-    private Byte status;
-
     private Integer enjoyCount;
 
     private Integer shareCount;
 
-    private Teacher teacher;
+    private Long channelId;
+
+    private TeacherForVideoVO teacher;
+
+    private AdvertisementVO advertisement;
 
     public Long getId() {
         return id;
@@ -63,14 +65,6 @@ public class VideoVO implements Serializable {
         this.url = url == null ? null : url.trim();
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
     public Integer getEnjoyCount() {
         return enjoyCount;
     }
@@ -87,11 +81,27 @@ public class VideoVO implements Serializable {
         this.shareCount = shareCount;
     }
 
-    public Teacher getTeacher() {
+    public TeacherForVideoVO getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(Teacher teacher) {
+    public void setTeacher(TeacherForVideoVO teacher) {
         this.teacher = teacher;
+    }
+
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
+    public AdvertisementVO getAdvertisement() {
+        return advertisement;
+    }
+
+    public void setAdvertisement(AdvertisementVO advertisement) {
+        this.advertisement = advertisement;
     }
 }

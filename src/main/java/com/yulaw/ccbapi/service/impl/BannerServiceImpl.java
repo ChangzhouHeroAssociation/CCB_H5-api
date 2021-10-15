@@ -7,6 +7,7 @@ import com.yulaw.ccbapi.model.pojo.Advertisement;
 import com.yulaw.ccbapi.model.pojo.Banner;
 import com.yulaw.ccbapi.model.pojo.Video;
 import com.yulaw.ccbapi.model.vo.AdvertisementVO;
+import com.yulaw.ccbapi.model.vo.BannerForHomeVO;
 import com.yulaw.ccbapi.model.vo.BannerVO;
 import com.yulaw.ccbapi.model.vo.VideoVO;
 import com.yulaw.ccbapi.service.BannerService;
@@ -52,5 +53,19 @@ public class BannerServiceImpl implements BannerService {
         }
         PageInfo pageInfo = new PageInfo(resultList);
         return pageInfo;
+    }
+
+    @Override
+    public List<BannerForHomeVO> getBannerListForHome(){
+        List<Banner> banners = bannerMapper.selectForHome();
+        ArrayList<BannerForHomeVO> bannerForHomeVOS = new ArrayList<>();
+        for (Banner banner : banners) {
+            BannerForHomeVO bannerForHomeVO = new BannerForHomeVO();
+            BeanUtils.copyProperties(banner,bannerForHomeVO);
+            bannerForHomeVOS.add(bannerForHomeVO);
+
+        }
+        return  bannerForHomeVOS;
+
     }
 }
