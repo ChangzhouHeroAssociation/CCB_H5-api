@@ -47,12 +47,12 @@ public class IndexController {
     @ResponseBody
     public ApiRestResponse getHomePagePart2(){
 
-        MiddleOfHomeVO middleOfHomeVO = new MiddleOfHomeVO();
-        middleOfHomeVO.setNewVideoVO(videoService.getNew());
-        middleOfHomeVO.setTeacherForHomeVO(teacherService.getTeacherListForHome());
-        middleOfHomeVO.setHotVideoVO(videoService.getHotVideoVO());
+        MiddleOfHomeVO middleOfHome = new MiddleOfHomeVO();
+        middleOfHome.setNewVideo(videoService.getNew());
+        middleOfHome.setTeacherForHome(teacherService.getTeacherListForHome());
+        middleOfHome.setHotVideo(videoService.getHotVideoVO());
 
-        return ApiRestResponse.success(middleOfHomeVO);
+        return ApiRestResponse.success(middleOfHome);
 
     }
     @GetMapping("/homePagePart3")

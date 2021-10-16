@@ -68,7 +68,7 @@
         url = #{url,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        "status" = #{status,jdbcType=TINYINT},
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="enjoyCount != null">
         enjoy_count = #{enjoyCount,jdbcType=INTEGER},
@@ -91,7 +91,7 @@
       description = #{description,jdbcType=VARCHAR},
       views = #{views,jdbcType=INTEGER},
       url = #{url,jdbcType=VARCHAR},
-      "status" = #{status,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
       enjoy_count = #{enjoyCount,jdbcType=INTEGER},
       share_count = #{shareCount,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

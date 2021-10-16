@@ -19,14 +19,17 @@ public class AnswerServiceImpl implements AnswerService {
     AnswerMapper answerMapper;
 
     @Override
-    public void add(AddAnswerReq addAnswerReq){
-        Answer answer = new Answer();
-        BeanUtils.copyProperties(addAnswerReq,answer);
-        answer.setCreateTime(new Date());
-        answer.setUpdateTime(new Date());
-        int count = answerMapper.insertSelective(answer);
-        if(count == 0){
-            throw new CcbException(CcbExceptionEnum.ADD_QUESTION_FAILED);
+    public void add(AddAnswerReq[] addAnswerReq){
+        for (AddAnswerReq answerReq : addAnswerReq) {
+            Answer answer = new Answer();
+            BeanUtils.copyProperties(answerReq,answer);
+            answer.setCreateTime(new Date());
+            answer.setUpdateTime(new Date());
+            int count = answerMapper.insertSelective(answer);
+            if(count == 0){
+                throw new CcbException(CcbExceptionEnum.ADD_QUESTION_FAILED);
+            }
         }
+
     }
 }

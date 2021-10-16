@@ -18,5 +18,6 @@ public interface QuestionMapper {
 
     List<Question> findAll();
 
-    Question selectByChannelId(Long channelId);
+    List<Question> selectByChannelId(Long channelId);
+
 }

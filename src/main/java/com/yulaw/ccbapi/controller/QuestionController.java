@@ -30,8 +30,8 @@ public class QuestionController {
     @GetMapping("/question")
     @ResponseBody
     public ApiRestResponse selectByChannelName(@RequestParam String name) throws CcbException {
-        Question question = questionService.selectByChannelName(name);
-        return ApiRestResponse.success(question);
+        List<Question> questionList = questionService.selectByChannelName(name);
+        return ApiRestResponse.success(questionList);
 
     }
 }

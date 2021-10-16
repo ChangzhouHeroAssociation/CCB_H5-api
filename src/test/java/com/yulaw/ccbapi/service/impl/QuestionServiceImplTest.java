@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -21,7 +23,7 @@ public class QuestionServiceImplTest {
     @Test
     public void selectByChannelName() {
         Channel channel = channelMapper.selectByName("频道3");
-        Question question = questionMapper.selectByChannelId(channel.getId());
-        System.out.println(question.getTitle());
+        List<Question> question = questionMapper.selectByChannelId(channel.getId());
+        System.out.println(question);
     }
 }

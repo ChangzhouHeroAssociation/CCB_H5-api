@@ -1,19 +1,17 @@
 package com.yulaw.ccbapi.model.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class QuestionVO implements Serializable {
+
     private Long id;
 
     private String title;
 
-    private String option;
-
-    private Long channelId;
+    private String[] optionList;
 
     private Integer category;
-
-    private Integer weight;
 
     public Long getId() {
         return id;
@@ -28,23 +26,15 @@ public class QuestionVO implements Serializable {
     }
 
     public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+        this.title = title;
     }
 
-    public String getOption() {
-        return option;
+    public String[] getOptionList() {
+        return optionList;
     }
 
-    public void setOption(String option) {
-        this.option = option == null ? null : option.trim();
-    }
-
-    public Long getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Long channelId) {
-        this.channelId = channelId;
+    public void setOptionList(String[] optionList) {
+        this.optionList = optionList;
     }
 
     public Integer getCategory() {
@@ -54,12 +44,7 @@ public class QuestionVO implements Serializable {
     public void setCategory(Integer category) {
         this.category = category;
     }
-
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
 }
+
+
+

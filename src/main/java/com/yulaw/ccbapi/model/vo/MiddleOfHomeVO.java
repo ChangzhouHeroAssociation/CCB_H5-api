@@ -4,33 +4,33 @@ import java.util.List;
 
 public class MiddleOfHomeVO {
 
-    private NewVideoVO newVideoVO;
+    private NewVideoVO newVideo;
 
-    private List<TeacherForHomeVO> teacherForHomeVO;
+    private List<TeacherForHomeVO> teacherForHome;
 
-    private List<HotVideoVO> hotVideoVO;
+    private List<HotVideoVO> hotVideo;
 
-    public NewVideoVO getNewVideoVO() {
-        return newVideoVO;
+    public NewVideoVO getNewVideo() {
+        return newVideo;
     }
 
-    public void setNewVideoVO(NewVideoVO newVideoVO) {
-        this.newVideoVO = newVideoVO;
+    public void setNewVideo(NewVideoVO newVideo) {
+        this.newVideo = newVideo;
     }
 
-    public List<TeacherForHomeVO> getTeacherForHomeVO() {
-        return teacherForHomeVO;
+    public List<TeacherForHomeVO> getTeacherForHome() {
+        return teacherForHome;
     }
 
-    public void setTeacherForHomeVO(List<TeacherForHomeVO> teacherForHomeVO) {
-        this.teacherForHomeVO = teacherForHomeVO;
+    public void setTeacherForHome(List<TeacherForHomeVO> teacherForHome) {
+        this.teacherForHome = teacherForHome;
     }
 
-    public List<HotVideoVO> getHotVideoVO() {
-        return hotVideoVO;
+    public List<HotVideoVO> getHotVideo() {
+        return hotVideo;
     }
 
-    public void setHotVideoVO(List<HotVideoVO> hotVideoVO) {
-        this.hotVideoVO = hotVideoVO;
+    public void setHotVideo(List<HotVideoVO> hotVideo) {
+        this.hotVideo = hotVideo;
     }
 }

@@ -3,6 +3,7 @@ package com.yulaw.ccbapi.model.vo;
 import com.yulaw.ccbapi.model.pojo.Teacher;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class VideoVO implements Serializable {
     private Long id;
@@ -24,6 +25,8 @@ public class VideoVO implements Serializable {
     private TeacherForVideoVO teacher;
 
     private AdvertisementVO advertisement;
+
+    private List<QuestionVO> questionList;
 
     public Long getId() {
         return id;
@@ -103,5 +106,13 @@ public class VideoVO implements Serializable {
 
     public void setAdvertisement(AdvertisementVO advertisement) {
         this.advertisement = advertisement;
+    }
+
+    public List<QuestionVO> getQuestionList() {
+        return questionList;
+    }
+
+    public void setQuestionList(List<QuestionVO> questionList) {
+        this.questionList = questionList;
     }
 }

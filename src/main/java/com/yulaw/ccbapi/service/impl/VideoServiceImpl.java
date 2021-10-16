@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.model.dao.*;
 import com.yulaw.ccbapi.model.pojo.*;
 import com.yulaw.ccbapi.model.vo.*;
+import com.yulaw.ccbapi.service.QuestionService;
 import com.yulaw.ccbapi.service.VideoService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -12,7 +13,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     ChannelAndVideoMapper channelAndVideoMapper;
+
+    @Autowired
+    QuestionService questionService;
 
 
     @Override
@@ -123,7 +129,23 @@ public class VideoServiceImpl implements VideoService {
             BeanUtils.copyProperties(advertisement, advertisementVO);
             videoVO.setAdvertisement(advertisementVO);
         }
+        videoVO.setQuestionList(questionService.selectByChannelId(videoVO.getChannelId()));
         return videoVO;
+    }
+
+    @Override
+    public void addStarById(Long id, Integer type){
+        Video video = videoMapper.selectByPrimaryKey(id);
+        if(type == 1){
+            video.setEnjoyCount(video.getEnjoyCount() + 1);
+        }
+        if(type == 2){
+            video.setViews(video.getViews() + 1);
+        }
+        if (type == 3){
+            video.setShareCount(video.getShareCount() + 1);
+        }
+        videoMapper.updateByPrimaryKeySelective(video);
     }
 
 }

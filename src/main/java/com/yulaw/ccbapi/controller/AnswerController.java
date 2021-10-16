@@ -20,7 +20,7 @@ public class AnswerController {
 
     @PostMapping("/answer/submit")
     @ResponseBody
-    public ApiRestResponse submitAnswer(@Valid @RequestBody AddAnswerReq addAnswerReq){
+    public ApiRestResponse submitAnswer(@Valid @RequestBody AddAnswerReq[] addAnswerReq){
 
         answerService.add(addAnswerReq);
         return ApiRestResponse.success();

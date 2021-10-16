@@ -56,4 +56,12 @@ public class VideoController {
         return ApiRestResponse.success(video);
 
     }
+
+    @PostMapping("/video/add")
+    @ResponseBody
+    public ApiRestResponse addStar(@RequestParam Long id,@RequestParam Integer type){
+        videoService.addStarById(id, type);
+        return ApiRestResponse.success();
+
+    }
 }

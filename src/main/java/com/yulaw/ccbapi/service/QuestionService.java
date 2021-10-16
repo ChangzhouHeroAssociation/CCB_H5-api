@@ -10,5 +10,7 @@ public interface QuestionService {
 
     List<QuestionVO> getQuestionList();
 
-    Question selectByChannelName(String name);
+    List<Question> selectByChannelName(String name);
+
+    List<QuestionVO> selectByChannelId(Long id);
 }

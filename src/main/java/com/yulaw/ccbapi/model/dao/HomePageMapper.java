@@ -9,6 +9,8 @@ public interface HomePageMapper {
 
     HomePage selectByPrimaryKey(Integer id);
 
+    HomePage selectOne();
+
     int updateByPrimaryKeySelective(HomePage record);
 
     int updateByPrimaryKey(HomePage record);

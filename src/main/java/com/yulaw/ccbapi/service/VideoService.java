@@ -19,4 +19,7 @@ public interface VideoService {
     List<HotVideoVO> getHotVideoVO();
 
     VideoVO getVideoById(Long id);
+
+
+    void addStarById(Long id, Integer type);
 }
