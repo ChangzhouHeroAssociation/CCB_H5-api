@@ -9,7 +9,7 @@
   <sql id="Base_Column_List">
     id, channel_id, video_id
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from channel_video_relation
@@ -27,7 +27,7 @@
     from channel_video_relation
     where video_id = #{videoId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from channel_video_relation
     where id = #{id,jdbcType=INTEGER}
   </delete>

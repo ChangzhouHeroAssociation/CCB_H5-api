@@ -11,7 +11,7 @@ public interface ChannelService {
 
     List<ChannelForHomeVO> getChannelList();
 
-    ChannelVO getChannelById(Long id);
+    ChannelVO getChannelById(Long id,Integer pageNum,Integer pageSize);
 
     Channel getChannelByName(String name);
 }

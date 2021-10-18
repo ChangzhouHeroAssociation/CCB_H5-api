@@ -1,33 +1,33 @@
 package com.yulaw.ccbapi.model.pojo;
 
 public class VideoAndCategory {
-    private Integer id;
+    private Long id;
 
-    private Integer categoryId;
+    private Long categoryId;
 
-    private Integer videoId;
+    private Long videoId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
-    public Integer getVideoId() {
+    public Long getVideoId() {
         return videoId;
     }
 
-    public void setVideoId(Integer videoId) {
+    public void setVideoId(Long videoId) {
         this.videoId = videoId;
     }
 }

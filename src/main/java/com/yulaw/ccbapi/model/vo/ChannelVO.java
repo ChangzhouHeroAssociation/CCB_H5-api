@@ -1,5 +1,6 @@
 package com.yulaw.ccbapi.model.vo;
 
+import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.model.pojo.Video;
 
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class ChannelVO implements Serializable {
 
     private String image;
 
-    private List<HotVideoVO> hotVideoVOList;
+    private PageInfo VideoList;
 
     public Long getId() {
         return id;
@@ -59,11 +60,11 @@ public class ChannelVO implements Serializable {
         this.image = image == null ? null : image.trim();
     }
 
-    public List<HotVideoVO> getHotVideoVOList() {
-        return hotVideoVOList;
+    public PageInfo getVideoList() {
+        return VideoList;
     }
 
-    public void setHotVideoVOList(List<HotVideoVO> hotVideoVOList) {
-        this.hotVideoVOList = hotVideoVOList;
+    public void setVideoList(PageInfo videoList) {
+        VideoList = videoList;
     }
 }

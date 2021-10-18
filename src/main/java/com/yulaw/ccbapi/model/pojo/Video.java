@@ -102,4 +102,20 @@ public class Video {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "id=" + id +
+                ", videoTitle='" + videoTitle + '\'' +
+                ", description='" + description + '\'' +
+                ", views=" + views +
+                ", url='" + url + '\'' +
+                ", status=" + status +
+                ", enjoyCount=" + enjoyCount +
+                ", shareCount=" + shareCount +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

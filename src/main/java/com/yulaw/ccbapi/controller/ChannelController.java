@@ -31,8 +31,10 @@ public class ChannelController {
 
     @GetMapping("/channel")
     @ResponseBody
-    public ApiRestResponse getChannelById(@RequestParam(required = false,defaultValue = "3") Long id) throws CcbException {
-        ChannelVO channel = channelService.getChannelById(id);
+    public ApiRestResponse getChannelById(@RequestParam(required = false,defaultValue = "3") Long id,
+                                          @RequestParam(required = false,defaultValue = "1") Integer pageNum,
+                                          @RequestParam(required = false,defaultValue = "10") Integer pageSize){
+        ChannelVO channel = channelService.getChannelById(id,pageNum,pageSize);
         return ApiRestResponse.success(channel);
 
     }

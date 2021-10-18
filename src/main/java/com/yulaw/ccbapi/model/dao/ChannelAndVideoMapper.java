@@ -7,9 +7,9 @@ import java.util.List;
 
 @Repository
 public interface ChannelAndVideoMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
-    ChannelAndVideo selectByPrimaryKey(Integer id);
+    ChannelAndVideo selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(ChannelAndVideo record);
 

@@ -15,6 +15,12 @@
     from video_category_relation
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByCategoryId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from video_category_relation
+    where category_id = #{categoryId,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from video_category_relation
     where id = #{id,jdbcType=INTEGER}

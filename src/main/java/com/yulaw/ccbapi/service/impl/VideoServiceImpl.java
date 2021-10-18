@@ -2,6 +2,8 @@ package com.yulaw.ccbapi.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yulaw.ccbapi.exception.CcbException;
+import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.dao.*;
 import com.yulaw.ccbapi.model.pojo.*;
 import com.yulaw.ccbapi.model.vo.*;
@@ -32,6 +34,9 @@ public class VideoServiceImpl implements VideoService {
     ChannelMapper channelMapper;
 
     @Autowired
+    CategoryMapper categoryMapper;
+
+    @Autowired
     AdvertisementMapper advertisementMapper;
 
     @Autowired
@@ -41,11 +46,13 @@ public class VideoServiceImpl implements VideoService {
     ChannelAndVideoMapper channelAndVideoMapper;
 
     @Autowired
+    VideoAndCategoryMapper videoAndCategoryMapper;
+
+    @Autowired
     QuestionService questionService;
 
 
     @Override
-    @Cacheable(value = "getVideoList")
     public List<VideoVO> getVideoList() {
         List<Video> videoAll = videoMapper.findAll();
         List<VideoVO> resultList = new ArrayList<>();
@@ -57,12 +64,76 @@ public class VideoServiceImpl implements VideoService {
         return resultList;
     }
 
+    /**
+     * 按频道精确查询
+     * @param channelId
+     * @return
+     */
     @Override
-    public PageInfo listForAdmin(Integer pageNum, Integer pageSize, String orderBy){
-        PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
-        List<Video> videoList = videoMapper.findAll();
-        List<HotVideoVO> resultList = new ArrayList<>();
-        for (Video video : videoList) {
+    public List<Video> getVideoListByChannelId(Long channelId){
+        List<ChannelAndVideo> channelAndVideos = channelAndVideoMapper.selectByChannelId(channelId);
+        ArrayList<Video> videoList = new ArrayList<>();
+        for (ChannelAndVideo channelAndVideo : channelAndVideos) {
+            Video video = videoMapper.selectByPrimaryKey(channelAndVideo.getVideoId());
+            videoList.add(video);
+        }
+        return videoList;
+    }
+
+    /**
+     * 按视频分组精确查询
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Video> getVideoListByCategoryId(Long categoryId){
+        List<VideoAndCategory> videoAndCategorys = videoAndCategoryMapper.selectByCategoryId(categoryId);
+        ArrayList<Video> videoList = new ArrayList<>();
+        for (VideoAndCategory videoAndCategory : videoAndCategorys) {
+            Video video = videoMapper.selectByPrimaryKey(videoAndCategory.getVideoId());
+            videoList.add(video);
+        }
+        return videoList;
+    }
+
+    /**
+     * 按视频标题模糊查询
+     * @param title
+     * @return
+     */
+    @Override
+    public List<Video> getVideoListByTitle(String title){
+        List<Video> videoList = videoMapper.selectByTitle(title);
+        return videoList;
+    }
+
+    /**
+     * 按讲师姓名模糊查询
+     * @param name
+     * @return
+     */
+    @Override
+    public List<Video> getVideoListByTeacher(String name){
+        List<Teacher> teachers = teacherMapper.selectByNameLike(name);
+        List<Video> resultList = new ArrayList<>();
+        for (Teacher teacher : teachers) {
+            List<VideoAndTeacher> videoAndTeachers = videoAndTeacherMapper.selectByTeacherId(teacher.getId());
+            for (VideoAndTeacher videoAndTeacher : videoAndTeachers) {
+                resultList.add(videoMapper.selectByPrimaryKey(videoAndTeacher.getVideoId()));
+            }
+        }
+        return resultList;
+    }
+
+    /**
+     * Video对象转HotVideoVO并填充属性值
+     * @param oldList
+     * @return
+     */
+    @Override
+    public ArrayList<HotVideoVO> copyToHotVideo(List<Video> oldList){
+        ArrayList<HotVideoVO> resultList = new ArrayList<>();
+        for (Video video : oldList) {
             HotVideoVO hotVideoVO = new HotVideoVO();
             BeanUtils.copyProperties(video,hotVideoVO);
             try{
@@ -81,8 +152,43 @@ public class VideoServiceImpl implements VideoService {
                 throw e;
             }
         }
-        PageInfo pageInfo = new PageInfo(resultList);
-        return pageInfo;
+        return resultList;
+    }
+
+    @Override
+    //@Cacheable(value = "getPageList")
+    public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
+                                Long channelId, Long categoryId, String title, String teacherName){
+
+        ArrayList<HotVideoVO> resultList = null;
+        List<Video> videoList;
+        if(channelId == 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
+            PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
+            videoList = videoMapper.findAll();
+        }else if(channelId != 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
+            PageHelper.startPage(pageNum,pageSize);
+            //缺少按新增时间排序
+            videoList = getVideoListByChannelId(channelId);
+
+        }else if(channelId == 0L && categoryId != 0L && "".equals(title) && "".equals(teacherName)){
+            PageHelper.startPage(pageNum,pageSize);
+            //缺少按新增时间排序
+            videoList = getVideoListByCategoryId(categoryId);
+        }else if(channelId == 0L && categoryId == 0L && !("".equals(title)) && "".equals(teacherName)){
+            PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
+            videoList = getVideoListByTitle(title);
+        }else if(channelId == 0L && categoryId == 0L && "".equals(title)){
+            PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
+            videoList = getVideoListByTeacher(teacherName);
+        }else {
+            throw new CcbException(CcbExceptionEnum.REQUEST_PARAM_ERROR);
+        }
+        if(videoList != null){
+            resultList = copyToHotVideo(videoList);
+            return new PageInfo(resultList);
+        }else {
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
     }
 
     @Override
@@ -114,15 +220,21 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public VideoVO getVideoById(Long id) {
+        //播放，只要调取视频详情接口就可以计入一次播放
+        addStarById(id,2);
+
         Video video = videoMapper.selectByPrimaryKey(id);
         VideoVO videoVO = new VideoVO();
         BeanUtils.copyProperties(video, videoVO);
+
         VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(videoVO.getId());
         Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
         TeacherForVideoVO teacherForVideoVO = new TeacherForVideoVO();
         BeanUtils.copyProperties(teacher,teacherForVideoVO);
         videoVO.setTeacher(teacherForVideoVO);
+
         videoVO.setChannelId(channelAndVideoMapper.selectByVideoId(videoVO.getId()).getChannelId());
+        
         Advertisement advertisement = advertisementMapper.selectByChannelId(videoVO.getChannelId());
         if(advertisement != null){
             AdvertisementVO advertisementVO = new AdvertisementVO();

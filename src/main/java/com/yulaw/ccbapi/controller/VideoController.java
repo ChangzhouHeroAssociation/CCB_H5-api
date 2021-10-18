@@ -37,9 +37,13 @@ public class VideoController {
     @ResponseBody
     public ApiRestResponse listVideoForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                              @RequestParam(required = false, defaultValue = "5") Integer pageSize,
-                                             @RequestParam(required = false, defaultValue = "views") String orderBy){
+                                             @RequestParam(required = false, defaultValue = "views") String orderBy,
+                                             @RequestParam(required = false,defaultValue = "0") Long channelId,
+                                             @RequestParam(required = false,defaultValue = "0") Long categoryId,
+                                             @RequestParam(required = false,defaultValue = "") String title,
+                                             @RequestParam(required = false,defaultValue = "") String teacherName){
         try{
-            PageInfo pageInfo = videoService.listForAdmin(pageNum , pageSize , orderBy);
+            PageInfo pageInfo = videoService.getPageList(pageNum , pageSize , orderBy, channelId, categoryId, title, teacherName);
             return ApiRestResponse.success(pageInfo);
         }catch (BadSqlGrammarException e){
             return ApiRestResponse.error(CcbExceptionEnum.REQUEST_PARAM_NOT_FOUND);

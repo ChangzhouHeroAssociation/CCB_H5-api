@@ -18,4 +18,6 @@ public interface TeacherMapper {
     List<Teacher> findAll();
 
     List<Teacher> selectForHome();
+
+    List<Teacher> selectByNameLike(String name);
 }

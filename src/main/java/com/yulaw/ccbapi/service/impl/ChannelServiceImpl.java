@@ -1,5 +1,6 @@
 package com.yulaw.ccbapi.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.dao.*;
@@ -8,6 +9,7 @@ import com.yulaw.ccbapi.model.vo.ChannelForHomeVO;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
 import com.yulaw.ccbapi.model.vo.HotVideoVO;
 import com.yulaw.ccbapi.service.ChannelService;
+import com.yulaw.ccbapi.service.VideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,6 +36,9 @@ public class ChannelServiceImpl implements ChannelService {
     @Autowired
     TeacherMapper teacherMapper;
 
+    @Autowired
+    VideoService videoService;
+
     @Override
     @Cacheable(value = "getChannelList")
     public List<ChannelForHomeVO> getChannelList() {
@@ -48,26 +53,16 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public ChannelVO getChannelById(Long id) {
+    public ChannelVO getChannelById(Long id,Integer pageNum, Integer pageSize) {
         ChannelVO channelVO = new ChannelVO();
         Channel channel = channelMapper.selectByPrimaryKey(id);
         if(channel == null){
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         BeanUtils.copyProperties(channel,channelVO);
-        ArrayList<HotVideoVO> videos = new ArrayList<>();
-        List<ChannelAndVideo> channelAndVideos = channelAndVideoMapper.selectByChannelId(channelVO.getId());
-        for (ChannelAndVideo channelAndVideo : channelAndVideos) {
-            Video video = videoMapper.selectByPrimaryKey(channelAndVideo.getVideoId());
-            HotVideoVO hotVideoVO = new HotVideoVO();
-            BeanUtils.copyProperties(video,hotVideoVO);
-            hotVideoVO.setChannelIcon(channelVO.getIcon());
-            VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
-            Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
-            hotVideoVO.setTeacher(teacher.getTeacherName());
-            videos.add(hotVideoVO);
-        }
-        channelVO.setHotVideoVOList(videos);
+        PageInfo videoList = videoService.getPageList(pageNum, pageSize, "views", id, 0L, "", "");
+
+        channelVO.setVideoList(videoList);
         return channelVO;
     }
 

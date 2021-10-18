@@ -31,6 +31,12 @@
     ORDER by create_time desc
     LIMIT 10
   </select>
+  <select id="selectByNameLike" resultType="com.yulaw.ccbapi.model.pojo.Teacher">
+    select
+    <include refid="Base_Column_List"/>
+    from teacher
+    WHERE teacher_name LIKE concat('%',#{name},'%')
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from teacher
     where id = #{id,jdbcType=BIGINT}

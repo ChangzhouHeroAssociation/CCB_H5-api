@@ -23,4 +23,7 @@ public interface VideoMapper {
     Video selectNew();
 
     List<Video> selectHotByView();
+
+    List<Video> selectByTitle(String title);
+
 }

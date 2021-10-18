@@ -2,7 +2,9 @@ package com.yulaw.ccbapi.model.vo;
 
 import com.yulaw.ccbapi.model.pojo.Teacher;
 
-public class HotVideoVO {
+import java.io.Serializable;
+
+public class HotVideoVO implements Serializable {
     private Long id;
 
     private String videoTitle;
