@@ -56,6 +56,7 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
+    @Cacheable(value = "getBannerListForHome")
     public List<BannerForHomeVO> getBannerListForHome(){
         List<Banner> banners = bannerMapper.selectForHome();
         ArrayList<BannerForHomeVO> bannerForHomeVOS = new ArrayList<>();

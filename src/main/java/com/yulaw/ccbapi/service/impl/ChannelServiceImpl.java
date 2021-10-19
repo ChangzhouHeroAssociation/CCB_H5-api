@@ -13,6 +13,8 @@ import com.yulaw.ccbapi.service.VideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ public class ChannelServiceImpl implements ChannelService {
     @Autowired
     VideoService videoService;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
     @Override
     @Cacheable(value = "getChannelList")
     public List<ChannelForHomeVO> getChannelList() {
@@ -53,6 +58,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
+    @Cacheable(value = "getChannelById")
     public ChannelVO getChannelById(Long id,Integer pageNum, Integer pageSize) {
         ChannelVO channelVO = new ChannelVO();
         Channel channel = channelMapper.selectByPrimaryKey(id);
@@ -63,6 +69,18 @@ public class ChannelServiceImpl implements ChannelService {
         PageInfo videoList = videoService.getPageList(pageNum, pageSize, "views", id, 0L, "", "");
 
         channelVO.setVideoList(videoList);
+
+        // 将channel访问量记录到缓存
+        BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("channel");
+
+        if(hashKey.hasKey(channelVO.getChannelName())){
+            //FIXME : 实现自增 BoundHashOperations.increament 报错
+            Integer value2 = hashKey.get(channelVO.getChannelName());
+            value2 = value2 + 1;
+            hashKey.put(channelVO.getChannelName(), value2);
+        }else {
+            hashKey.put(channelVO.getChannelName(), 1);
+        }
         return channelVO;
     }
 

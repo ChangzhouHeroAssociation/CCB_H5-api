@@ -48,7 +48,7 @@
         </javaClientGenerator>
 
         <!--6. 我要生成的表  可以一次性生成多张表 tableName是表名   domainObjectName是实体名 -->
-        <table tableName="advertisement" domainObjectName="Advertisement"
+        <!--<table tableName="advertisement" domainObjectName="Advertisement"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableInsert="false"/>
@@ -93,6 +93,18 @@
                enableDeleteByExample="false" enableSelectByExample="false"
                enableInsert="false"/>
         <table tableName="video_teacher_relation" domainObjectName="VideoAndTeacher"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>-->
+        <table tableName="log_channel" domainObjectName="ChannelLog"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="log_teacher" domainObjectName="TeacherLog"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableInsert="false"/>
+        <table tableName="log_video" domainObjectName="VideoLog"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableInsert="false"/>

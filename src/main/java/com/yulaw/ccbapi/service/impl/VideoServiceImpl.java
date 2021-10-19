@@ -14,6 +14,8 @@ import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,8 +53,12 @@ public class VideoServiceImpl implements VideoService {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
 
     @Override
+    @Cacheable(value = "getVideoList")
     public List<VideoVO> getVideoList() {
         List<Video> videoAll = videoMapper.findAll();
         List<VideoVO> resultList = new ArrayList<>();
@@ -70,6 +76,7 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     @Override
+    @Cacheable("getVideoListByChannelId")
     public List<Video> getVideoListByChannelId(Long channelId){
         List<ChannelAndVideo> channelAndVideos = channelAndVideoMapper.selectByChannelId(channelId);
         ArrayList<Video> videoList = new ArrayList<>();
@@ -86,6 +93,7 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     @Override
+    @Cacheable(value = "getVideoListByCategoryId")
     public List<Video> getVideoListByCategoryId(Long categoryId){
         List<VideoAndCategory> videoAndCategorys = videoAndCategoryMapper.selectByCategoryId(categoryId);
         ArrayList<Video> videoList = new ArrayList<>();
@@ -102,6 +110,7 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     @Override
+    @Cacheable(value = "getVideoListByTitle")
     public List<Video> getVideoListByTitle(String title){
         List<Video> videoList = videoMapper.selectByTitle(title);
         return videoList;
@@ -113,6 +122,7 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     @Override
+    @Cacheable(value = "getVideoListByTeacher")
     public List<Video> getVideoListByTeacher(String name){
         List<Teacher> teachers = teacherMapper.selectByNameLike(name);
         List<Video> resultList = new ArrayList<>();
@@ -156,7 +166,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    //@Cacheable(value = "getPageList")
+    @Cacheable(value = "getPageList")
     public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
                                 Long channelId, Long categoryId, String title, String teacherName){
 
@@ -167,12 +177,12 @@ public class VideoServiceImpl implements VideoService {
             videoList = videoMapper.findAll();
         }else if(channelId != 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
             PageHelper.startPage(pageNum,pageSize);
-            //缺少按新增时间排序
+            //FIXME : 缺少按新增时间排序
             videoList = getVideoListByChannelId(channelId);
 
         }else if(channelId == 0L && categoryId != 0L && "".equals(title) && "".equals(teacherName)){
             PageHelper.startPage(pageNum,pageSize);
-            //缺少按新增时间排序
+            //FIXME : 缺少按新增时间排序
             videoList = getVideoListByCategoryId(categoryId);
         }else if(channelId == 0L && categoryId == 0L && !("".equals(title)) && "".equals(teacherName)){
             PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
@@ -192,6 +202,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Cacheable(value = "getNew")
     public NewVideoVO getNew(){
         Video video = videoMapper.selectNew();
         NewVideoVO newVideoVO = new NewVideoVO();
@@ -200,6 +211,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Cacheable(value = "getHotVideoVO")
     public List<HotVideoVO> getHotVideoVO(){
         List<Video> videos = videoMapper.selectHotByView();
         ArrayList<HotVideoVO> hotVideoVOS = new ArrayList<>();
@@ -219,9 +231,11 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Cacheable(value = "getVideoById")
     public VideoVO getVideoById(Long id) {
         //播放，只要调取视频详情接口就可以计入一次播放
         addStarById(id,2);
+
 
         Video video = videoMapper.selectByPrimaryKey(id);
         VideoVO videoVO = new VideoVO();
@@ -234,7 +248,7 @@ public class VideoServiceImpl implements VideoService {
         videoVO.setTeacher(teacherForVideoVO);
 
         videoVO.setChannelId(channelAndVideoMapper.selectByVideoId(videoVO.getId()).getChannelId());
-        
+
         Advertisement advertisement = advertisementMapper.selectByChannelId(videoVO.getChannelId());
         if(advertisement != null){
             AdvertisementVO advertisementVO = new AdvertisementVO();
@@ -242,6 +256,19 @@ public class VideoServiceImpl implements VideoService {
             videoVO.setAdvertisement(advertisementVO);
         }
         videoVO.setQuestionList(questionService.selectByChannelId(videoVO.getChannelId()));
+
+        // 将video访问量记录到缓存
+        BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_view");
+
+        if(hashKey.hasKey(videoVO.getVideoTitle())){
+            //FIXME : 实现自增 BoundHashOperations.increament 报错
+            Integer value2 = hashKey.get(videoVO.getVideoTitle());
+            value2 = value2 + 1;
+            hashKey.put(videoVO.getVideoTitle(), value2);
+        }else {
+            hashKey.put(videoVO.getVideoTitle(), 1);
+        }
+
         return videoVO;
     }
 
@@ -256,6 +283,17 @@ public class VideoServiceImpl implements VideoService {
         }
         if (type == 3){
             video.setShareCount(video.getShareCount() + 1);
+            // 将video访问量记录到缓存
+            BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_share");
+
+            if(hashKey.hasKey(video.getVideoTitle())){
+                //FIXME : 实现自增 BoundHashOperations.increament 报错
+                Integer value2 = hashKey.get(video.getVideoTitle());
+                value2 = value2 + 1;
+                hashKey.put(video.getVideoTitle(), value2);
+            }else {
+                hashKey.put(video.getVideoTitle(), 1);
+            }
         }
         videoMapper.updateByPrimaryKeySelective(video);
     }

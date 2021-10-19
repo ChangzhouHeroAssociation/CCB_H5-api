@@ -1,8 +1,9 @@
 package com.yulaw.ccbapi.model.vo;
 
 
+import java.io.Serializable;
 
-public class TeacherForVideoVO {
+public class TeacherForVideoVO implements Serializable {
     private Long id;
 
     private String teacherName;

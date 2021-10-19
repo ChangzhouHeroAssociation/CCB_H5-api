@@ -2,9 +2,10 @@ package com.yulaw.ccbapi.model.vo;
 
 import com.yulaw.ccbapi.model.pojo.Video;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TeacherForHomeVO {
+public class TeacherForHomeVO implements Serializable {
 
     private Long id;
 

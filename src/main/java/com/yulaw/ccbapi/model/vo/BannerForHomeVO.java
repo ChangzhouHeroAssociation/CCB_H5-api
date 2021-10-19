@@ -1,6 +1,8 @@
 package com.yulaw.ccbapi.model.vo;
 
-public class BannerForHomeVO {
+import java.io.Serializable;
+
+public class BannerForHomeVO implements Serializable {
     private Long id;
 
     private String bannerName;
