@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -177,13 +179,36 @@ public class VideoServiceImpl implements VideoService {
             videoList = videoMapper.findAll();
         }else if(channelId != 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
             PageHelper.startPage(pageNum,pageSize);
-            //FIXME : 缺少按新增时间排序
+
             videoList = getVideoListByChannelId(channelId);
+            //FIXME : 按创建时间排序 却不起作用
+            Collections.sort(videoList, new Comparator<Video>() {
+                @Override
+                public int compare(Video o1, Video o2) {
+                    if (o1.getCreateTime().before(o2.getCreateTime())) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
 
         }else if(channelId == 0L && categoryId != 0L && "".equals(title) && "".equals(teacherName)){
             PageHelper.startPage(pageNum,pageSize);
-            //FIXME : 缺少按新增时间排序
+
             videoList = getVideoListByCategoryId(categoryId);
+
+            //FIXME : 按创建时间排序 却不起作用
+            Collections.sort(videoList, new Comparator<Video>() {
+                @Override
+                public int compare(Video o1, Video o2) {
+                    if (o1.getCreateTime().before(o2.getCreateTime())) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
         }else if(channelId == 0L && categoryId == 0L && !("".equals(title)) && "".equals(teacherName)){
             PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
             videoList = getVideoListByTitle(title);

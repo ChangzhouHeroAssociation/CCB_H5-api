@@ -33,4 +33,13 @@ public class AddAnswerReq {
     public void setChannelId(Long channelId) {
         this.channelId = channelId;
     }
+
+    @Override
+    public String toString() {
+        return "AddAnswerReq{" +
+                "questionId=" + questionId +
+                ", result='" + result + '\'' +
+                ", channelId=" + channelId +
+                '}';
+    }
 }
