@@ -95,5 +95,32 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertBatch" parameterType="com.yulaw.ccbapi.model.pojo.Answer">
+    INSERT INTO answer
+    (question_id, `result`, channel_id, create_time, update_time)
+    VALUES
+    <foreach collection ="list" item="item" separator =",">
+    <trim prefix=" (" suffix=")" suffixOverrides="," >
+      <if test="item.id != null" >
+        #{item.id,jdbcType=BIGINT},
+      </if>
+      <if test="item.questionId != null" >
+        #{item.questionId,jdbcType=BIGINT},
+      </if>
+      <if test="item.result != null" >
+        #{item.result,jdbcType=VARCHAR},
+      </if>
+      <if test="item.channelId != null" >
+        #{item.channelId,jdbcType=BIGINT},
+      </if>
+      <if test="item.createTime != null" >
+        #{item.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item.updateTime != null" >
+        #{item.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    </foreach>
+  </insert>
 
 </mapper>

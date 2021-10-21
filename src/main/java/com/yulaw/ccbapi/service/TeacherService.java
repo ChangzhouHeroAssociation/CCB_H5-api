@@ -1,5 +1,6 @@
 package com.yulaw.ccbapi.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.model.vo.TeacherForHomeVO;
 import com.yulaw.ccbapi.model.vo.TeacherVO;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface TeacherService {
 
-    List<TeacherForHomeVO> getTeacherListForHome();
+    PageInfo getTeacherListForHome(Integer pageNum, Integer pageSize);
 
     TeacherVO getTeacherById(Long id);
 }

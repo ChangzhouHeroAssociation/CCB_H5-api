@@ -1,5 +1,7 @@
 package com.yulaw.ccbapi.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
@@ -46,7 +48,8 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     @Cacheable(value = "getChannelList")
-    public List<ChannelForHomeVO> getChannelList() {
+    public PageInfo getChannelList(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize, "create_time desc");
         List<Channel> channelAll = channelMapper.findChannelAll();
         List<ChannelForHomeVO> channelList = new ArrayList<>();
         for (Channel channel : channelAll) {
@@ -54,7 +57,7 @@ public class ChannelServiceImpl implements ChannelService {
             BeanUtils.copyProperties(channel,channelForHomeVO);
             channelList.add(channelForHomeVO);
         }
-        return channelList;
+        return new PageInfo(channelList);
     }
 
     @Override

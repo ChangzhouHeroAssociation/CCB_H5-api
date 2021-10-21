@@ -33,7 +33,7 @@ public class BannerController {
         return ApiRestResponse.success(bannerList);
     }
 
-    @PostMapping("/banner/pageList")
+    @GetMapping("/banner/pageList")
     @ResponseBody
     public ApiRestResponse listBannerForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                              @RequestParam(required = false, defaultValue = "3") Integer pageSize,

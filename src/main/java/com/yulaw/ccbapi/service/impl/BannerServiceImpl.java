@@ -2,6 +2,8 @@ package com.yulaw.ccbapi.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yulaw.ccbapi.exception.CcbException;
+import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.dao.BannerMapper;
 import com.yulaw.ccbapi.model.pojo.Advertisement;
 import com.yulaw.ccbapi.model.pojo.Banner;
@@ -58,13 +60,17 @@ public class BannerServiceImpl implements BannerService {
     @Override
     @Cacheable(value = "getBannerListForHome")
     public List<BannerForHomeVO> getBannerListForHome(){
-        List<Banner> banners = bannerMapper.selectForHome();
-        ArrayList<BannerForHomeVO> bannerForHomeVOS = new ArrayList<>();
-        for (Banner banner : banners) {
-            BannerForHomeVO bannerForHomeVO = new BannerForHomeVO();
-            BeanUtils.copyProperties(banner,bannerForHomeVO);
-            bannerForHomeVOS.add(bannerForHomeVO);
 
+        ArrayList<BannerForHomeVO> bannerForHomeVOS = new ArrayList<>();
+        try {
+            List<Banner> banners = bannerMapper.selectForHome();
+            for (Banner banner : banners) {
+                BannerForHomeVO bannerForHomeVO = new BannerForHomeVO();
+                BeanUtils.copyProperties(banner,bannerForHomeVO);
+                bannerForHomeVOS.add(bannerForHomeVO);
+            }
+        }catch (Exception e){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         return  bannerForHomeVOS;
 

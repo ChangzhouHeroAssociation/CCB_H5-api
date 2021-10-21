@@ -33,7 +33,7 @@ public class VideoController {
 
     }
 
-    @PostMapping("/video/pageList")
+    @GetMapping("/video/pageList")
     @ResponseBody
     public ApiRestResponse listVideoForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                              @RequestParam(required = false, defaultValue = "5") Integer pageSize,
@@ -61,7 +61,7 @@ public class VideoController {
 
     }
 
-    @PostMapping("/video/add")
+    @GetMapping("/video/add")
     @ResponseBody
     public ApiRestResponse addStar(@RequestParam Long id,@RequestParam Integer type){
         videoService.addStarById(id, type);

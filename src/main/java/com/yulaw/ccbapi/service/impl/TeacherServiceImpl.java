@@ -1,5 +1,7 @@
 package com.yulaw.ccbapi.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.dao.*;
@@ -42,15 +44,20 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @Cacheable(value = "getTeacherListForHome")
-    public List<TeacherForHomeVO> getTeacherListForHome(){
-        List<Teacher> teachers = teacherMapper.selectForHome();
+    public PageInfo getTeacherListForHome(Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
         ArrayList<TeacherForHomeVO> teacherForHomeVOs = new ArrayList<>();
-        for (Teacher teacher : teachers) {
-            TeacherForHomeVO teacherForHomeVO = new TeacherForHomeVO();
-            BeanUtils.copyProperties(teacher,teacherForHomeVO);
-            teacherForHomeVOs.add(teacherForHomeVO);
+        try{
+            List<Teacher> teachers = teacherMapper.selectForHome();
+            for (Teacher teacher : teachers) {
+                TeacherForHomeVO teacherForHomeVO = new TeacherForHomeVO();
+                BeanUtils.copyProperties(teacher,teacherForHomeVO);
+                teacherForHomeVOs.add(teacherForHomeVO);
+            }
+        }catch (Exception e){
+            throw new CcbException(CcbExceptionEnum.GET_TEACHER_FAILED);
         }
-        return teacherForHomeVOs;
+        return new PageInfo(teacherForHomeVOs);
 
     }
 

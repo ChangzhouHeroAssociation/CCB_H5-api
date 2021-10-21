@@ -1,5 +1,7 @@
 package com.yulaw.ccbapi.service.impl;
 
+import com.yulaw.ccbapi.exception.CcbException;
+import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.dao.HomePageMapper;
 import com.yulaw.ccbapi.model.pojo.HomePage;
 import com.yulaw.ccbapi.service.HomePageService;
@@ -20,6 +22,10 @@ public class HomePageServiceImpl implements HomePageService {
     @Override
     @Cacheable(value = "getHomePage")
     public HomePage getHomePage() {
-        return homePageMapper.selectOne();
+        HomePage homePage = homePageMapper.selectOne();
+        if(homePage == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
+        return homePage;
     }
 }

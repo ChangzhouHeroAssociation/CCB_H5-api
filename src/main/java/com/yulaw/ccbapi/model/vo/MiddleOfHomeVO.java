@@ -1,12 +1,14 @@
 package com.yulaw.ccbapi.model.vo;
 
+import com.github.pagehelper.PageInfo;
+
 import java.util.List;
 
 public class MiddleOfHomeVO {
 
     private NewVideoVO newVideo;
 
-    private List<TeacherForHomeVO> teacherForHome;
+    private PageInfo teacherList;
 
     private List<HotVideoVO> hotVideo;
 
@@ -18,14 +20,6 @@ public class MiddleOfHomeVO {
         this.newVideo = newVideo;
     }
 
-    public List<TeacherForHomeVO> getTeacherForHome() {
-        return teacherForHome;
-    }
-
-    public void setTeacherForHome(List<TeacherForHomeVO> teacherForHome) {
-        this.teacherForHome = teacherForHome;
-    }
-
     public List<HotVideoVO> getHotVideo() {
         return hotVideo;
     }
@@ -33,4 +27,14 @@ public class MiddleOfHomeVO {
     public void setHotVideo(List<HotVideoVO> hotVideo) {
         this.hotVideo = hotVideo;
     }
+
+    public PageInfo getTeacherList() {
+        return teacherList;
+    }
+
+    public void setTeacherList(PageInfo teacherList) {
+        this.teacherList = teacherList;
+    }
 }
+
+

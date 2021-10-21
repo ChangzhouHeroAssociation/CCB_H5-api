@@ -1,5 +1,6 @@
 package com.yulaw.ccbapi.model.vo;
 
+import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.model.pojo.HomePage;
 
 import java.util.List;
@@ -8,7 +9,7 @@ public class HomeAndChannelVO {
 
     private HomePage homePage;
 
-    private List<ChannelForHomeVO> channelForHomeVOList;
+    private PageInfo channelForHomeVOList;
 
     public HomePage getHomePage() {
         return homePage;
@@ -18,11 +19,11 @@ public class HomeAndChannelVO {
         this.homePage = homePage;
     }
 
-    public List<ChannelForHomeVO> getChannelForHomeVOList() {
+    public PageInfo getChannelForHomeVOList() {
         return channelForHomeVOList;
     }
 
-    public void setChannelForHomeVOList(List<ChannelForHomeVO> channelForHomeVOList) {
+    public void setChannelForHomeVOList(PageInfo channelForHomeVOList) {
         this.channelForHomeVOList = channelForHomeVOList;
     }
 }

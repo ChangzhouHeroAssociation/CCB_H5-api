@@ -172,15 +172,24 @@ public class VideoServiceImpl implements VideoService {
     public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
                                 Long channelId, Long categoryId, String title, String teacherName){
 
-        ArrayList<HotVideoVO> resultList = null;
-        List<Video> videoList;
+        ArrayList<HotVideoVO> resultList;
+        List<Video> videoList = null;
+
         if(channelId == 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
+            // 情况一： 不指定四参数之一
             PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
             videoList = videoMapper.findAll();
+            if(videoList == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
         }else if(channelId != 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
+            // 情况二： 指定四参数之一，按频道id查询
             PageHelper.startPage(pageNum,pageSize);
 
             videoList = getVideoListByChannelId(channelId);
+            if(videoList == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
             //FIXME : 按创建时间排序 却不起作用
             Collections.sort(videoList, new Comparator<Video>() {
                 @Override
@@ -194,9 +203,13 @@ public class VideoServiceImpl implements VideoService {
             });
 
         }else if(channelId == 0L && categoryId != 0L && "".equals(title) && "".equals(teacherName)){
+            // 情况三： 指定四参数之一，按分类id查询
             PageHelper.startPage(pageNum,pageSize);
 
             videoList = getVideoListByCategoryId(categoryId);
+            if(videoList == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
 
             //FIXME : 按创建时间排序 却不起作用
             Collections.sort(videoList, new Comparator<Video>() {
@@ -210,47 +223,51 @@ public class VideoServiceImpl implements VideoService {
                 }
             });
         }else if(channelId == 0L && categoryId == 0L && !("".equals(title)) && "".equals(teacherName)){
+            // 情况三： 指定四参数之一，按标题查询
             PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
             videoList = getVideoListByTitle(title);
+            if(videoList == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
         }else if(channelId == 0L && categoryId == 0L && "".equals(title)){
+            // 情况四： 指定四参数之一，按老师姓名查询
             PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
             videoList = getVideoListByTeacher(teacherName);
+            if(videoList == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
         }else {
+            // 其他参数请求方式则调用错误
             throw new CcbException(CcbExceptionEnum.REQUEST_PARAM_ERROR);
         }
-        if(videoList != null){
-            resultList = copyToHotVideo(videoList);
-            return new PageInfo(resultList);
-        }else {
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-        }
+        resultList = copyToHotVideo(videoList);
+        return new PageInfo(resultList);
     }
 
     @Override
     @Cacheable(value = "getNew")
     public NewVideoVO getNew(){
-        Video video = videoMapper.selectNew();
-        NewVideoVO newVideoVO = new NewVideoVO();
-        BeanUtils.copyProperties(video,newVideoVO);
-        return newVideoVO;
+        try {
+            Video video = videoMapper.selectNew();
+            NewVideoVO newVideoVO = new NewVideoVO();
+            BeanUtils.copyProperties(video,newVideoVO);
+            return newVideoVO;
+        }catch (Exception e){
+            throw  new CcbException(CcbExceptionEnum.GET_VIDEO_FAILED);
+        }
+
     }
 
     @Override
     @Cacheable(value = "getHotVideoVO")
     public List<HotVideoVO> getHotVideoVO(){
-        List<Video> videos = videoMapper.selectHotByView();
-        ArrayList<HotVideoVO> hotVideoVOS = new ArrayList<>();
-        for (Video video : videos) {
-            HotVideoVO hotVideoVO = new HotVideoVO();
-            BeanUtils.copyProperties(video,hotVideoVO);
-            VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
-            Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
-            hotVideoVO.setTeacher(teacher.getTeacherName());
-            ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
-            Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
-            hotVideoVO.setChannelIcon(channel.getIcon());
-            hotVideoVOS.add(hotVideoVO);
+        ArrayList<HotVideoVO> hotVideoVOS;
+        try {
+            List<Video> videos = videoMapper.selectHotByView();
+            hotVideoVOS = copyToHotVideo(videos);
 
+        }catch (Exception e){
+            throw new CcbException(CcbExceptionEnum.GET_VIDEO_FAILED);
         }
         return hotVideoVOS;
     }
@@ -260,7 +277,6 @@ public class VideoServiceImpl implements VideoService {
     public VideoVO getVideoById(Long id) {
         //播放，只要调取视频详情接口就可以计入一次播放
         addStarById(id,2);
-
 
         Video video = videoMapper.selectByPrimaryKey(id);
         VideoVO videoVO = new VideoVO();

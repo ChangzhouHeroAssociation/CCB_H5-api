@@ -1,5 +1,6 @@
 package com.yulaw.ccbapi.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.model.pojo.Channel;
@@ -23,9 +24,10 @@ public class ChannelController {
 
     @GetMapping("/channel/list")
     @ResponseBody
-    public ApiRestResponse getChannelList() throws CcbException {
-        List<ChannelForHomeVO> channelList = channelService.getChannelList();
-        return ApiRestResponse.success(channelList);
+    public ApiRestResponse getChannelList(@RequestParam(required = false,defaultValue = "1") Integer pageNum,
+                                          @RequestParam(required = false,defaultValue = "8") Integer pageSize){
+        PageInfo list = channelService.getChannelList(pageNum,pageSize);
+        return ApiRestResponse.success(list);
 
     }
 

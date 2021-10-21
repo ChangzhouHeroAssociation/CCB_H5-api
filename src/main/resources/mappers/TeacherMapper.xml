@@ -29,7 +29,6 @@
     <include refid="Base_Column_List"/>
     from teacher
     ORDER by create_time desc
-    LIMIT 10
   </select>
   <select id="selectByNameLike" resultType="com.yulaw.ccbapi.model.pojo.Teacher">
     select

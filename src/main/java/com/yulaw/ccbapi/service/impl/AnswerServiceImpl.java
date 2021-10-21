@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Service
@@ -20,16 +21,23 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public void add(AddAnswerReq[] addAnswerReq){
+        ArrayList<Answer> answers = new ArrayList<>();
         for (AddAnswerReq answerReq : addAnswerReq) {
             Answer answer = new Answer();
             BeanUtils.copyProperties(answerReq,answer);
             answer.setCreateTime(new Date());
             answer.setUpdateTime(new Date());
-            int count = answerMapper.insertSelective(answer);
+            answers.add(answer);
+        }
+        try {
+            int count = answerMapper.insertBatch(answers);
             if(count == 0){
                 throw new CcbException(CcbExceptionEnum.ADD_QUESTION_FAILED);
+            }else if(count < answers.size()){
+                throw new CcbException(CcbExceptionEnum.INSERT_LOST);
             }
+        }catch (Exception e){
+            throw new CcbException(CcbExceptionEnum.ADD_QUESTION_FAILED);
         }
-
     }
 }
