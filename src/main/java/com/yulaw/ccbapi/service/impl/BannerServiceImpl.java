@@ -32,6 +32,23 @@ public class BannerServiceImpl implements BannerService {
     BannerMapper bannerMapper;
 
     @Override
+    public PageInfo listForAdmin(Integer pageNum, Integer pageSize, String orderBy) {
+        PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
+        List<Banner> bannerList = bannerMapper.findAll();
+        if(bannerList == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
+        List<BannerVO> resultList = new ArrayList<>();
+        for (Banner banner : bannerList) {
+            BannerVO bannerVO = new BannerVO();
+            BeanUtils.copyProperties(banner,bannerVO);
+            resultList.add(bannerVO);
+        }
+        PageInfo pageInfo = new PageInfo(resultList);
+        return pageInfo;
+    }
+
+    @Override
     @Cacheable(value = "getBannerListForHome")
     public List<BannerForHomeVO> getBannerListForHome(){
 

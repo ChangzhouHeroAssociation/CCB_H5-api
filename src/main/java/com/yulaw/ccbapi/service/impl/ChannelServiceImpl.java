@@ -46,7 +46,22 @@ public class ChannelServiceImpl implements ChannelService {
     @Autowired
     RedisTemplate redisTemplate;
 
-
+    @Override
+    @Cacheable(value = "getChannelList")
+    public PageInfo getChannelList(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize, "create_time desc");
+        List<Channel> channelAll = channelMapper.selectAll();
+        if(channelAll == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
+        List<ChannelForHomeVO> channelList = new ArrayList<>();
+        for (Channel channel : channelAll) {
+            ChannelForHomeVO channelForHomeVO = new ChannelForHomeVO();
+            BeanUtils.copyProperties(channel,channelForHomeVO);
+            channelList.add(channelForHomeVO);
+        }
+        return new PageInfo(channelList);
+    }
 
     @Override
     @Cacheable(value = "getChannelById")

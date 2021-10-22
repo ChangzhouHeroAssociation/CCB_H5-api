@@ -40,11 +40,5 @@ public class ChannelController {
         return ApiRestResponse.success(channel);
 
     }
-    @GetMapping("/channelByName")
-    @ResponseBody
-    public ApiRestResponse getChannelByName(@RequestParam String name) throws CcbException {
-        Channel channel = channelService.getChannelByName(name);
-        return ApiRestResponse.success(channel);
 
-    }
 }

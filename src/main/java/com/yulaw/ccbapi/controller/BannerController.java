@@ -25,13 +25,7 @@ public class BannerController {
     @Autowired
     BannerService bannerService;
 
-    @GetMapping("/banner/list")
-    @ResponseBody
-    public ApiRestResponse getBannerList() throws CcbException {
 
-        List<BannerVO> bannerList = bannerService.getBannerList();
-        return ApiRestResponse.success(bannerList);
-    }
 
     @GetMapping("/banner/pageList")
     @ResponseBody

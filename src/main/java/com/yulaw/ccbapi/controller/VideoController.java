@@ -25,13 +25,6 @@ public class VideoController {
     @Autowired
     VideoService videoService;
 
-    @GetMapping("/video/list")
-    @ResponseBody
-    public ApiRestResponse getVideoList() throws CcbException {
-        List<VideoVO> resultList = videoService.getVideoList();
-        return ApiRestResponse.success(resultList);
-
-    }
 
     @GetMapping("/video/pageList")
     @ResponseBody

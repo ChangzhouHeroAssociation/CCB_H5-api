@@ -16,22 +16,4 @@ import java.util.List;
 @Controller
 public class QuestionController {
 
-    @Autowired
-    QuestionService questionService;
-
-    @GetMapping("/question/list")
-    @ResponseBody
-    public ApiRestResponse getQuestionList() throws CcbException {
-        List<QuestionVO> resultList = questionService.getQuestionList();
-        return ApiRestResponse.success(resultList);
-
-    }
-
-    @GetMapping("/question")
-    @ResponseBody
-    public ApiRestResponse selectByChannelName(@RequestParam String name) throws CcbException {
-        List<Question> questionList = questionService.selectByChannelName(name);
-        return ApiRestResponse.success(questionList);
-
-    }
 }
