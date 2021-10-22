@@ -8,9 +8,5 @@ import java.util.List;
 
 public interface QuestionService {
 
-    List<QuestionVO> getQuestionList();
-
-    List<Question> selectByChannelName(String name);
-
     List<QuestionVO> selectByChannelId(Long id);
 }

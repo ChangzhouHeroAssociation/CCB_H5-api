@@ -9,6 +9,4 @@ public interface AdvertisementService {
 
     List<AdvertisementVO> getAdvertisementList();
 
-
-    AdvertisementVO selectByChannelId(Long id);
 }

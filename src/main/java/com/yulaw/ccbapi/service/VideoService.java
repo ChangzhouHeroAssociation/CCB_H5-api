@@ -12,28 +12,16 @@ import java.util.List;
 
 public interface VideoService {
 
-    List<VideoVO> getVideoList();
-
-
-    List<Video> getVideoListByChannelId(Long channelId);
-
-    List<Video> getVideoListByCategoryId(Long categoryId);
-
-    List<Video> getVideoListByTitle(String title);
-
-    List<Video> getVideoListByTeacher(String name);
 
     ArrayList<HotVideoVO> copyToHotVideo(List<Video> oldList);
 
     PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
                          Long channelId, Long categoryId, String keywords);
-
     NewVideoVO getNew();
 
     List<HotVideoVO> getHotVideoVO();
 
     VideoVO getVideoById(Long id);
-
-
+    
     void addStarById(Long id, Integer type);
 }

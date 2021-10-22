@@ -15,7 +15,4 @@ public interface ChannelMapper {
 
     int updateByPrimaryKey(Channel record);
 
-    List<Channel> findChannelAll();
-
-    Channel selectByName(String name);
 }

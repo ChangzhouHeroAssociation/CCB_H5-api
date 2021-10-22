@@ -10,9 +10,7 @@ import java.util.List;
 
 public interface ChannelService {
 
-    PageInfo getChannelList(Integer pageNum, Integer pageSize);
 
     ChannelVO getChannelById(Long id,Integer pageNum,Integer pageSize);
 
-    Channel getChannelByName(String name);
 }

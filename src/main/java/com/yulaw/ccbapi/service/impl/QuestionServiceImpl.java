@@ -21,30 +21,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     QuestionMapper questionMapper;
-    @Autowired
-    ChannelMapper channelMapper;
 
-    @Override
-    @Cacheable(value = "getQuestionList")
-    public List<QuestionVO> getQuestionList() {
-        List<Question> questionAll = questionMapper.findAll();
-        List<QuestionVO> resultList = new ArrayList<>();
-        for (Question question : questionAll) {
-            QuestionVO questionVO = new QuestionVO();
-            BeanUtils.copyProperties(question,questionVO);
-            resultList.add(questionVO);
-        }
-        return resultList;
-    }
-
-    @Override
-    public List<Question> selectByChannelName(String name) {
-        Channel channel = channelMapper.selectByName(name);
-        List<Question> questionList = questionMapper.selectByChannelId(channel.getId());
-        return questionList;
-
-    }
-    
     @Override
     public List<QuestionVO> selectByChannelId(Long id){
         List<Question> questionList = questionMapper.selectByChannelId(id);

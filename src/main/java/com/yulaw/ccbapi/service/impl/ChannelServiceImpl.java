@@ -46,22 +46,7 @@ public class ChannelServiceImpl implements ChannelService {
     @Autowired
     RedisTemplate redisTemplate;
 
-    @Override
-    @Cacheable(value = "getChannelList")
-    public PageInfo getChannelList(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize, "create_time desc");
-        List<Channel> channelAll = channelMapper.findChannelAll();
-        if(channelAll == null){
-            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
-        }
-        List<ChannelForHomeVO> channelList = new ArrayList<>();
-        for (Channel channel : channelAll) {
-            ChannelForHomeVO channelForHomeVO = new ChannelForHomeVO();
-            BeanUtils.copyProperties(channel,channelForHomeVO);
-            channelList.add(channelForHomeVO);
-        }
-        return new PageInfo(channelList);
-    }
+
 
     @Override
     @Cacheable(value = "getChannelById")
@@ -72,7 +57,7 @@ public class ChannelServiceImpl implements ChannelService {
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         BeanUtils.copyProperties(channel,channelVO);
-        PageInfo videoList = videoService.getPageList(pageNum, pageSize, "views", id, 0L, "");
+        PageInfo videoList = videoService.getPageList(pageNum, pageSize, "views", id, null, null);
 
         channelVO.setVideoList(videoList);
 
@@ -90,12 +75,4 @@ public class ChannelServiceImpl implements ChannelService {
         return channelVO;
     }
 
-    @Override
-    public Channel getChannelByName(String name) {
-        Channel channel = channelMapper.selectByName(name);
-        if(channel == null){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-        }
-        return channel;
-    }
 }
