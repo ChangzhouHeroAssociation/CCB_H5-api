@@ -13,7 +13,7 @@ public class ApiRestResponse<T> {
 
     private T data;
 
-    private static final int OK_CODE = 10000;
+    private static final int OK_CODE = 200;
 
     private static final String OK_MSG = "SUCCESS";
 

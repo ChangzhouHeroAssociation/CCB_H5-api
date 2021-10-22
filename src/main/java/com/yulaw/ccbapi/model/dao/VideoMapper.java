@@ -26,4 +26,8 @@ public interface VideoMapper {
 
     List<Video> selectByTitle(String title);
 
+    List<Video> selectByTeacher(String keywords);
+
+    List<Video> selectByChannelIdCategoryIdAndName(Long channelId, Long categoryId,String keywords);
+
 }

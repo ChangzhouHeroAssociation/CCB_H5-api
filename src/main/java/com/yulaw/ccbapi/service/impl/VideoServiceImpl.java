@@ -63,6 +63,9 @@ public class VideoServiceImpl implements VideoService {
     @Cacheable(value = "getVideoList")
     public List<VideoVO> getVideoList() {
         List<Video> videoAll = videoMapper.findAll();
+        if(videoAll == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         List<VideoVO> resultList = new ArrayList<>();
         for (Video video : videoAll) {
             VideoVO videoVO = new VideoVO();
@@ -81,9 +84,15 @@ public class VideoServiceImpl implements VideoService {
     @Cacheable("getVideoListByChannelId")
     public List<Video> getVideoListByChannelId(Long channelId){
         List<ChannelAndVideo> channelAndVideos = channelAndVideoMapper.selectByChannelId(channelId);
+        if(channelAndVideos == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         ArrayList<Video> videoList = new ArrayList<>();
         for (ChannelAndVideo channelAndVideo : channelAndVideos) {
             Video video = videoMapper.selectByPrimaryKey(channelAndVideo.getVideoId());
+            if(video == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
             videoList.add(video);
         }
         return videoList;
@@ -98,9 +107,15 @@ public class VideoServiceImpl implements VideoService {
     @Cacheable(value = "getVideoListByCategoryId")
     public List<Video> getVideoListByCategoryId(Long categoryId){
         List<VideoAndCategory> videoAndCategorys = videoAndCategoryMapper.selectByCategoryId(categoryId);
+        if(videoAndCategorys == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         ArrayList<Video> videoList = new ArrayList<>();
         for (VideoAndCategory videoAndCategory : videoAndCategorys) {
             Video video = videoMapper.selectByPrimaryKey(videoAndCategory.getVideoId());
+            if(video == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
             videoList.add(video);
         }
         return videoList;
@@ -115,6 +130,9 @@ public class VideoServiceImpl implements VideoService {
     @Cacheable(value = "getVideoListByTitle")
     public List<Video> getVideoListByTitle(String title){
         List<Video> videoList = videoMapper.selectByTitle(title);
+        if(videoList == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         return videoList;
     }
 
@@ -127,11 +145,21 @@ public class VideoServiceImpl implements VideoService {
     @Cacheable(value = "getVideoListByTeacher")
     public List<Video> getVideoListByTeacher(String name){
         List<Teacher> teachers = teacherMapper.selectByNameLike(name);
+        if(teachers == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         List<Video> resultList = new ArrayList<>();
         for (Teacher teacher : teachers) {
             List<VideoAndTeacher> videoAndTeachers = videoAndTeacherMapper.selectByTeacherId(teacher.getId());
+            if(videoAndTeachers == null){
+                throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+            }
             for (VideoAndTeacher videoAndTeacher : videoAndTeachers) {
-                resultList.add(videoMapper.selectByPrimaryKey(videoAndTeacher.getVideoId()));
+                Video video = videoMapper.selectByPrimaryKey(videoAndTeacher.getVideoId());
+                if(video == null){
+                    throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+                }
+                resultList.add(video);
             }
         }
         return resultList;
@@ -148,98 +176,44 @@ public class VideoServiceImpl implements VideoService {
         for (Video video : oldList) {
             HotVideoVO hotVideoVO = new HotVideoVO();
             BeanUtils.copyProperties(video,hotVideoVO);
-            try{
-                VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
-                if(videoAndTeacher != null){
-                    Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
-                    hotVideoVO.setTeacher(teacher.getTeacherName());
-                }
-                ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
-                if(channelAndVideo != null){
-                    Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
-                    hotVideoVO.setChannelIcon(channel.getIcon());
-                }
-                resultList.add(hotVideoVO);
-            }catch (MyBatisSystemException e){
-                throw e;
+
+            VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
+            if(videoAndTeacher == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
             }
+
+            Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
+            if(teacher == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
+            hotVideoVO.setTeacher(teacher.getTeacherName());
+
+            ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
+            if(channelAndVideo == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
+
+            Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
+            if(channel == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
+            hotVideoVO.setChannelIcon(channel.getIcon());
+            resultList.add(hotVideoVO);
+
         }
         return resultList;
     }
 
     @Override
-    @Cacheable(value = "getPageList")
+    //@Cacheable(value = "getPageList")
     public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
-                                Long channelId, Long categoryId, String title, String teacherName){
+                                Long channelId, Long categoryId, String keywords){
 
         ArrayList<HotVideoVO> resultList;
-        List<Video> videoList = null;
+        List<Video> videoList;
+        PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
 
-        if(channelId == 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
-            // 情况一： 不指定四参数之一
-            PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
-            videoList = videoMapper.findAll();
-            if(videoList == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-        }else if(channelId != 0L && categoryId == 0L && "".equals(title) && "".equals(teacherName)){
-            // 情况二： 指定四参数之一，按频道id查询
-            PageHelper.startPage(pageNum,pageSize);
-
-            videoList = getVideoListByChannelId(channelId);
-            if(videoList == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-            //FIXME : 按创建时间排序 却不起作用
-            Collections.sort(videoList, new Comparator<Video>() {
-                @Override
-                public int compare(Video o1, Video o2) {
-                    if (o1.getCreateTime().before(o2.getCreateTime())) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
-            });
-
-        }else if(channelId == 0L && categoryId != 0L && "".equals(title) && "".equals(teacherName)){
-            // 情况三： 指定四参数之一，按分类id查询
-            PageHelper.startPage(pageNum,pageSize);
-
-            videoList = getVideoListByCategoryId(categoryId);
-            if(videoList == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-
-            //FIXME : 按创建时间排序 却不起作用
-            Collections.sort(videoList, new Comparator<Video>() {
-                @Override
-                public int compare(Video o1, Video o2) {
-                    if (o1.getCreateTime().before(o2.getCreateTime())) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
-            });
-        }else if(channelId == 0L && categoryId == 0L && !("".equals(title)) && "".equals(teacherName)){
-            // 情况三： 指定四参数之一，按标题查询
-            PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
-            videoList = getVideoListByTitle(title);
-            if(videoList == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-        }else if(channelId == 0L && categoryId == 0L && "".equals(title)){
-            // 情况四： 指定四参数之一，按老师姓名查询
-            PageHelper.startPage(pageNum,pageSize,"create_time" + " desc");
-            videoList = getVideoListByTeacher(teacherName);
-            if(videoList == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-        }else {
-            // 其他参数请求方式则调用错误
-            throw new CcbException(CcbExceptionEnum.REQUEST_PARAM_ERROR);
-        }
+        videoList = videoMapper.selectByChannelIdCategoryIdAndName(channelId,categoryId,keywords);
         resultList = copyToHotVideo(videoList);
         return new PageInfo(resultList);
     }
@@ -247,14 +221,15 @@ public class VideoServiceImpl implements VideoService {
     @Override
     @Cacheable(value = "getNew")
     public NewVideoVO getNew(){
-        try {
-            Video video = videoMapper.selectNew();
-            NewVideoVO newVideoVO = new NewVideoVO();
-            BeanUtils.copyProperties(video,newVideoVO);
-            return newVideoVO;
-        }catch (Exception e){
-            throw  new CcbException(CcbExceptionEnum.GET_VIDEO_FAILED);
+
+        Video video = videoMapper.selectNew();
+        if(video == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
+        NewVideoVO newVideoVO = new NewVideoVO();
+        BeanUtils.copyProperties(video,newVideoVO);
+        return newVideoVO;
+
 
     }
 
@@ -262,13 +237,12 @@ public class VideoServiceImpl implements VideoService {
     @Cacheable(value = "getHotVideoVO")
     public List<HotVideoVO> getHotVideoVO(){
         ArrayList<HotVideoVO> hotVideoVOS;
-        try {
-            List<Video> videos = videoMapper.selectHotByView();
-            hotVideoVOS = copyToHotVideo(videos);
-
-        }catch (Exception e){
-            throw new CcbException(CcbExceptionEnum.GET_VIDEO_FAILED);
+        List<Video> videos = videoMapper.selectHotByView();
+        if(videos == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
+        hotVideoVOS = copyToHotVideo(videos);
+
         return hotVideoVOS;
     }
 
@@ -279,24 +253,46 @@ public class VideoServiceImpl implements VideoService {
         addStarById(id,2);
 
         Video video = videoMapper.selectByPrimaryKey(id);
+        if(video == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
+
         VideoVO videoVO = new VideoVO();
         BeanUtils.copyProperties(video, videoVO);
 
+        //添加讲师
         VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(videoVO.getId());
+        if(videoAndTeacher == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
+
         Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
+        if(teacher == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
         TeacherForVideoVO teacherForVideoVO = new TeacherForVideoVO();
         BeanUtils.copyProperties(teacher,teacherForVideoVO);
         videoVO.setTeacher(teacherForVideoVO);
-
-        videoVO.setChannelId(channelAndVideoMapper.selectByVideoId(videoVO.getId()).getChannelId());
-
+        //添加频道
+        ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(videoVO.getId());
+        if(channelAndVideo == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
+        videoVO.setChannelId(channelAndVideo.getChannelId());
+        //添加广告
         Advertisement advertisement = advertisementMapper.selectByChannelId(videoVO.getChannelId());
-        if(advertisement != null){
+        if(advertisement == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
             AdvertisementVO advertisementVO = new AdvertisementVO();
             BeanUtils.copyProperties(advertisement, advertisementVO);
             videoVO.setAdvertisement(advertisementVO);
+        //添加问卷
+        List<QuestionVO> questionVOS = questionService.selectByChannelId(videoVO.getChannelId());
+        if(questionVOS == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
-        videoVO.setQuestionList(questionService.selectByChannelId(videoVO.getChannelId()));
+        videoVO.setQuestionList(questionVOS);
 
         // 将video访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_view");
@@ -316,6 +312,9 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public void addStarById(Long id, Integer type){
         Video video = videoMapper.selectByPrimaryKey(id);
+        if(video == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
         if(type == 1){
             video.setEnjoyCount(video.getEnjoyCount() + 1);
         }

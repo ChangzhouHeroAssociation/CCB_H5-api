@@ -47,16 +47,17 @@ public class TeacherServiceImpl implements TeacherService {
     public PageInfo getTeacherListForHome(Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         ArrayList<TeacherForHomeVO> teacherForHomeVOs = new ArrayList<>();
-        try{
-            List<Teacher> teachers = teacherMapper.selectForHome();
-            for (Teacher teacher : teachers) {
-                TeacherForHomeVO teacherForHomeVO = new TeacherForHomeVO();
-                BeanUtils.copyProperties(teacher,teacherForHomeVO);
-                teacherForHomeVOs.add(teacherForHomeVO);
-            }
-        }catch (Exception e){
-            throw new CcbException(CcbExceptionEnum.GET_TEACHER_FAILED);
+
+        List<Teacher> teachers = teacherMapper.selectForHome();
+        if(teachers == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
+        for (Teacher teacher : teachers) {
+            TeacherForHomeVO teacherForHomeVO = new TeacherForHomeVO();
+            BeanUtils.copyProperties(teacher,teacherForHomeVO);
+            teacherForHomeVOs.add(teacherForHomeVO);
+        }
+
         return new PageInfo(teacherForHomeVOs);
 
     }
@@ -73,13 +74,26 @@ public class TeacherServiceImpl implements TeacherService {
         BeanUtils.copyProperties(teacher, teacherVO);
         ArrayList<HotVideoVO> hotVideoVOS = new ArrayList<>();
         List<VideoAndTeacher> videoAndTeachers = videoAndTeacherMapper.selectByTeacherId(teacherVO.getId());
+        if(videoAndTeachers == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         for (VideoAndTeacher videoAndTeacher : videoAndTeachers) {
             Video video = videoMapper.selectByPrimaryKey(videoAndTeacher.getVideoId());
+            if (video == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
             HotVideoVO hotVideoVO = new HotVideoVO();
             BeanUtils.copyProperties(video,hotVideoVO);
             hotVideoVO.setTeacher(teacherVO.getTeacherName());
+
             ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
+            if(channelAndVideo == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
             Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
+            if(channel == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
             hotVideoVO.setChannelIcon(channel.getIcon());
             hotVideoVOS.add(hotVideoVO);
         }

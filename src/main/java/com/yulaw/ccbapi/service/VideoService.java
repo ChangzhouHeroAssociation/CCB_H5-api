@@ -26,7 +26,7 @@ public interface VideoService {
     ArrayList<HotVideoVO> copyToHotVideo(List<Video> oldList);
 
     PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
-                         Long channelId, Long categoryId, String title, String teacherName);
+                         Long channelId, Long categoryId, String keywords);
 
     NewVideoVO getNew();
 

@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UserService实现类
+ * BannerService实现类
+ * 前两个函数测试用的 业务中没用到
  */
 @Service
 public class BannerServiceImpl implements BannerService {
@@ -34,6 +35,9 @@ public class BannerServiceImpl implements BannerService {
     @Cacheable(value = "getBannerList")
     public List<BannerVO> getBannerList() {
         List<Banner> bannerList = bannerMapper.findAll();
+        if(bannerList == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         List<BannerVO> resultList = new ArrayList<>();
         for (Banner banner : bannerList) {
             BannerVO bannerVO = new BannerVO();
@@ -47,6 +51,9 @@ public class BannerServiceImpl implements BannerService {
     public PageInfo listForAdmin(Integer pageNum, Integer pageSize, String orderBy) {
         PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
         List<Banner> bannerList = bannerMapper.findAll();
+        if(bannerList == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
         List<BannerVO> resultList = new ArrayList<>();
         for (Banner banner : bannerList) {
             BannerVO bannerVO = new BannerVO();
@@ -62,17 +69,16 @@ public class BannerServiceImpl implements BannerService {
     public List<BannerForHomeVO> getBannerListForHome(){
 
         ArrayList<BannerForHomeVO> bannerForHomeVOS = new ArrayList<>();
-        try {
-            List<Banner> banners = bannerMapper.selectForHome();
-            for (Banner banner : banners) {
-                BannerForHomeVO bannerForHomeVO = new BannerForHomeVO();
-                BeanUtils.copyProperties(banner,bannerForHomeVO);
-                bannerForHomeVOS.add(bannerForHomeVO);
-            }
-        }catch (Exception e){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+
+        List<Banner> banners = bannerMapper.selectForHome();
+        if(banners == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
+        for (Banner banner : banners) {
+            BannerForHomeVO bannerForHomeVO = new BannerForHomeVO();
+            BeanUtils.copyProperties(banner,bannerForHomeVO);
+            bannerForHomeVOS.add(bannerForHomeVO);
         }
         return  bannerForHomeVOS;
-
     }
 }

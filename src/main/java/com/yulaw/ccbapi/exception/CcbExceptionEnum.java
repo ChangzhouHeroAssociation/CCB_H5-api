@@ -5,22 +5,25 @@ package com.yulaw.ccbapi.exception;
  */
 public enum CcbExceptionEnum {
     //业务异常
-    NEED_PARM(101,"参数不能为空"),
-    DATA_NOT_FOUND(102,"未找到该数据"),
-    RESULT_NOT_ONLY(103,"查询结果不唯一"),
-    QUESTION_TYPE_ERROR(104,"问题类型错误"),
-    INSERT_LOST(105,"部分数据未成功插入"),
-    ADD_QUESTION_FAILED(106,"提交问卷失败"),
-    REQUEST_PARAM_NOT_FOUND(107,"未找到该字段"),
-    REQUEST_PARAM_ERROR(108,"请求参数错误"),
-    MKDIR_FAILED(109,"创建文件夹失败"),
-    UPLOAD_FAILED(110,"图片上传失败"),
-    GET_TEACHER_FAILED(111,"获取讲师信息失败"),
-    GET_VIDEO_FAILED(112,"获取视频信息失败"),
-    GET_BANNER_FAILED(113,"获取banner信息失败"),
+    NEED_PARM(401,"参数不能为空"),
+    QUESTION_TYPE_ERROR(402,"问题类型错误"),
+    RESULT_NOT_ONLY(403,"查询结果不唯一"),
 
+    INSERT_LOST(405,"部分数据未成功插入"),
+    ADD_QUESTION_FAILED(406,"提交问卷失败"),
+    REQUEST_PARAM_NOT_FOUND(407,"未找到该字段"),
+    REQUEST_PARAM_ERROR(408,"请求参数错误"),
+    MKDIR_FAILED(409,"创建文件夹失败"),
+    UPLOAD_FAILED(410,"图片上传失败"),
+    GET_TEACHER_FAILED(411,"获取讲师信息失败"),
+    GET_VIDEO_FAILED(412,"获取视频信息失败"),
+    GET_BANNER_FAILED(413,"获取banner信息失败"),
+
+
+    DATA_NOT_FOUND(404,"未找到该数据"),
 
     //系统异常
+    NO_POINT_EXCEPTION(501,"空指针异常"),
     SYSTEM_ERROR(500,"系统异常");
 
     /**

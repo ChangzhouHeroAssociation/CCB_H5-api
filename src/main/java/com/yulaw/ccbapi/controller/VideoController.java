@@ -37,20 +37,18 @@ public class VideoController {
     @ResponseBody
     public ApiRestResponse listVideoForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                              @RequestParam(required = false, defaultValue = "5") Integer pageSize,
-                                             @RequestParam(required = false, defaultValue = "views") String orderBy,
-                                             @RequestParam(required = false,defaultValue = "0") Long channelId,
-                                             @RequestParam(required = false,defaultValue = "0") Long categoryId,
-                                             @RequestParam(required = false,defaultValue = "") String title,
-                                             @RequestParam(required = false,defaultValue = "") String teacherName){
+                                             @RequestParam(required = false, defaultValue = "create_time") String orderBy,
+                                             @RequestParam(required = false) Long channelId,
+                                             @RequestParam(required = false) Long categoryId,
+                                             @RequestParam(required = false) String keywords){
         try{
-            PageInfo pageInfo = videoService.getPageList(pageNum , pageSize , orderBy, channelId, categoryId, title, teacherName);
+            PageInfo pageInfo = videoService.getPageList(pageNum , pageSize , orderBy, channelId, categoryId, keywords);
             return ApiRestResponse.success(pageInfo);
         }catch (BadSqlGrammarException e){
             return ApiRestResponse.error(CcbExceptionEnum.REQUEST_PARAM_NOT_FOUND);
         }catch (MyBatisSystemException e){
             return ApiRestResponse.error(CcbExceptionEnum.RESULT_NOT_ONLY);
         }
-
     }
 
     @GetMapping("/video")

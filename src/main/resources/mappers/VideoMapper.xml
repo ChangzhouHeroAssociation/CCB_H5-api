@@ -54,6 +54,46 @@
     from video
     WHERE video_title LIKE concat('%',#{title},'%')
   </select>
+  <select id="selectByTeacher" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+        v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time
+    from
+        video v, video_teacher_relation vt, teacher t
+    WHERE
+        v.id = vt.video_id
+        AND t.id = vt.teacher_id
+        AND t.teacher_name LIKE concat('%',#{keywords},'%')
+
+  </select>
+  <select id="selectByChannelIdCategoryIdAndName" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    <if test="channelId != null">
+      select
+      v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time
+      from
+      video v, channel_video_relation cv, channel c
+      WHERE
+      v.id = cv.video_id
+      AND c.id = cv.channel_id
+      AND c.id = #{channelId,jdbcType=BIGINT}
+    </if>
+    <if test="categoryId != null">
+      select
+      v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time
+      from
+      video v, video_category_relation r, category c
+      WHERE
+      v.id = r.video_id
+      AND c.id = r.category_id
+      AND c.id = #{categoryId,jdbcType=BIGINT}
+    </if>
+    <if test='keywords != null and keywords !="" '>
+      select
+      <include refid="Base_Column_List"/>
+      from video
+      where video_title LIKE concat('%',#{keywords},'%')
+    </if>
+
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from video
     where id = #{id,jdbcType=BIGINT}
