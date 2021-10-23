@@ -20,8 +20,6 @@ public interface VideoMapper {
 
     Video selectNew();
 
-    Video selectByChannelId(Long id);
-
     List<Video> selectHotByView();
 
     List<Video> selectByTitle(String title);

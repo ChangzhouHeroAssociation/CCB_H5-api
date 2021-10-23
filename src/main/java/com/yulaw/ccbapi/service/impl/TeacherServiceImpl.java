@@ -8,6 +8,7 @@ import com.yulaw.ccbapi.model.dao.*;
 import com.yulaw.ccbapi.model.pojo.*;
 import com.yulaw.ccbapi.model.vo.*;
 import com.yulaw.ccbapi.service.TeacherService;
+import com.yulaw.ccbapi.service.VideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,6 +37,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     RedisTemplate redisTemplate;
+
+    @Autowired
+    VideoService videoService;
 
 
 
@@ -69,22 +73,9 @@ public class TeacherServiceImpl implements TeacherService {
         }
         TeacherVO teacherVO = new TeacherVO();
         BeanUtils.copyProperties(teacher, teacherVO);
-        ArrayList<HotVideoVO> hotVideoList = new ArrayList<>();
 
         List<Video> videos = videoMapper.selectByTeacherId(teacherVO.getId());
-        for (Video video : videos) {
-            HotVideoVO hotVideoVO = new HotVideoVO();
-            BeanUtils.copyProperties(video,hotVideoVO);
-            hotVideoVO.setTeacher(teacherVO.getTeacherName());
-
-            Channel channel = channelMapper.selectByPrimaryKey(video.getChannelId());
-            if(channel == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-            hotVideoVO.setChannelIcon(channel.getIcon());
-
-            hotVideoList.add(hotVideoVO);
-        }
+        ArrayList<HotVideoVO> hotVideoList = videoService.copyToHotVideo(videos);
         teacherVO.setHotVideoVOList(hotVideoList);
 
         /*// 将teacher访问量记录到缓存

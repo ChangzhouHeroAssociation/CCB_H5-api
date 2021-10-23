@@ -23,9 +23,11 @@ public class HomePageServiceImpl implements HomePageService {
     //@Cacheable(value = "getHomePage")
     public HomePage getHomePage() {
         HomePage homePage = homePageMapper.selectOne();
-        if(homePage == null){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        if(homePage != null){
+            return homePage;
+        }else {
+            return null;
         }
-        return homePage;
+
     }
 }

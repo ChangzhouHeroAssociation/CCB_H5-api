@@ -23,21 +23,10 @@ public class ChannelController {
     @Autowired
     ChannelService channelService;
 
-    @GetMapping("/channel/list")
-    @ResponseBody
-    public BaseResponse getChannelList(@RequestParam(required = false,defaultValue = "1") Integer pageNum,
-                                          @RequestParam(required = false,defaultValue = "8") Integer pageSize){
-        PageInfo list = channelService.getChannelList(pageNum,pageSize);
-        return ApiRestResponse.success(list);
-
-    }
-
     @GetMapping("/channel")
     @ResponseBody
-    public BaseResponse getChannelById(@RequestParam(required = false,defaultValue = "3") Long id,
-                                       @RequestParam(required = false,defaultValue = "1") Integer pageNum,
-                                       @RequestParam(required = false,defaultValue = "10") Integer pageSize){
-        ChannelVO channel = channelService.getChannelById(id,pageNum,pageSize);
+    public BaseResponse getChannelById(@RequestParam(required = false,defaultValue = "3") Long id){
+        ChannelVO channel = channelService.getChannelById(id);
         return ApiRestResponse.success(channel);
 
     }

@@ -10,7 +10,5 @@ import java.util.List;
 
 public interface BannerService {
 
-    PageInfo listForAdmin(Integer pageNum, Integer pageSize, String orderBy);
-
     List<BannerForHomeVO> getBannerListForHome();
 }

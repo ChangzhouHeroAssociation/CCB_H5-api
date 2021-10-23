@@ -53,20 +53,13 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     //@Cacheable(value = "getChannelById")
-    public ChannelVO getChannelById(Long id,Integer pageNum, Integer pageSize) {
+    public ChannelVO getChannelById(Long id) {
         ChannelVO channelVO = new ChannelVO();
         Channel channel = channelMapper.selectByPrimaryKey(id);
         if(channel == null){
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         BeanUtils.copyProperties(channel,channelVO);
-        Video video = videoMapper.selectByChannelId(channelVO.getId());
-        if(video == null){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-        }
-        HotVideoVO hotVideoVO = new HotVideoVO();
-        BeanUtils.copyProperties(video,hotVideoVO);
-        channelVO.setHotVideoVO(hotVideoVO);
 
         /*// 将channel访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("channel");

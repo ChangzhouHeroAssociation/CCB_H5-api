@@ -37,12 +37,6 @@
     ORDER BY create_time desc
     LIMIT 1
   </select>
-  <select id="selectByChannelId" resultType="com.yulaw.ccbapi.model.pojo.Video">
-    select
-    <include refid="Base_Column_List"/>
-    from video
-    where channel_id = #{id,jdbcType=BIGINT}
-  </select>
   <select id="selectHotByView" resultType="com.yulaw.ccbapi.model.pojo.Video">
     select
     <include refid="Base_Column_List"/>

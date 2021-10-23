@@ -18,8 +18,6 @@ public class ChannelVO implements Serializable {
 
     private String image;
 
-    private HotVideoVO hotVideoVO;
-
     public Long getId() {
         return id;
     }
@@ -60,11 +58,4 @@ public class ChannelVO implements Serializable {
         this.image = image == null ? null : image.trim();
     }
 
-    public HotVideoVO getHotVideoVO() {
-        return hotVideoVO;
-    }
-
-    public void setHotVideoVO(HotVideoVO hotVideoVO) {
-        this.hotVideoVO = hotVideoVO;
-    }
 }

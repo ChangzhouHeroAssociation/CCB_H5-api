@@ -23,22 +23,4 @@ import java.util.List;
 @Controller
 public class BannerController {
 
-    @Autowired
-    BannerService bannerService;
-
-
-
-    @GetMapping("/banner/pageList")
-    @ResponseBody
-    public BaseResponse listBannerForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                                           @RequestParam(required = false, defaultValue = "3") Integer pageSize,
-                                           @RequestParam(required = false, defaultValue = "weight") String orderBy){
-        try {
-            PageInfo pageInfo = bannerService.listForAdmin(pageNum , pageSize , orderBy);
-            return ApiRestResponse.success(pageInfo);
-        }catch (BadSqlGrammarException e){
-            return ApiRestResponse.error(CcbExceptionEnum.REQUEST_PARAM_NOT_FOUND);
-        }
-    }
-
 }

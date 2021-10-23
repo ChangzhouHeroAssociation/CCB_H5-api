@@ -7,6 +7,7 @@ import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.dao.*;
 import com.yulaw.ccbapi.model.pojo.*;
 import com.yulaw.ccbapi.model.vo.*;
+import com.yulaw.ccbapi.service.AdvertisementService;
 import com.yulaw.ccbapi.service.QuestionService;
 import com.yulaw.ccbapi.service.VideoService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -41,7 +42,7 @@ public class VideoServiceImpl implements VideoService {
     CategoryMapper categoryMapper;
 
     @Autowired
-    AdvertisementMapper advertisementMapper;
+    AdvertisementService advertisementService;
 
     @Autowired
     QuestionService questionService;
@@ -64,20 +65,17 @@ public class VideoServiceImpl implements VideoService {
 
             //(视频讲师关联查询)
             Teacher teacher = teacherMapper.selectByVideoId(hotVideoVO.getId());
-            if(teacher == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            if(teacher != null){
+                hotVideoVO.setTeacher(teacher.getTeacherName());
             }
-            hotVideoVO.setTeacher(teacher.getTeacherName());
 
             //频道图标查询
 
             Channel channel = channelMapper.selectByPrimaryKey(video.getChannelId());
-            if(channel == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            if(channel != null){
+                hotVideoVO.setChannelIcon(channel.getIcon());
             }
-            hotVideoVO.setChannelIcon(channel.getIcon());
             resultList.add(hotVideoVO);
-
         }
         return resultList;
     }
@@ -104,14 +102,13 @@ public class VideoServiceImpl implements VideoService {
     public NewVideoVO getNew(){
 
         Video video = videoMapper.selectNew();
-        if(video == null){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        if(video != null){
+            NewVideoVO newVideoVO = new NewVideoVO();
+            BeanUtils.copyProperties(video,newVideoVO);
+            return newVideoVO;
+        }else {
+            return null;
         }
-        NewVideoVO newVideoVO = new NewVideoVO();
-        BeanUtils.copyProperties(video,newVideoVO);
-        return newVideoVO;
-
-
     }
 
     @Override
@@ -123,7 +120,6 @@ public class VideoServiceImpl implements VideoService {
             throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
         hotVideoVOS = copyToHotVideo(videos);
-
         return hotVideoVOS;
     }
 
@@ -143,24 +139,23 @@ public class VideoServiceImpl implements VideoService {
 
         //添加讲师(关联查询）
         Teacher teacher = teacherMapper.selectByVideoId(videoVO.getId());
-        if(teacher == null){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        if(teacher != null){
+            TeacherForVideoVO teacherForVideoVO = new TeacherForVideoVO();
+            BeanUtils.copyProperties(teacher,teacherForVideoVO);
+            videoVO.setTeacher(teacherForVideoVO);
         }
-        TeacherForVideoVO teacherForVideoVO = new TeacherForVideoVO();
-        BeanUtils.copyProperties(teacher,teacherForVideoVO);
-        videoVO.setTeacher(teacherForVideoVO);
 
         //添加广告
-        Advertisement advertisement = advertisementMapper.selectByChannelId(videoVO.getChannelId());
-        if(advertisement == null){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-        }
+        Advertisement advertisement = advertisementService.getAdvByChannelId(videoVO.getChannelId());
+        if(advertisement != null){
             AdvertisementVO advertisementVO = new AdvertisementVO();
             BeanUtils.copyProperties(advertisement, advertisementVO);
             videoVO.setAdvertisement(advertisementVO);
+        }
+
 
         //添加问卷
-        List<QuestionVO> questionVOS = questionService.selectByChannelId(videoVO.getChannelId());
+        List<QuestionVO> questionVOS = questionService.getQuestionByChannelId(videoVO.getChannelId());
         if(questionVOS == null){
             throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
@@ -209,5 +204,4 @@ public class VideoServiceImpl implements VideoService {
         }
         videoMapper.updateByPrimaryKeySelective(video);
     }
-
 }
