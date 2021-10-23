@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface ChannelService {
 
-
-    @Cacheable(value = "getChannelList")
     PageInfo getChannelList(Integer pageNum, Integer pageSize);
 
     ChannelVO getChannelById(Long id, Integer pageNum, Integer pageSize);

@@ -38,10 +38,8 @@ public class VideoController {
         try{
             PageInfo pageInfo = videoService.getPageList(pageNum , pageSize , orderBy, channelId, categoryId, keywords);
             return ApiRestResponse.success(pageInfo);
-        }catch (BadSqlGrammarException e){
-            return ApiRestResponse.error(CcbExceptionEnum.REQUEST_PARAM_NOT_FOUND);
-        }catch (MyBatisSystemException e){
-            return ApiRestResponse.error(CcbExceptionEnum.RESULT_NOT_ONLY);
+        }catch (Exception e){
+            return ApiRestResponse.error(CcbExceptionEnum.REQUEST_PARAM_ERROR);
         }
     }
 

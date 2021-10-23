@@ -49,7 +49,7 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    @Cacheable(value = "getBannerListForHome")
+    //@Cacheable(value = "getBannerListForHome")
     public List<BannerForHomeVO> getBannerListForHome(){
 
         ArrayList<BannerForHomeVO> bannerForHomeVOS = new ArrayList<>();
