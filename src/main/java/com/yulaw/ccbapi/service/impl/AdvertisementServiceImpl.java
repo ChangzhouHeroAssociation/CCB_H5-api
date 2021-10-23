@@ -15,20 +15,4 @@ import java.util.List;
 @Service
 public class AdvertisementServiceImpl implements AdvertisementService {
 
-    @Autowired
-    AdvertisementMapper advertisementMapper;
-
-    @Override
-    @Cacheable(value = "getAdvertisementList")
-    public List<AdvertisementVO> getAdvertisementList() {
-        List<Advertisement> advertisementList = advertisementMapper.findAll();
-        List<AdvertisementVO> advList = new ArrayList<>();
-        for (Advertisement advertisement : advertisementList) {
-            AdvertisementVO advertisementVO = new AdvertisementVO();
-            BeanUtils.copyProperties(advertisement,advertisementVO);
-            advList.add(advertisementVO);
-        }
-        return advList;
-    }
-
 }

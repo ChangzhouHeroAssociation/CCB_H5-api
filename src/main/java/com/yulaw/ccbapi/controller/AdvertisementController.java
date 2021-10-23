@@ -1,6 +1,7 @@
 package com.yulaw.ccbapi.controller;
 
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.model.vo.AdvertisementVO;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
@@ -15,14 +16,4 @@ import java.util.List;
 @Controller
 public class AdvertisementController {
 
-    @Autowired
-    AdvertisementService advertisementService;
-
-    @GetMapping("/advertisement/list")
-    @ResponseBody
-    public ApiRestResponse getAdvertisementList() throws CcbException {
-        List<AdvertisementVO> advList = advertisementService.getAdvertisementList();
-        return ApiRestResponse.success(advList);
-
-    }
 }

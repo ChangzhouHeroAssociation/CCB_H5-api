@@ -2,6 +2,7 @@ package com.yulaw.ccbapi.exception;
 
 
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
@@ -38,12 +39,12 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ApiRestResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
+    public BaseResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         log.error("MethodArgumentNotValidException:" , e);
         return handleBindingResult(e.getBindingResult());
     }
 
-    private ApiRestResponse handleBindingResult(BindingResult result){
+    private BaseResponse handleBindingResult(BindingResult result){
         //把异常处理为对外暴露的提示
         List<String> list = new ArrayList<>();
         if(result.hasErrors()){

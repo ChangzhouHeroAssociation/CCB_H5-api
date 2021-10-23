@@ -2,6 +2,7 @@ package com.yulaw.ccbapi.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.model.pojo.HomePage;
 import com.yulaw.ccbapi.model.pojo.Video;
@@ -35,8 +36,8 @@ public class IndexController {
 
     @GetMapping("/homePagePart1")
     @ResponseBody
-    public ApiRestResponse getHomePage1(@RequestParam(required = false,defaultValue = "1") Integer pageNum,
-                                        @RequestParam(required = false,defaultValue = "8") Integer pageSize){
+    public BaseResponse getHomePage1(@RequestParam(required = false,defaultValue = "1") Integer pageNum,
+                                     @RequestParam(required = false,defaultValue = "8") Integer pageSize){
         HomePage homePage = homePageService.getHomePage();
         PageInfo channelList = channelService.getChannelList(pageNum,pageSize);
         HomeAndChannelVO homeAndChannelVO = new HomeAndChannelVO();
@@ -48,7 +49,7 @@ public class IndexController {
 
     @GetMapping("/homePagePart2")
     @ResponseBody
-    public ApiRestResponse getHomePagePart2(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+    public BaseResponse getHomePagePart2(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                             @RequestParam(required = false, defaultValue = "10") Integer pageSize){
 
         MiddleOfHomeVO middleOfHome = new MiddleOfHomeVO();
@@ -61,7 +62,7 @@ public class IndexController {
     }
     @GetMapping("/homePagePart3")
     @ResponseBody
-    public ApiRestResponse getHomePagePart3(){
+    public BaseResponse getHomePagePart3(){
 
         List<BannerForHomeVO> bannerListForHome = bannerService.getBannerListForHome();
         return ApiRestResponse.success(bannerListForHome);

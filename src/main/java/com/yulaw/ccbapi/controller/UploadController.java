@@ -1,6 +1,7 @@
 package com.yulaw.ccbapi.controller;
 
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.common.Constant;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class UploadController {
 
     @PostMapping("/admin/upload/file")
-    public ApiRestResponse upload(HttpServletRequest httpServletRequest , @RequestParam("file") MultipartFile file) {
+    public BaseResponse upload(HttpServletRequest httpServletRequest , @RequestParam("file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         //生成文件名UUID

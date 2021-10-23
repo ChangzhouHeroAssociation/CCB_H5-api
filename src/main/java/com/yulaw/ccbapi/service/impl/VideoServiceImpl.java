@@ -44,15 +44,6 @@ public class VideoServiceImpl implements VideoService {
     AdvertisementMapper advertisementMapper;
 
     @Autowired
-    VideoAndTeacherMapper videoAndTeacherMapper;
-
-    @Autowired
-    ChannelAndVideoMapper channelAndVideoMapper;
-
-    @Autowired
-    VideoAndCategoryMapper videoAndCategoryMapper;
-
-    @Autowired
     QuestionService questionService;
 
     @Autowired
@@ -71,23 +62,16 @@ public class VideoServiceImpl implements VideoService {
             HotVideoVO hotVideoVO = new HotVideoVO();
             BeanUtils.copyProperties(video,hotVideoVO);
 
-            VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(hotVideoVO.getId());
-            if(videoAndTeacher == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-
-            Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
+            //(视频讲师关联查询)
+            Teacher teacher = teacherMapper.selectByVideoId(hotVideoVO.getId());
             if(teacher == null){
                 throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
             }
             hotVideoVO.setTeacher(teacher.getTeacherName());
 
-            ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
-            if(channelAndVideo == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
+            //频道图标查询
 
-            Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
+            Channel channel = channelMapper.selectByPrimaryKey(video.getChannelId());
             if(channel == null){
                 throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
             }
@@ -99,7 +83,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    //@Cacheable(value = "getPageList")
+    @Cacheable(value = "getPageList")
     public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
                                 Long channelId, Long categoryId, String keywords){
 
@@ -154,25 +138,15 @@ public class VideoServiceImpl implements VideoService {
         VideoVO videoVO = new VideoVO();
         BeanUtils.copyProperties(video, videoVO);
 
-        //添加讲师
-        VideoAndTeacher videoAndTeacher = videoAndTeacherMapper.selectByVideoId(videoVO.getId());
-        if(videoAndTeacher == null){
-            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
-        }
-
-        Teacher teacher = teacherMapper.selectByPrimaryKey(videoAndTeacher.getTeacherId());
+        //添加讲师(关联查询）
+        Teacher teacher = teacherMapper.selectByVideoId(videoVO.getId());
         if(teacher == null){
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         TeacherForVideoVO teacherForVideoVO = new TeacherForVideoVO();
         BeanUtils.copyProperties(teacher,teacherForVideoVO);
         videoVO.setTeacher(teacherForVideoVO);
-        //添加频道
-        ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(videoVO.getId());
-        if(channelAndVideo == null){
-            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-        }
-        videoVO.setChannelId(channelAndVideo.getChannelId());
+
         //添加广告
         Advertisement advertisement = advertisementMapper.selectByChannelId(videoVO.getChannelId());
         if(advertisement == null){
@@ -181,6 +155,7 @@ public class VideoServiceImpl implements VideoService {
             AdvertisementVO advertisementVO = new AdvertisementVO();
             BeanUtils.copyProperties(advertisement, advertisementVO);
             videoVO.setAdvertisement(advertisementVO);
+
         //添加问卷
         List<QuestionVO> questionVOS = questionService.selectByChannelId(videoVO.getChannelId());
         if(questionVOS == null){

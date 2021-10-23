@@ -12,10 +12,11 @@
     <result column="share_count" jdbcType="INTEGER" property="shareCount" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="channel_id" jdbcType="INTEGER" property="channelId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, video_title, description, views, url, status, enjoy_count, share_count, create_time,
-    update_time
+    update_time,channel_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,18 +29,19 @@
     <include refid="Base_Column_List"/>
     from video
   </select>
-  <select id="selectAllOrderByViews" resultType="com.yulaw.ccbapi.model.pojo.Video">
-    select
-    <include refid="Base_Column_List"/>
-    from video
-    ORDER BY views
-  </select>
+
   <select id="selectNew" resultType="com.yulaw.ccbapi.model.pojo.Video">
     select
     <include refid="Base_Column_List"/>
     from video
     ORDER BY create_time desc
     LIMIT 1
+  </select>
+  <select id="selectByChannelId" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+    <include refid="Base_Column_List"/>
+    from video
+    where channel_id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectHotByView" resultType="com.yulaw.ccbapi.model.pojo.Video">
     select
@@ -56,7 +58,7 @@
   </select>
   <select id="selectByTeacher" resultType="com.yulaw.ccbapi.model.pojo.Video">
     select
-        v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time
+        v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time, v.channel_id
     from
         video v, video_teacher_relation vt, teacher t
     WHERE
@@ -65,20 +67,29 @@
         AND t.teacher_name LIKE concat('%',#{keywords},'%')
 
   </select>
+  <select id="selectByTeacherId" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+      v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time, v.channel_id
+    from
+      video v, video_teacher_relation vt, teacher t
+    WHERE
+      v.id = vt.video_id
+      AND t.id = vt.teacher_id
+      AND t.id = #{id,jdbcType=BIGINT}
+
+  </select>
   <select id="selectByChannelIdCategoryIdAndName" resultType="com.yulaw.ccbapi.model.pojo.Video">
     <if test="channelId != null">
       select
-      v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time
+      <include refid="Base_Column_List"/>
       from
-      video v, channel_video_relation cv, channel c
+      video
       WHERE
-      v.id = cv.video_id
-      AND c.id = cv.channel_id
-      AND c.id = #{channelId,jdbcType=BIGINT}
+      channel_id = #{channelId,jdbcType=BIGINT}
     </if>
     <if test="categoryId != null">
       select
-      v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time
+      v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count, v.share_count, v.create_time, v.update_time,v.channel_id
       from
       video v, video_category_relation r, category c
       WHERE
@@ -128,6 +139,9 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="channelId != null">
+        channel_id = #{channelId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -141,7 +155,8 @@
       enjoy_count = #{enjoyCount,jdbcType=INTEGER},
       share_count = #{shareCount,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      channel_id = #{channelId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

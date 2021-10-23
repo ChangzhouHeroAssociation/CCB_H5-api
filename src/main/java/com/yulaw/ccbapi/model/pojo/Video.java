@@ -23,6 +23,8 @@ public class Video {
 
     private Date updateTime;
 
+    private Long channelId;
+
     public Long getId() {
         return id;
     }
@@ -103,6 +105,14 @@ public class Video {
         this.updateTime = updateTime;
     }
 
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
     @Override
     public String toString() {
         return "Video{" +
@@ -116,6 +126,7 @@ public class Video {
                 ", shareCount=" + shareCount +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", channelId=" + channelId +
                 '}';
     }
 }

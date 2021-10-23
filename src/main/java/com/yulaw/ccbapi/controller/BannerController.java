@@ -2,6 +2,7 @@ package com.yulaw.ccbapi.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.pojo.Banner;
@@ -29,9 +30,9 @@ public class BannerController {
 
     @GetMapping("/banner/pageList")
     @ResponseBody
-    public ApiRestResponse listBannerForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                                             @RequestParam(required = false, defaultValue = "3") Integer pageSize,
-                                             @RequestParam(required = false, defaultValue = "weight") String orderBy){
+    public BaseResponse listBannerForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                           @RequestParam(required = false, defaultValue = "3") Integer pageSize,
+                                           @RequestParam(required = false, defaultValue = "weight") String orderBy){
         try {
             PageInfo pageInfo = bannerService.listForAdmin(pageNum , pageSize , orderBy);
             return ApiRestResponse.success(pageInfo);

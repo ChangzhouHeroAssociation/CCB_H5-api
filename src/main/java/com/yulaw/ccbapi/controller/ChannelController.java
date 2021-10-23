@@ -2,6 +2,7 @@ package com.yulaw.ccbapi.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.model.pojo.Channel;
 import com.yulaw.ccbapi.model.vo.ChannelForHomeVO;
@@ -24,7 +25,7 @@ public class ChannelController {
 
     @GetMapping("/channel/list")
     @ResponseBody
-    public ApiRestResponse getChannelList(@RequestParam(required = false,defaultValue = "1") Integer pageNum,
+    public BaseResponse getChannelList(@RequestParam(required = false,defaultValue = "1") Integer pageNum,
                                           @RequestParam(required = false,defaultValue = "8") Integer pageSize){
         PageInfo list = channelService.getChannelList(pageNum,pageSize);
         return ApiRestResponse.success(list);
@@ -33,9 +34,9 @@ public class ChannelController {
 
     @GetMapping("/channel")
     @ResponseBody
-    public ApiRestResponse getChannelById(@RequestParam(required = false,defaultValue = "3") Long id,
-                                          @RequestParam(required = false,defaultValue = "1") Integer pageNum,
-                                          @RequestParam(required = false,defaultValue = "10") Integer pageSize){
+    public BaseResponse getChannelById(@RequestParam(required = false,defaultValue = "3") Long id,
+                                       @RequestParam(required = false,defaultValue = "1") Integer pageNum,
+                                       @RequestParam(required = false,defaultValue = "10") Integer pageSize){
         ChannelVO channel = channelService.getChannelById(id,pageNum,pageSize);
         return ApiRestResponse.success(channel);
 

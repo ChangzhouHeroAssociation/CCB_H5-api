@@ -11,7 +11,6 @@ public class NewVideoVO implements Serializable {
 
     private String url;
 
-
     public Long getId() {
         return id;
     }
@@ -35,6 +34,5 @@ public class NewVideoVO implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-
 
 }

@@ -18,15 +18,17 @@ public interface VideoMapper {
 
     List<Video> findAll();
 
-    List<Video> selectAllOrderByViews();
-
     Video selectNew();
+
+    Video selectByChannelId(Long id);
 
     List<Video> selectHotByView();
 
     List<Video> selectByTitle(String title);
 
     List<Video> selectByTeacher(String keywords);
+
+    List<Video> selectByTeacherId(Long id);
 
     List<Video> selectByChannelIdCategoryIdAndName(Long channelId, Long categoryId,String keywords);
 

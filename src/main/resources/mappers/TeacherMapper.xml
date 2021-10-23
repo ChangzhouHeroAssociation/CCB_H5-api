@@ -36,6 +36,16 @@
     from teacher
     WHERE teacher_name LIKE concat('%',#{name},'%')
   </select>
+  <select id="selectByVideoId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+      t.id, t.teacher_name, t.description, t.teacher_photo, t.`status`, t.create_time, t.update_time
+    from
+      video v, video_teacher_relation vt, teacher t
+    WHERE
+      v.id = #{id,jdbcType=BIGINT}
+      AND v.id = vt.video_id
+      AND t.id = vt.teacher_id
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from teacher
     where id = #{id,jdbcType=BIGINT}

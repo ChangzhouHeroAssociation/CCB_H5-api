@@ -35,9 +35,6 @@ public class TeacherServiceImpl implements TeacherService {
     ChannelMapper channelMapper;
 
     @Autowired
-    ChannelAndVideoMapper channelAndVideoMapper;
-
-    @Autowired
     RedisTemplate redisTemplate;
 
 
@@ -72,32 +69,23 @@ public class TeacherServiceImpl implements TeacherService {
         }
         TeacherVO teacherVO = new TeacherVO();
         BeanUtils.copyProperties(teacher, teacherVO);
-        ArrayList<HotVideoVO> hotVideoVOS = new ArrayList<>();
-        List<VideoAndTeacher> videoAndTeachers = videoAndTeacherMapper.selectByTeacherId(teacherVO.getId());
-        if(videoAndTeachers == null){
-            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
-        }
-        for (VideoAndTeacher videoAndTeacher : videoAndTeachers) {
-            Video video = videoMapper.selectByPrimaryKey(videoAndTeacher.getVideoId());
-            if (video == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
+        ArrayList<HotVideoVO> hotVideoList = new ArrayList<>();
+
+        List<Video> videos = videoMapper.selectByTeacherId(teacherVO.getId());
+        for (Video video : videos) {
             HotVideoVO hotVideoVO = new HotVideoVO();
             BeanUtils.copyProperties(video,hotVideoVO);
             hotVideoVO.setTeacher(teacherVO.getTeacherName());
 
-            ChannelAndVideo channelAndVideo = channelAndVideoMapper.selectByVideoId(hotVideoVO.getId());
-            if(channelAndVideo == null){
-                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
-            }
-            Channel channel = channelMapper.selectByPrimaryKey(channelAndVideo.getChannelId());
+            Channel channel = channelMapper.selectByPrimaryKey(video.getChannelId());
             if(channel == null){
                 throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
             }
             hotVideoVO.setChannelIcon(channel.getIcon());
-            hotVideoVOS.add(hotVideoVO);
+
+            hotVideoList.add(hotVideoVO);
         }
-        teacherVO.setHotVideoVOList(hotVideoVOS);
+        teacherVO.setHotVideoVOList(hotVideoList);
 
         // 将teacher访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("teacher");

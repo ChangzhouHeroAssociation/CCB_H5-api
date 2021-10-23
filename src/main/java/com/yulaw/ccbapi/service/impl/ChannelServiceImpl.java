@@ -29,19 +29,7 @@ public class ChannelServiceImpl implements ChannelService {
     ChannelMapper channelMapper;
 
     @Autowired
-    ChannelAndVideoMapper channelAndVideoMapper;
-
-    @Autowired
-    VideoAndTeacherMapper videoAndTeacherMapper;
-
-    @Autowired
     VideoMapper videoMapper;
-
-    @Autowired
-    TeacherMapper teacherMapper;
-
-    @Autowired
-    VideoService videoService;
 
     @Autowired
     RedisTemplate redisTemplate;
@@ -72,9 +60,13 @@ public class ChannelServiceImpl implements ChannelService {
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         BeanUtils.copyProperties(channel,channelVO);
-        PageInfo videoList = videoService.getPageList(pageNum, pageSize, "views", id, null, null);
-
-        channelVO.setVideoList(videoList);
+        Video video = videoMapper.selectByChannelId(channelVO.getId());
+        if(video == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
+        HotVideoVO hotVideoVO = new HotVideoVO();
+        BeanUtils.copyProperties(video,hotVideoVO);
+        channelVO.setHotVideoVO(hotVideoVO);
 
         // 将channel访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("channel");

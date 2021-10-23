@@ -20,4 +20,6 @@ public interface TeacherMapper {
     List<Teacher> selectForHome();
 
     List<Teacher> selectByNameLike(String name);
+
+    Teacher selectByVideoId(Long id);
 }

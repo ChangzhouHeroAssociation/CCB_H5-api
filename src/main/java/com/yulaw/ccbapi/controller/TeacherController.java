@@ -1,6 +1,7 @@
 package com.yulaw.ccbapi.controller;
 
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.model.vo.TeacherVO;
 import com.yulaw.ccbapi.service.TeacherService;
@@ -20,7 +21,7 @@ public class TeacherController {
 
     @GetMapping("/teacher")
     @ResponseBody
-    public ApiRestResponse getTeacherById(@RequestParam Long id){
+    public BaseResponse getTeacherById(@RequestParam Long id){
         TeacherVO teacher = teacherService.getTeacherById(id);
         return ApiRestResponse.success(teacher);
 

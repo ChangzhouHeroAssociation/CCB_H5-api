@@ -2,6 +2,7 @@ package com.yulaw.ccbapi.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
+import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
@@ -28,12 +29,12 @@ public class VideoController {
 
     @GetMapping("/video/pageList")
     @ResponseBody
-    public ApiRestResponse listVideoForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                                             @RequestParam(required = false, defaultValue = "5") Integer pageSize,
-                                             @RequestParam(required = false, defaultValue = "create_time") String orderBy,
-                                             @RequestParam(required = false) Long channelId,
-                                             @RequestParam(required = false) Long categoryId,
-                                             @RequestParam(required = false) String keywords){
+    public BaseResponse listVideoForAdmin(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                          @RequestParam(required = false, defaultValue = "5") Integer pageSize,
+                                          @RequestParam(required = false, defaultValue = "create_time") String orderBy,
+                                          @RequestParam(required = false) Long channelId,
+                                          @RequestParam(required = false) Long categoryId,
+                                          @RequestParam(required = false) String keywords){
         try{
             PageInfo pageInfo = videoService.getPageList(pageNum , pageSize , orderBy, channelId, categoryId, keywords);
             return ApiRestResponse.success(pageInfo);
@@ -46,7 +47,7 @@ public class VideoController {
 
     @GetMapping("/video")
     @ResponseBody
-    public ApiRestResponse getVideoById(@RequestParam Long id){
+    public BaseResponse getVideoById(@RequestParam Long id){
         VideoVO video = videoService.getVideoById(id);
         return ApiRestResponse.success(video);
 
@@ -54,9 +55,9 @@ public class VideoController {
 
     @GetMapping("/video/add")
     @ResponseBody
-    public ApiRestResponse addStar(@RequestParam Long id,@RequestParam Integer type){
+    public BaseResponse addStar(@RequestParam Long id,@RequestParam Integer type){
         videoService.addStarById(id, type);
-        return ApiRestResponse.success();
+        return new BaseResponse(200,"SUCCESS");
 
     }
 }
