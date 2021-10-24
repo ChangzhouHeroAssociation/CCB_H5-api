@@ -14,7 +14,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     AdvertisementMapper advertisementMapper;
 
     @Override
-    //@Cacheable(value = "getAdvByChannelId")
+    @Cacheable(value = "getAdvByChannelId")
     public Advertisement getAdvByChannelId(Long id){
         return advertisementMapper.selectByChannelId(id);
     }

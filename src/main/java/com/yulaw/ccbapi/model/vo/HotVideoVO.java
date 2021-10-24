@@ -3,6 +3,7 @@ package com.yulaw.ccbapi.model.vo;
 import com.yulaw.ccbapi.model.pojo.Teacher;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class HotVideoVO implements Serializable {
     private Long id;
@@ -15,7 +16,7 @@ public class HotVideoVO implements Serializable {
 
     private String url;
 
-    private String teacher;
+    private List<String> teacherNameList;
 
     private String channelIcon;
 
@@ -59,12 +60,12 @@ public class HotVideoVO implements Serializable {
         this.url = url;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public List<String> getTeacherNameList() {
+        return teacherNameList;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
+    public void setTeacherNameList(List<String> teacherNameList) {
+        this.teacherNameList = teacherNameList;
     }
 
     public String getChannelIcon() {

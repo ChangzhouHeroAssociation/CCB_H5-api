@@ -22,7 +22,7 @@ public class VideoVO implements Serializable {
 
     private Long channelId;
 
-    private TeacherForVideoVO teacher;
+    private List<TeacherForVideoVO> teacherList;
 
     private AdvertisementVO advertisement;
 
@@ -84,12 +84,12 @@ public class VideoVO implements Serializable {
         this.shareCount = shareCount;
     }
 
-    public TeacherForVideoVO getTeacher() {
-        return teacher;
+    public List<TeacherForVideoVO> getTeacherList() {
+        return teacherList;
     }
 
-    public void setTeacher(TeacherForVideoVO teacher) {
-        this.teacher = teacher;
+    public void setTeacherList(List<TeacherForVideoVO> teacherList) {
+        this.teacherList = teacherList;
     }
 
     public Long getChannelId() {

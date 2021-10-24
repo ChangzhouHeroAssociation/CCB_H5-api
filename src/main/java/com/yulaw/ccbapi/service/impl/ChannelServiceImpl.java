@@ -35,7 +35,7 @@ public class ChannelServiceImpl implements ChannelService {
     RedisTemplate redisTemplate;
 
     @Override
-    //@Cacheable(value = "getChannelList")
+    @Cacheable(value = "getChannelList")
     public PageInfo getChannelList(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize, "create_time desc");
         List<Channel> channelAll = channelMapper.selectAll();
@@ -52,7 +52,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    //@Cacheable(value = "getChannelById")
+    @Cacheable(value = "getChannelById")
     public ChannelVO getChannelById(Long id) {
         ChannelVO channelVO = new ChannelVO();
         Channel channel = channelMapper.selectByPrimaryKey(id);
@@ -61,7 +61,7 @@ public class ChannelServiceImpl implements ChannelService {
         }
         BeanUtils.copyProperties(channel,channelVO);
 
-        /*// 将channel访问量记录到缓存
+        // 将channel访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("channel");
 
         if(hashKey.hasKey(channelVO.getChannelName())){
@@ -71,7 +71,7 @@ public class ChannelServiceImpl implements ChannelService {
             hashKey.put(channelVO.getChannelName(), value2);
         }else {
             hashKey.put(channelVO.getChannelName(), 1);
-        }*/
+        }
         return channelVO;
     }
 

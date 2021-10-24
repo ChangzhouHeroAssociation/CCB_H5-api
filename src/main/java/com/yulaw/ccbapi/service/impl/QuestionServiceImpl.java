@@ -23,7 +23,7 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionMapper questionMapper;
 
     @Override
-    //@Cacheable(value = "getQuestion")
+    @Cacheable(value = "getQuestion")
     public List<QuestionVO> getQuestionByChannelId(Long id){
         List<Question> questionList = questionMapper.selectByChannelId(id);
         ArrayList<QuestionVO> questionVOS = new ArrayList<>();

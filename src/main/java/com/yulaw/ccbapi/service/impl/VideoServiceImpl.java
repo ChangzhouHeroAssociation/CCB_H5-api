@@ -64,10 +64,13 @@ public class VideoServiceImpl implements VideoService {
             BeanUtils.copyProperties(video,hotVideoVO);
 
             //(视频讲师关联查询)
-            Teacher teacher = teacherMapper.selectByVideoId(hotVideoVO.getId());
-            if(teacher != null){
-                hotVideoVO.setTeacher(teacher.getTeacherName());
+            List<Teacher> teachers = teacherMapper.selectByVideoId(hotVideoVO.getId());
+            ArrayList<String> nameList = new ArrayList<>();
+            for (Teacher teacher : teachers) {
+                nameList.add(teacher.getTeacherName());
             }
+            hotVideoVO.setTeacherNameList(nameList);
+
 
             //频道图标查询
 
@@ -81,7 +84,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    //@Cacheable(value = "getPageList")
+    @Cacheable(value = "getPageList")
     public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
                                 Long channelId, Long categoryId, String keywords){
 
@@ -98,7 +101,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    //@Cacheable(value = "getNew")
+    @Cacheable(value = "getNew")
     public NewVideoVO getNew(){
 
         Video video = videoMapper.selectNew();
@@ -112,7 +115,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    //@Cacheable(value = "getHotVideoVO")
+    @Cacheable(value = "getHotVideoVO")
     public List<HotVideoVO> getHotVideoVO(){
         ArrayList<HotVideoVO> hotVideoVOS;
         List<Video> videos = videoMapper.selectHotByView();
@@ -124,7 +127,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    //@Cacheable(value = "getVideoById")
+    @Cacheable(value = "getVideoById")
     public VideoVO getVideoById(Long id) {
         //播放，只要调取视频详情接口就可以计入一次播放
         addStarById(id,2);
@@ -138,12 +141,14 @@ public class VideoServiceImpl implements VideoService {
         BeanUtils.copyProperties(video, videoVO);
 
         //添加讲师(关联查询）
-        Teacher teacher = teacherMapper.selectByVideoId(videoVO.getId());
-        if(teacher != null){
+        List<Teacher> teachers = teacherMapper.selectByVideoId(videoVO.getId());
+        ArrayList<TeacherForVideoVO> teacherList = new ArrayList<>();
+        for (Teacher teacher : teachers) {
             TeacherForVideoVO teacherForVideoVO = new TeacherForVideoVO();
             BeanUtils.copyProperties(teacher,teacherForVideoVO);
-            videoVO.setTeacher(teacherForVideoVO);
+            teacherList.add(teacherForVideoVO);
         }
+        videoVO.setTeacherList(teacherList);
 
         //添加广告
         Advertisement advertisement = advertisementService.getAdvByChannelId(videoVO.getChannelId());
@@ -161,7 +166,7 @@ public class VideoServiceImpl implements VideoService {
         }
         videoVO.setQuestionList(questionVOS);
 
-        /*// 将video访问量记录到缓存
+        // 将video访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_view");
 
         if(hashKey.hasKey(videoVO.getVideoTitle())){
@@ -171,7 +176,7 @@ public class VideoServiceImpl implements VideoService {
             hashKey.put(videoVO.getVideoTitle(), value2);
         }else {
             hashKey.put(videoVO.getVideoTitle(), 1);
-        }*/
+        }
 
         return videoVO;
     }
@@ -190,7 +195,7 @@ public class VideoServiceImpl implements VideoService {
         }
         if (type == 3){
             video.setShareCount(video.getShareCount() + 1);
-            /*// 将video访问量记录到缓存
+            // 将video访问量记录到缓存
             BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_share");
 
             if(hashKey.hasKey(video.getVideoTitle())){
@@ -200,7 +205,7 @@ public class VideoServiceImpl implements VideoService {
                 hashKey.put(video.getVideoTitle(), value2);
             }else {
                 hashKey.put(video.getVideoTitle(), 1);
-            }*/
+            }
         }
         videoMapper.updateByPrimaryKeySelective(video);
     }

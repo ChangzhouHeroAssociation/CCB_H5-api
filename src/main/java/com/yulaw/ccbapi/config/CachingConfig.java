@@ -11,7 +11,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import java.time.Duration;
 
 @Configuration
-@EnableCaching
 public class CachingConfig {
 
     @Bean
@@ -19,9 +18,9 @@ public class CachingConfig {
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.lockingRedisCacheWriter(connectionFactory);
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
-        cacheConfiguration.entryTtl(Duration.ofSeconds(30));
+        RedisCacheConfiguration configuration = cacheConfiguration.entryTtl(Duration.ofHours(3));
 
-        RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter,cacheConfiguration);
+        RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter,configuration);
         return redisCacheManager;
     }
 }

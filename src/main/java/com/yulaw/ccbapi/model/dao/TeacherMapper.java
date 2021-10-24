@@ -21,5 +21,5 @@ public interface TeacherMapper {
 
     List<Teacher> selectByNameLike(String name);
 
-    Teacher selectByVideoId(Long id);
+    List<Teacher> selectByVideoId(Long id);
 }

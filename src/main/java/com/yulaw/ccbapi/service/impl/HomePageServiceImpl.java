@@ -20,7 +20,7 @@ public class HomePageServiceImpl implements HomePageService {
     HomePageMapper homePageMapper;
 
     @Override
-    //@Cacheable(value = "getHomePage")
+    @Cacheable(value = "getHomePage")
     public HomePage getHomePage() {
         HomePage homePage = homePageMapper.selectOne();
         if(homePage != null){

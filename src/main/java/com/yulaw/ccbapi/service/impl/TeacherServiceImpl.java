@@ -44,7 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    //@Cacheable(value = "getTeacherListForHome")
+    @Cacheable(value = "getTeacherListForHome")
     public PageInfo getTeacherListForHome(Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         ArrayList<TeacherForHomeVO> teacherForHomeVOs = new ArrayList<>();
@@ -64,7 +64,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    //@Cacheable(value = "getTeacherById")
+    @Cacheable(value = "getTeacherById")
     public TeacherVO getTeacherById(Long id) {
 
         Teacher teacher = teacherMapper.selectByPrimaryKey(id);
@@ -78,7 +78,7 @@ public class TeacherServiceImpl implements TeacherService {
         ArrayList<HotVideoVO> hotVideoList = videoService.copyToHotVideo(videos);
         teacherVO.setHotVideoVOList(hotVideoList);
 
-        /*// 将teacher访问量记录到缓存
+        // 将teacher访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("teacher");
 
         if(hashKey.hasKey(teacherVO.getTeacherName())){
@@ -88,7 +88,7 @@ public class TeacherServiceImpl implements TeacherService {
             hashKey.put(teacherVO.getTeacherName(), value2);
         }else {
             hashKey.put(teacherVO.getTeacherName(), 1);
-        }*/
+        }
 
 
         return teacherVO;
