@@ -1,8 +1,9 @@
 package com.yulaw.ccbapi.model.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Advertisement {
+public class Advertisement implements Serializable {
     private Long id;
 
     private String imageUrl;
