@@ -130,7 +130,7 @@ public class VideoServiceImpl implements VideoService {
     @Cacheable(value = "getVideoById")
     public VideoVO getVideoById(Long id) {
         //播放，只要调取视频详情接口就可以计入一次播放
-        addStarById(id,2);
+        addStarById(id,3);
 
         Video video = videoMapper.selectByPrimaryKey(id);
         if(video == null){
@@ -190,10 +190,10 @@ public class VideoServiceImpl implements VideoService {
         if(type == 1){
             video.setEnjoyCount(video.getEnjoyCount() + 1);
         }
-        if(type == 2){
+        if(type == 3){
             video.setViews(video.getViews() + 1);
         }
-        if (type == 3){
+        if (type == 2){
             video.setShareCount(video.getShareCount() + 1);
             // 将video访问量记录到缓存
             BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_share");
@@ -208,5 +208,34 @@ public class VideoServiceImpl implements VideoService {
             }
         }
         videoMapper.updateByPrimaryKeySelective(video);
+    }
+
+    @Override
+    @Cacheable(value = "getNextVideoById")
+    public VideoVO getNextVideoById(Long id) {
+        Video video = videoMapper.selectByPrimaryKey(id);
+        if(video == null){
+            throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+        }
+        List<Video> videos = videoMapper.selectByChannelId(video.getChannelId());
+        Long resultId = null;
+        int flag = 0;
+        VideoVO videoVO;
+        for (Video video1 : videos) {
+            if(video1.getId().equals(id)){
+                flag = 1;
+                continue;
+            }
+            if(flag == 1){
+                resultId = video1.getId();
+                break;
+            }
+        }
+        if(resultId == null){
+            videoVO  = getVideoById(videos.get(0).getId());
+        }else {
+            videoVO = getVideoById(resultId);
+        }
+        return videoVO;
     }
 }

@@ -72,6 +72,16 @@
       AND t.id = #{id,jdbcType=BIGINT}
 
   </select>
+  <select id="selectByChannelId" resultType="com.yulaw.ccbapi.model.pojo.Video">
+    select
+    <include refid="Base_Column_List"/>
+    from
+    video
+    WHERE
+    channel_id = #{channelId,jdbcType=BIGINT}
+    ORDER by create_time desc
+
+  </select>
   <select id="selectByChannelIdCategoryIdAndName" resultType="com.yulaw.ccbapi.model.pojo.Video">
     <if test="channelId != null">
       select

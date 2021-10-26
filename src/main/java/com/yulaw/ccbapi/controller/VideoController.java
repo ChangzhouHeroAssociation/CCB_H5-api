@@ -51,11 +51,19 @@ public class VideoController {
 
     }
 
-    @GetMapping("/video/add")
+    @PostMapping("/video/add")
     @ResponseBody
     public BaseResponse addStar(@RequestParam Long id,@RequestParam Integer type){
         videoService.addStarById(id, type);
         return new BaseResponse(200,"SUCCESS");
 
+    }
+
+    @GetMapping("/video/next")
+    @ResponseBody
+    public BaseResponse nextVideo(@RequestParam Long id){
+
+        VideoVO video = videoService.getNextVideoById(id);
+        return ApiRestResponse.success(video);
     }
 }

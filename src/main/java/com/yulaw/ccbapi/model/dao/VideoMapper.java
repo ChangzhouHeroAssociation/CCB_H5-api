@@ -28,6 +28,8 @@ public interface VideoMapper {
 
     List<Video> selectByTeacherId(Long id);
 
+    List<Video> selectByChannelId(Long id);
+
     List<Video> selectByChannelIdCategoryIdAndName(Long channelId, Long categoryId,String keywords);
 
 }
