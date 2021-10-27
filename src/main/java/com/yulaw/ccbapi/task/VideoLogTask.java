@@ -14,9 +14,15 @@ public class VideoLogTask {
     @Autowired
     VideoLogService videoLogService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void updateVideoData(){
+    @Scheduled(cron = "0 0 */6 * * ?")
+    public void updateVideoLog(){
         videoLogService.task();
+        System.out.println("更新视频日志！");
+    }
+
+    @Scheduled(cron = "0 0 0/6 * * ?")
+    public void updateVideoData(){
+        videoLogService.update();
         System.out.println("更新视频统计！");
     }
 }

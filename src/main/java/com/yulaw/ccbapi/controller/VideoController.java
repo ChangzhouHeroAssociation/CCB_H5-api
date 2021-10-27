@@ -46,7 +46,10 @@ public class VideoController {
     @GetMapping("/video")
     @ResponseBody
     public BaseResponse getVideoById(@RequestParam Long id){
+
         VideoVO video = videoService.getVideoById(id);
+        //播放，只要调取视频详情接口就可以计入一次播放
+        videoService.addStarById(id,3);
         return ApiRestResponse.success(video);
 
     }

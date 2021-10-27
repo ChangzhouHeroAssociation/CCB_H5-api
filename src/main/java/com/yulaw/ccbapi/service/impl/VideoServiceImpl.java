@@ -129,8 +129,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     @Cacheable(value = "getVideoById")
     public VideoVO getVideoById(Long id) {
-        //播放，只要调取视频详情接口就可以计入一次播放
-        addStarById(id,3);
+
 
         Video video = videoMapper.selectByPrimaryKey(id);
         if(video == null){
@@ -166,17 +165,7 @@ public class VideoServiceImpl implements VideoService {
         }
         videoVO.setQuestionList(questionVOS);
 
-        // 将video访问量记录到缓存
-        BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_view");
 
-        if(hashKey.hasKey(videoVO.getVideoTitle())){
-            //FIXME : 实现自增 BoundHashOperations.increament 报错
-            Integer value2 = hashKey.get(videoVO.getVideoTitle());
-            value2 = value2 + 1;
-            hashKey.put(videoVO.getVideoTitle(), value2);
-        }else {
-            hashKey.put(videoVO.getVideoTitle(), 1);
-        }
 
         return videoVO;
     }
@@ -188,14 +177,55 @@ public class VideoServiceImpl implements VideoService {
             throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
         }
         if(type == 1){
-            video.setEnjoyCount(video.getEnjoyCount() + 1);
+            //增加一个点赞量到redis
+            BoundHashOperations<String,Long,Integer> hashKey = redisTemplate.boundHashOps("enjoy_count");
+
+            if(hashKey.hasKey(video.getId())){
+                Integer value2 = hashKey.get(video.getId());
+                value2 = value2 + 1;
+                hashKey.put(video.getId(), value2);
+            }else {
+                hashKey.put(video.getId(), 1);
+            }
         }
         if(type == 3){
-            video.setViews(video.getViews() + 1);
+            //增加一个播放量到redis
+            BoundHashOperations<String,Long,Integer> hashKey = redisTemplate.boundHashOps("view_count");
+
+            if(hashKey.hasKey(video.getId())){
+                Integer value2 = hashKey.get(video.getId());
+                value2 = value2 + 1;
+                hashKey.put(video.getId(), value2);
+            }else {
+                hashKey.put(video.getId(), 1);
+            }
+
+            // 将video访问量记录到缓存日志
+            BoundHashOperations<String,String,Integer> log = redisTemplate.boundHashOps("video_view");
+
+            if(log.hasKey(video.getVideoTitle())){
+                //FIXME : 实现自增 BoundHashOperations.increament 报错
+                Integer value2 = log.get(video.getVideoTitle());
+                value2 = value2 + 1;
+                log.put(video.getVideoTitle(), value2);
+            }else {
+                log.put(video.getVideoTitle(), 1);
+            }
         }
         if (type == 2){
-            video.setShareCount(video.getShareCount() + 1);
-            // 将video访问量记录到缓存
+            //增加一个分享量到redis
+            BoundHashOperations<String,Long,Integer> shareCount = redisTemplate.boundHashOps("share_count");
+
+            if(shareCount.hasKey(video.getId())){
+                Integer value2 = shareCount.get(video.getId());
+                value2 = value2 + 1;
+                shareCount.put(video.getId(), value2);
+            }else {
+                shareCount.put(video.getId(), 1);
+            }
+
+
+            // 将video访问量记录到缓存日志
             BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_share");
 
             if(hashKey.hasKey(video.getVideoTitle())){
@@ -207,7 +237,6 @@ public class VideoServiceImpl implements VideoService {
                 hashKey.put(video.getVideoTitle(), 1);
             }
         }
-        videoMapper.updateByPrimaryKeySelective(video);
     }
 
     @Override
