@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.model.pojo.Video;
 import com.yulaw.ccbapi.model.vo.HotVideoVO;
 import com.yulaw.ccbapi.model.vo.NewVideoVO;
+import com.yulaw.ccbapi.model.vo.TinyVideoVO;
 import com.yulaw.ccbapi.model.vo.VideoVO;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,4 +28,7 @@ public interface VideoService {
     void addStarById(Long id, Integer type);
 
     VideoVO getNextVideoById(Long id);
+
+    @Cacheable(value = "searchVideoById")
+    List<TinyVideoVO> searchVideo(String title);
 }

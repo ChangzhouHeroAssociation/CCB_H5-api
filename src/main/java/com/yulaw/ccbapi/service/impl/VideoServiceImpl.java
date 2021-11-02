@@ -10,20 +10,14 @@ import com.yulaw.ccbapi.model.vo.*;
 import com.yulaw.ccbapi.service.AdvertisementService;
 import com.yulaw.ccbapi.service.QuestionService;
 import com.yulaw.ccbapi.service.VideoService;
-import org.apache.ibatis.exceptions.TooManyResultsException;
-import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.xml.namespace.QName;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -63,6 +57,7 @@ public class VideoServiceImpl implements VideoService {
             HotVideoVO hotVideoVO = new HotVideoVO();
             BeanUtils.copyProperties(video,hotVideoVO);
 
+
             //(视频讲师关联查询)
             List<Teacher> teachers = teacherMapper.selectByVideoId(hotVideoVO.getId());
             ArrayList<String> nameList = new ArrayList<>();
@@ -77,6 +72,7 @@ public class VideoServiceImpl implements VideoService {
             Channel channel = channelMapper.selectByPrimaryKey(video.getChannelId());
             if(channel != null){
                 hotVideoVO.setChannelIcon(channel.getIcon());
+                hotVideoVO.setChannnelName(channel.getChannelName());
             }
             resultList.add(hotVideoVO);
         }
@@ -91,8 +87,11 @@ public class VideoServiceImpl implements VideoService {
         ArrayList<HotVideoVO> resultList;
         List<Video> videoList;
         PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
-
-        videoList = videoMapper.selectByChannelIdCategoryIdAndName(channelId,categoryId,keywords);
+        if(categoryId == null && channelId == null && keywords == null){
+            videoList = videoMapper.findAll();
+        }else{
+            videoList = videoMapper.selectByChannelIdCategoryIdAndName(channelId,categoryId,keywords);
+        }
         if(videoList == null){
             throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
@@ -138,6 +137,10 @@ public class VideoServiceImpl implements VideoService {
 
         VideoVO videoVO = new VideoVO();
         BeanUtils.copyProperties(video, videoVO);
+        Channel channel = channelMapper.selectByPrimaryKey(videoVO.getChannelId());
+        if(channel != null){
+            videoVO.setChannelName(channel.getChannelName());
+        }
 
         //添加讲师(关联查询）
         List<Teacher> teachers = teacherMapper.selectByVideoId(videoVO.getId());
@@ -266,5 +269,18 @@ public class VideoServiceImpl implements VideoService {
             videoVO = getVideoById(resultId);
         }
         return videoVO;
+    }
+
+    @Override
+    @Cacheable(value = "searchVideoById")
+    public List<TinyVideoVO> searchVideo(String title){
+        List<Video> videos = videoMapper.selectByChannelIdCategoryIdAndName(null, null, title);
+        ArrayList<TinyVideoVO> tinyVideoVOS = new ArrayList<>();
+        for (Video video : videos) {
+            TinyVideoVO tinyVideoVO = new TinyVideoVO();
+            BeanUtils.copyProperties(video,tinyVideoVO);
+            tinyVideoVOS.add(tinyVideoVO);
+        }
+        return tinyVideoVOS;
     }
 }

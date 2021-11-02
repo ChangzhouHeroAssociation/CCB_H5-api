@@ -6,6 +6,7 @@ import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
+import com.yulaw.ccbapi.model.vo.TinyVideoVO;
 import com.yulaw.ccbapi.model.vo.VideoVO;
 import com.yulaw.ccbapi.service.VideoService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -67,6 +68,14 @@ public class VideoController {
     public BaseResponse nextVideo(@RequestParam Long id){
 
         VideoVO video = videoService.getNextVideoById(id);
+        //播放，只要调取视频详情接口就可以计入一次播放
+        videoService.addStarById(video.getId(),3);
         return ApiRestResponse.success(video);
+    }
+    @GetMapping("/video/search")
+    @ResponseBody
+    public BaseResponse searchVideo(@RequestParam String title){
+        List<TinyVideoVO> tinyVideoVOS = videoService.searchVideo(title);
+        return ApiRestResponse.success(tinyVideoVOS);
     }
 }

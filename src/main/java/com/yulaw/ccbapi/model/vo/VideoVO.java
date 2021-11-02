@@ -22,6 +22,8 @@ public class VideoVO implements Serializable {
 
     private Long channelId;
 
+    private String channelName;
+
     private List<TeacherForVideoVO> teacherList;
 
     private AdvertisementVO advertisement;
@@ -114,5 +116,13 @@ public class VideoVO implements Serializable {
 
     public void setQuestionList(List<QuestionVO> questionList) {
         this.questionList = questionList;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }
