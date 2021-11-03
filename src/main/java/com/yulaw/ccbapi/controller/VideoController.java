@@ -43,6 +43,14 @@ public class VideoController {
             return ApiRestResponse.error(CcbExceptionEnum.REQUEST_PARAM_ERROR);
         }
     }
+    @GetMapping("/video/recommend")
+    @ResponseBody
+    public BaseResponse getRecommendVideoList(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                              @RequestParam(required = false, defaultValue = "4") Integer pageSize,
+                                              @RequestParam(required = false) Integer isRecommend){
+        PageInfo recommendVideoList = videoService.getRecommendVideoList(pageNum, pageSize, isRecommend);
+        return ApiRestResponse.success(recommendVideoList);
+    }
 
     @GetMapping("/video")
     @ResponseBody

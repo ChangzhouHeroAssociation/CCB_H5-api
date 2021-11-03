@@ -49,14 +49,18 @@ public class IndexController {
 
     @GetMapping("/homePagePart2")
     @ResponseBody
-    public BaseResponse getHomePagePart2(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                                            @RequestParam(required = false, defaultValue = "10") Integer pageSize){
+    public BaseResponse getHomePagePart2(@RequestParam(required = false, defaultValue = "1") Integer npageNum,
+                                         @RequestParam(required = false, defaultValue = "4") Integer npageSize,
+                                         @RequestParam(required = false, defaultValue = "1") Integer tpageNum,
+                                         @RequestParam(required = false, defaultValue = "10") Integer tpageSize,
+                                         @RequestParam(required = false, defaultValue = "1") Integer rpageNum,
+                                         @RequestParam(required = false, defaultValue = "4") Integer rpageSize
+                                         ){
 
         MiddleOfHomeVO middleOfHome = new MiddleOfHomeVO();
-        middleOfHome.setNewVideo(videoService.getNew());
-        middleOfHome.setTeacherList(teacherService.getTeacherListForHome(pageNum, pageSize));
-        middleOfHome.setHotVideo(videoService.getHotVideoVO());
-
+        middleOfHome.setNewVideoList(videoService.getNewVideoList(npageNum,npageSize));
+        middleOfHome.setTeacherList(teacherService.getTeacherListForHome(tpageNum, tpageSize));
+        middleOfHome.setRecommendVideoList(videoService.getRecommendVideoList(rpageNum, rpageSize,1));
         return ApiRestResponse.success(middleOfHome);
 
     }

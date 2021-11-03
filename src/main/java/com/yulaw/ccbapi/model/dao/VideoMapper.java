@@ -22,6 +22,8 @@ public interface VideoMapper {
 
     List<Video> selectHotByView();
 
+    List<Video> selectRecommend(Integer flag);
+
     List<Video> selectByTitle(String title);
 
     List<Video> selectByTeacher(String keywords);

@@ -11,6 +11,8 @@ public class TeacherVO implements Serializable {
 
     private String teacherName;
 
+    private String job;
+
     private String description;
 
     private String teacherPhoto;
@@ -55,5 +57,13 @@ public class TeacherVO implements Serializable {
 
     public void setHotVideoVOList(List<HotVideoVO> hotVideoVOList) {
         this.hotVideoVOList = hotVideoVOList;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 }

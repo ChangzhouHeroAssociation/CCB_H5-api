@@ -16,6 +16,8 @@ public class VideoVO implements Serializable {
 
     private String url;
 
+    private String textPage;
+
     private Integer enjoyCount;
 
     private Integer shareCount;
@@ -29,6 +31,8 @@ public class VideoVO implements Serializable {
     private AdvertisementVO advertisement;
 
     private List<QuestionVO> questionList;
+
+
 
     public Long getId() {
         return id;
@@ -124,5 +128,13 @@ public class VideoVO implements Serializable {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public String getTextPage() {
+        return textPage;
+    }
+
+    public void setTextPage(String textPage) {
+        this.textPage = textPage;
     }
 }

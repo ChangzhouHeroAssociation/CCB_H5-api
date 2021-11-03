@@ -19,9 +19,10 @@ public interface VideoService {
 
     PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
                          Long channelId, Long categoryId, String keywords);
-    NewVideoVO getNew();
 
-    List<HotVideoVO> getHotVideoVO();
+    PageInfo getNewVideoList(Integer pageNum, Integer pageSize);
+
+    PageInfo getRecommendVideoList(Integer pageNum, Integer pageSize, Integer isRecommend);
 
     VideoVO getVideoById(Long id);
 
@@ -29,6 +30,5 @@ public interface VideoService {
 
     VideoVO getNextVideoById(Long id);
 
-    @Cacheable(value = "searchVideoById")
     List<TinyVideoVO> searchVideo(String title);
 }

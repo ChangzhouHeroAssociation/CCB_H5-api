@@ -13,6 +13,8 @@ public class Teacher {
 
     private Integer status;
 
+    private String job;
+
     private Date createTime;
 
     private Date updateTime;
@@ -71,5 +73,13 @@ public class Teacher {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 }

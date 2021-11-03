@@ -12,6 +12,8 @@ public class TeacherForVideoVO implements Serializable {
 
     private String teacherPhoto;
 
+    private String job;
+
     public Long getId() {
         return id;
     }
@@ -42,5 +44,13 @@ public class TeacherForVideoVO implements Serializable {
 
     public void setTeacherPhoto(String teacherPhoto) {
         this.teacherPhoto = teacherPhoto;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 }

@@ -6,26 +6,26 @@ import java.util.List;
 
 public class MiddleOfHomeVO {
 
-    private NewVideoVO newVideo;
+    private PageInfo newVideoList;
 
     private PageInfo teacherList;
 
-    private List<HotVideoVO> hotVideo;
+    private PageInfo RecommendVideoList;
 
-    public NewVideoVO getNewVideo() {
-        return newVideo;
+    public PageInfo getNewVideoList() {
+        return newVideoList;
     }
 
-    public void setNewVideo(NewVideoVO newVideo) {
-        this.newVideo = newVideo;
+    public void setNewVideoList(PageInfo newVideoList) {
+        this.newVideoList = newVideoList;
     }
 
-    public List<HotVideoVO> getHotVideo() {
-        return hotVideo;
+    public PageInfo getRecommendVideoList() {
+        return RecommendVideoList;
     }
 
-    public void setHotVideo(List<HotVideoVO> hotVideo) {
-        this.hotVideo = hotVideo;
+    public void setRecommendVideoList(PageInfo recommendVideoList) {
+        RecommendVideoList = recommendVideoList;
     }
 
     public PageInfo getTeacherList() {

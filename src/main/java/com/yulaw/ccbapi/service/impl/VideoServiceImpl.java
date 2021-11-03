@@ -99,30 +99,46 @@ public class VideoServiceImpl implements VideoService {
         return new PageInfo(resultList);
     }
 
+    /**
+     * 首页最新视频列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
-    @Cacheable(value = "getNew")
-    public NewVideoVO getNew(){
-
-        Video video = videoMapper.selectNew();
-        if(video != null){
-            NewVideoVO newVideoVO = new NewVideoVO();
-            BeanUtils.copyProperties(video,newVideoVO);
-            return newVideoVO;
-        }else {
-            return null;
-        }
+    @Cacheable(value = "getNewVideoList")
+    public PageInfo getNewVideoList(Integer pageNum, Integer pageSize){
+        return getPageList(pageNum,pageSize,"create_time",null,null,null);
     }
 
+    /**
+     * 首页推荐视频列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
-    @Cacheable(value = "getHotVideoVO")
-    public List<HotVideoVO> getHotVideoVO(){
-        ArrayList<HotVideoVO> hotVideoVOS;
-        List<Video> videos = videoMapper.selectHotByView();
-        if(videos == null){
+    @Cacheable(value = "getRecommendVideoList")
+    public PageInfo getRecommendVideoList(Integer pageNum, Integer pageSize,Integer isRecommend) {
+        ArrayList<HotVideoVO> recommendList;
+        PageHelper.startPage(pageNum, pageSize, "create_time desc");
+        List<Video> videos = null;
+        if (isRecommend == null){
+            PageInfo resultList = getPageList(pageNum, pageSize, "create_time", null, null, null);
+            return resultList;
+        }
+        if (isRecommend == 1) {
+            videos = videoMapper.selectRecommend(1);
+        }else if (isRecommend == 0){
+            videos = videoMapper.selectRecommend(0);
+        } else {
+            throw new CcbException(CcbExceptionEnum.REQUEST_PARAM_ERROR);
+        }
+        if (videos == null) {
             throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
-        hotVideoVOS = copyToHotVideo(videos);
-        return hotVideoVOS;
+        recommendList = copyToHotVideo(videos);
+        return new PageInfo(recommendList);
     }
 
     @Override
@@ -167,8 +183,6 @@ public class VideoServiceImpl implements VideoService {
             throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
         videoVO.setQuestionList(questionVOS);
-
-
 
         return videoVO;
     }
@@ -226,7 +240,6 @@ public class VideoServiceImpl implements VideoService {
             }else {
                 shareCount.put(video.getId(), 1);
             }
-
 
             // 将video访问量记录到缓存日志
             BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("video_share");

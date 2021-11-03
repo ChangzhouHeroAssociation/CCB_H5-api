@@ -25,6 +25,10 @@ public class Video {
 
     private Long channelId;
 
+    private String textPage;
+
+    private Integer isRecommend;
+
     public Long getId() {
         return id;
     }
@@ -113,6 +117,22 @@ public class Video {
         this.channelId = channelId;
     }
 
+    public String getTextPage() {
+        return textPage;
+    }
+
+    public void setTextPage(String textPage) {
+        this.textPage = textPage;
+    }
+
+    public Integer getIsRecommend() {
+        return isRecommend;
+    }
+
+    public void setIsRecommend(Integer isRecommend) {
+        this.isRecommend = isRecommend;
+    }
+
     @Override
     public String toString() {
         return "Video{" +
@@ -127,6 +147,8 @@ public class Video {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", channelId=" + channelId +
+                ", textPage='" + textPage + '\'' +
+                ", isRecommend=" + isRecommend +
                 '}';
     }
 }
