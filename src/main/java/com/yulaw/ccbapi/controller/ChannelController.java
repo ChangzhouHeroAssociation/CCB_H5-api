@@ -31,4 +31,11 @@ public class ChannelController {
 
     }
 
+    @GetMapping("/channel/pageList")
+    @ResponseBody
+    public BaseResponse getPageList(@RequestParam(required = false,defaultValue = "1") Integer pageNum,
+                                    @RequestParam(required = false,defaultValue = "6") Integer pageSize){
+        PageInfo channelList = channelService.getChannelList(pageNum, pageSize);
+        return ApiRestResponse.success(channelList);
+    }
 }

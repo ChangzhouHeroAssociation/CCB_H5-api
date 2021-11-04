@@ -11,6 +11,8 @@ public class ChannelForHomeVO implements Serializable {
 
     private String icon;
 
+    private String content;
+
     private Integer enabled;
 
     public Long getId() {
@@ -43,5 +45,13 @@ public class ChannelForHomeVO implements Serializable {
 
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
