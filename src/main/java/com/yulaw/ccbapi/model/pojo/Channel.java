@@ -21,6 +21,8 @@ public class Channel {
 
     private Integer enabled;
 
+    private String video;
+
     public Long getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class Channel {
 
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 }

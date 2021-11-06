@@ -8,6 +8,7 @@ import com.yulaw.ccbapi.model.pojo.HomePage;
 import com.yulaw.ccbapi.model.pojo.Video;
 import com.yulaw.ccbapi.model.vo.*;
 import com.yulaw.ccbapi.service.*;
+import com.yulaw.ccbapi.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class IndexController {
@@ -71,5 +73,12 @@ public class IndexController {
         List<BannerForHomeVO> bannerListForHome = bannerService.getBannerListForHome();
         return ApiRestResponse.success(bannerListForHome);
 
+    }
+
+    @GetMapping("/share")
+    @ResponseBody
+    public BaseResponse share(@RequestParam(required = false) String url){
+        Map<String, String> token = SignUtil.getResult(url);
+        return ApiRestResponse.success(token);
     }
 }

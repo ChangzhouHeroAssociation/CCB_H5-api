@@ -11,9 +11,10 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="enabled" jdbcType="TINYINT" property="enabled" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, channel_name, icon, content, image, create_time, update_time, status, enabled
+    id, channel_name, icon, content, image, create_time, update_time, status, enabled, video
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -58,6 +59,9 @@
       <if test="enabled != null">
         enabled = #{enabled,jdbcType=TINYINT},
       </if>
+      <if test="video != null">
+        video = #{video,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -70,7 +74,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       "status" = #{status,jdbcType=TINYINT},
-      enabled = #{enabled,jdbcType=TINYINT}
+      enabled = #{enabled,jdbcType=TINYINT},
+      video = #{video,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
