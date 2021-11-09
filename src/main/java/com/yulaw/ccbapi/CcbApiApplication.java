@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @MapperScan(basePackages = "com.yulaw.ccbapi.model.dao")
-@EnableCaching
+//@EnableCaching
 @EnableScheduling
 public class CcbApiApplication {
 
