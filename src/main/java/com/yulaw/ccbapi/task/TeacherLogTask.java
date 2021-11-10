@@ -14,7 +14,7 @@ public class TeacherLogTask {
     @Autowired
     TeacherLogService teacherLogService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0/10 * * * * ?")
     public void updateVideoData(){
         teacherLogService.task();
         System.out.println("更新讲师统计！");
