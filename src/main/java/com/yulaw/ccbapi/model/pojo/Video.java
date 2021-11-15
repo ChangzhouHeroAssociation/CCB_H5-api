@@ -29,6 +29,8 @@ public class Video {
 
     private Integer isRecommend;
 
+    private String picture;
+
     public Long getId() {
         return id;
     }
@@ -133,6 +135,14 @@ public class Video {
         this.isRecommend = isRecommend;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     @Override
     public String toString() {
         return "Video{" +
@@ -149,6 +159,7 @@ public class Video {
                 ", channelId=" + channelId +
                 ", textPage='" + textPage + '\'' +
                 ", isRecommend=" + isRecommend +
+                ", picture='" + picture + '\'' +
                 '}';
     }
 }

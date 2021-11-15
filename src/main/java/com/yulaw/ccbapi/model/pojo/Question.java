@@ -9,7 +9,7 @@ public class Question {
 
     private String option;
 
-    private Long channelId;
+    private String channelId;
 
     private Integer category;
 
@@ -43,11 +43,11 @@ public class Question {
         this.option = option == null ? null : option.trim();
     }
 
-    public Long getChannelId() {
+    public String getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(Long channelId) {
+    public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 

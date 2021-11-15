@@ -26,6 +26,7 @@
     select
     <include refid="Base_Column_List" />
     from channel
+    where status = 1
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

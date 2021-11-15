@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="option" jdbcType="VARCHAR" property="option" />
-    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="channel_id" jdbcType="VARCHAR" property="channelId" />
     <result column="category" jdbcType="TINYINT" property="category" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -25,11 +25,11 @@
     <include refid="Base_Column_List"/>
     from question
   </select>
-  <select id="selectByChannelId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  <select id="selectByChannelId" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
     <include refid="Base_Column_List"/>
     from question
-    where channel_id = #{channelId,jdbcType=BIGINT}
+    where FIND_IN_SET(#{channelId,jdbcType=VARCHAR},channel_id)
     ORDER BY weight desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -46,7 +46,7 @@
         "option" = #{option,jdbcType=VARCHAR},
       </if>
       <if test="channelId != null">
-        channel_id = #{channelId,jdbcType=BIGINT},
+        channel_id = #{channelId,jdbcType=VARCHAR},
       </if>
       <if test="category != null">
         category = #{category,jdbcType=TINYINT},
@@ -67,7 +67,7 @@
     update question
     set title = #{title,jdbcType=VARCHAR},
       "option" = #{option,jdbcType=VARCHAR},
-      channel_id = #{channelId,jdbcType=BIGINT},
+      channel_id = #{channelId,jdbcType=VARCHAR},
       category = #{category,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

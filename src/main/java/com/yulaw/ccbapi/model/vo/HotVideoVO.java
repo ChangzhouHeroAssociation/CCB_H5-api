@@ -22,6 +22,8 @@ public class HotVideoVO implements Serializable {
 
     private String channnelName;
 
+    private String picture;
+
     public Long getId() {
         return id;
     }
@@ -84,5 +86,13 @@ public class HotVideoVO implements Serializable {
 
     public void setChannnelName(String channnelName) {
         this.channnelName = channnelName;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

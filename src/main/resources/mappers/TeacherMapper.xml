@@ -8,11 +8,12 @@
     <result column="teacher_photo" jdbcType="VARCHAR" property="teacherPhoto" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="job" jdbcType="VARCHAR" property="job" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, teacher_name, description, teacher_photo, status, job, create_time, update_time
+    id, teacher_name, description, teacher_photo, status, job, weight, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -29,7 +30,7 @@
     select
     <include refid="Base_Column_List"/>
     from teacher
-    ORDER by create_time desc
+    ORDER by weight desc
   </select>
   <select id="selectByNameLike" resultType="com.yulaw.ccbapi.model.pojo.Teacher">
     select
@@ -39,7 +40,7 @@
   </select>
   <select id="selectByVideoId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
-      t.id, t.teacher_name, t.description, t.teacher_photo, t.`status`, t.job, t.create_time, t.update_time
+      t.id, t.teacher_name, t.description, t.teacher_photo, t.`status`, t.job, t.weight, t.create_time, t.update_time
     from
       video v, video_teacher_relation vt, teacher t
     WHERE
@@ -69,6 +70,9 @@
       <if test="job != null">
         job = #{job,jdbcType=VARCHAR},
       </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -85,6 +89,7 @@
       teacher_photo = #{teacherPhoto,jdbcType=VARCHAR},
       "status" = #{status,jdbcType=TINYINT},
       job = #{job,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

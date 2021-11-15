@@ -34,30 +34,26 @@ public class VideoLogServiceImpl implements VideoLogService {
     @Override
     @Transactional
     public void task() {
-        BoundHashOperations<String,String,Integer> hashView = redisTemplate.boundHashOps("video_view");
-        BoundHashOperations<String,String,Integer> hashShare = redisTemplate.boundHashOps("video_share");
-        Map<String,Integer> viewMap = hashView.entries();
-        Map<String,Integer> shareMap = hashShare.entries();
-        ArrayList<VideoLog> videoLogs = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : viewMap.entrySet()) {
+        BoundHashOperations<String,Long,Integer> hashView = redisTemplate.boundHashOps("video_view");
+        BoundHashOperations<String,Long,Integer> hashShare = redisTemplate.boundHashOps("video_share");
+
+        Map<Long,Integer> viewMap = hashView.entries();
+
+        for (Map.Entry<Long, Integer> entry : viewMap.entrySet()) {
             VideoLog videoLog = new VideoLog();
             videoLog.setCreateTime(new Date());
-            videoLog.setVideoName(entry.getKey());
             videoLog.setViewCount(entry.getValue());
-            videoLog.setShareCount(0);
-            videoLogs.add(videoLog);
-        }
-        for (Map.Entry<String, Integer> entry : shareMap.entrySet()) {
-            for (VideoLog videoLog : videoLogs) {
-                if(entry.getKey().equals(videoLog.getVideoName())){
-                    videoLog.setShareCount(entry.getValue());
-                }
+            if(hashShare.hasKey(entry.getKey())){
+                videoLog.setShareCount(hashShare.get(entry.getKey()));
+            }else {
+                videoLog.setShareCount(0);
             }
-        }
-
-        for (VideoLog videoLog : videoLogs) {
+            Video video = videoMapper.selectByPrimaryKey(entry.getKey());
+            if(video == null){
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
+            videoLog.setVideoName(video.getVideoTitle());
             videoLogMapper.insertSelective(videoLog);
-
         }
         redisTemplate.delete("video_view");
         redisTemplate.delete("video_share");
@@ -69,9 +65,8 @@ public class VideoLogServiceImpl implements VideoLogService {
         BoundHashOperations<String,Long,Integer> share = redisTemplate.boundHashOps("share_count");
         BoundHashOperations<String,Long,Integer> view = redisTemplate.boundHashOps("view_count");
         BoundHashOperations<String,Long,Integer> enjoy = redisTemplate.boundHashOps("enjoy_count");
-        Map<Long,Integer> shareMap = share.entries();
+
         Map<Long,Integer> viewMap = view.entries();
-        Map<Long,Integer> enjoyMap = enjoy.entries();
 
         for (Map.Entry<Long, Integer> entry : viewMap.entrySet()) {
             Video video = videoMapper.selectByPrimaryKey(entry.getKey());

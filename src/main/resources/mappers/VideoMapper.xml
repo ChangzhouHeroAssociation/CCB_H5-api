@@ -15,10 +15,11 @@
     <result column="channel_id" jdbcType="INTEGER" property="channelId" />
     <result column="text_page" jdbcType="VARCHAR" property="textPage" />
     <result column="is_recommend" jdbcType="TINYINT" property="isRecommend" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
   </resultMap>
   <sql id="Base_Column_List">
     id, video_title, description, views, url, status, enjoy_count, share_count, create_time,
-    update_time, channel_id, text_page, is_recommend
+    update_time, channel_id, text_page, is_recommend, picture
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -69,7 +70,7 @@
   <select id="selectByTeacher" resultType="com.yulaw.ccbapi.model.pojo.Video">
     select
         v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count,
-        v.share_count, v.create_time, v.update_time, v.channel_id, v.text_page, v.is_recommend
+        v.share_count, v.create_time, v.update_time, v.channel_id, v.text_page, v.is_recommend, v.picture
     from
         video v, video_teacher_relation vt, teacher t
     WHERE
@@ -81,7 +82,7 @@
   <select id="selectByTeacherId" resultType="com.yulaw.ccbapi.model.pojo.Video">
     select
       v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count,
-           v.share_count, v.create_time, v.update_time, v.channel_id, v.text_page, v.is_recommend
+           v.share_count, v.create_time, v.update_time, v.channel_id, v.text_page, v.is_recommend, v.picture
     from
       video v, video_teacher_relation vt, teacher t
     WHERE
@@ -112,7 +113,7 @@
     <if test="categoryId != null">
       select
         v.id, v.video_title, v.description, v.views, v.url, v.status, v.enjoy_count,
-        v.share_count, v.create_time, v.update_time,v.channel_id,v.text_page, v.is_recommend
+        v.share_count, v.create_time, v.update_time,v.channel_id,v.text_page, v.is_recommend, v.picture
       from
       video v, video_category_relation r, category c
       WHERE
@@ -171,6 +172,9 @@
       <if test="isRecommend != null">
         is_recommend = #{isRecommend,jdbcType=TINYINT},
       </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -187,7 +191,8 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       channel_id = #{channelId,jdbcType=BIGINT},
       text_page = #{textPage,jdbcType=VARCHAR},
-      is_recommend = #{isRecommend,jdbcType=TINYINT}
+      is_recommend = #{isRecommend,jdbcType=TINYINT},
+      picture = #{picture,jdbcType=VARCHAR},
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

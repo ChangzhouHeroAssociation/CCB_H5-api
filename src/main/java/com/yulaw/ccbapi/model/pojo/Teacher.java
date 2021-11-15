@@ -15,6 +15,8 @@ public class Teacher {
 
     private String job;
 
+    private Integer weight;
+
     private Date createTime;
 
     private Date updateTime;
@@ -81,5 +83,13 @@ public class Teacher {
 
     public void setJob(String job) {
         this.job = job;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }
