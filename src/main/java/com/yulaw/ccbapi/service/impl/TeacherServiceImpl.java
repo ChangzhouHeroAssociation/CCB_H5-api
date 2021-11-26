@@ -74,10 +74,6 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherVO teacherVO = new TeacherVO();
         BeanUtils.copyProperties(teacher, teacherVO);
 
-        List<Video> videos = videoMapper.selectByTeacherId(teacherVO.getId());
-        ArrayList<HotVideoVO> hotVideoList = videoService.copyToHotVideo(videos);
-        teacherVO.setHotVideoVOList(hotVideoList);
-
         // 将teacher访问量记录到缓存
         BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("teacher");
 
@@ -89,7 +85,6 @@ public class TeacherServiceImpl implements TeacherService {
         }else {
             hashKey.put(teacherVO.getTeacherName(), 1);
         }
-
 
         return teacherVO;
 

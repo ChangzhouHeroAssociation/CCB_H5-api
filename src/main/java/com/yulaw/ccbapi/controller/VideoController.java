@@ -35,9 +35,10 @@ public class VideoController {
                                           @RequestParam(required = false, defaultValue = "create_time") String orderBy,
                                           @RequestParam(required = false) Long channelId,
                                           @RequestParam(required = false) Long categoryId,
-                                          @RequestParam(required = false) String keywords){
+                                          @RequestParam(required = false) String keywords,
+                                          @RequestParam(required = false) Long teacherId){
         try{
-            PageInfo pageInfo = videoService.getPageList(pageNum , pageSize , orderBy, channelId, categoryId, keywords);
+            PageInfo pageInfo = videoService.getPageList(pageNum , pageSize , orderBy, channelId, categoryId, keywords, teacherId);
             return ApiRestResponse.success(pageInfo);
         }catch (Exception e){
             return ApiRestResponse.error(CcbExceptionEnum.REQUEST_PARAM_ERROR);

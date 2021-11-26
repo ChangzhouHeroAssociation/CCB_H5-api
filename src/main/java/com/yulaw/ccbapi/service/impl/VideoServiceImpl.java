@@ -82,14 +82,16 @@ public class VideoServiceImpl implements VideoService {
     @Override
     @Cacheable(value = "getPageList")
     public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
-                                Long channelId, Long categoryId, String keywords){
+                                Long channelId, Long categoryId, String keywords, Long teacherId){
 
         ArrayList<HotVideoVO> resultList;
         List<Video> videoList;
         PageHelper.startPage(pageNum,pageSize,orderBy + " desc");
-        if(categoryId == null && channelId == null && keywords == null){
+        if(categoryId == null && channelId == null && keywords == null && teacherId == null){
             videoList = videoMapper.findAll();
-        }else{
+        }else if(teacherId != null){
+            videoList = videoMapper.selectByTeacherId(teacherId);
+        }else {
             videoList = videoMapper.selectByChannelIdCategoryIdAndName(channelId,categoryId,keywords);
         }
         if(videoList == null){
@@ -108,7 +110,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     @Cacheable(value = "getNewVideoList")
     public PageInfo getNewVideoList(Integer pageNum, Integer pageSize){
-        return getPageList(pageNum,pageSize,"create_time",null,null,null);
+        return getPageList(pageNum,pageSize,"create_time",null,null,null,null);
     }
 
     /**
@@ -124,7 +126,7 @@ public class VideoServiceImpl implements VideoService {
         PageHelper.startPage(pageNum, pageSize, "create_time desc");
         List<Video> videos = null;
         if (isRecommend == null){
-            PageInfo resultList = getPageList(pageNum, pageSize, "create_time", null, null, null);
+            PageInfo resultList = getPageList(pageNum, pageSize, "create_time", null, null, null,null);
             return resultList;
         }
         if (isRecommend == 1) {

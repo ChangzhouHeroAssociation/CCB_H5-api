@@ -17,8 +17,6 @@ public class TeacherVO implements Serializable {
 
     private String teacherPhoto;
 
-    private List<HotVideoVO> hotVideoVOList;
-
     public Long getId() {
         return id;
     }
@@ -49,14 +47,6 @@ public class TeacherVO implements Serializable {
 
     public void setTeacherPhoto(String teacherPhoto) {
         this.teacherPhoto = teacherPhoto == null ? null : teacherPhoto.trim();
-    }
-
-    public List<HotVideoVO> getHotVideoVOList() {
-        return hotVideoVOList;
-    }
-
-    public void setHotVideoVOList(List<HotVideoVO> hotVideoVOList) {
-        this.hotVideoVOList = hotVideoVOList;
     }
 
     public String getJob() {
