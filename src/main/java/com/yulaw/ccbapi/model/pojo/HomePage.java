@@ -9,6 +9,16 @@ public class HomePage implements Serializable {
 
     private String activity;
 
+    private String picture;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     public Integer getId() {
         return id;
     }

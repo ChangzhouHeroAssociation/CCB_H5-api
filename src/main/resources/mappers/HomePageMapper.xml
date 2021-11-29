@@ -5,9 +5,10 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="video_url" jdbcType="VARCHAR" property="videoUrl" />
     <result column="activity" jdbcType="VARCHAR" property="activity" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, video_url, activity
+    id, video_url, activity, picture
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -34,13 +35,17 @@
       <if test="activity != null">
         activity = #{activity,jdbcType=VARCHAR},
       </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yulaw.ccbapi.model.pojo.HomePage">
     update home_page
     set video_url = #{videoUrl,jdbcType=VARCHAR},
-      activity = #{activity,jdbcType=VARCHAR}
+      activity = #{activity,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
