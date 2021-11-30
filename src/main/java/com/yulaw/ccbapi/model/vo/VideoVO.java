@@ -26,13 +26,21 @@ public class VideoVO implements Serializable {
 
     private String channelName;
 
+    private String picture;
+
     private List<TeacherForVideoVO> teacherList;
 
     private AdvertisementVO advertisement;
 
     private List<QuestionVO> questionList;
 
+    public String getPicture() {
+        return picture;
+    }
 
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     public Long getId() {
         return id;
