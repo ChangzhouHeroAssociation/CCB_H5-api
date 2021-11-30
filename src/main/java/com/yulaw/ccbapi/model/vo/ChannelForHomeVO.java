@@ -15,6 +15,16 @@ public class ChannelForHomeVO implements Serializable {
 
     private Integer enabled;
 
+    private Integer weight;
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
     public Long getId() {
         return id;
     }

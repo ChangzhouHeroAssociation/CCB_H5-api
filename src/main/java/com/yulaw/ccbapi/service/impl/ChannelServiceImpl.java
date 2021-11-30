@@ -35,7 +35,7 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     @Cacheable(value = "getChannelList")
     public PageInfo getChannelList(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize, "create_time desc");
+        PageHelper.startPage(pageNum,pageSize, "weight desc");
         List<Channel> channelAll = channelMapper.selectAll();
         if(channelAll == null){
             throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
