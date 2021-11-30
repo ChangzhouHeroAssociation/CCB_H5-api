@@ -30,6 +30,7 @@
     select
     <include refid="Base_Column_List"/>
     from teacher
+    where status = 1
     ORDER by weight desc
   </select>
   <select id="selectByNameLike" resultType="com.yulaw.ccbapi.model.pojo.Teacher">
