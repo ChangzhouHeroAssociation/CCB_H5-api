@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ChannelVO implements Serializable {
+
     private Long id;
 
     private String channelName;
@@ -26,6 +27,16 @@ public class ChannelVO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    private String cover;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public String getChannelName() {

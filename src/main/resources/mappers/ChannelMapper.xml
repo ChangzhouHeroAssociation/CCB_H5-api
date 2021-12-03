@@ -13,9 +13,10 @@
     <result column="enabled" jdbcType="TINYINT" property="enabled" />
     <result column="video" jdbcType="VARCHAR" property="video" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="cover" jdbcType="VARCHAR" property="cover" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, channel_name, icon, content, image, create_time, update_time, status, enabled, video, weight
+    id, channel_name, icon, content, image, create_time, update_time, status, enabled, video, weight, cover
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -67,6 +68,9 @@
       <if test="weight != null">
         weight = #{weight,jdbcType=INTEGER},
       </if>
+      <if test="cover != null">
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -82,6 +86,7 @@
       enabled = #{enabled,jdbcType=TINYINT},
       video = #{video,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
+      cover = #{cover,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

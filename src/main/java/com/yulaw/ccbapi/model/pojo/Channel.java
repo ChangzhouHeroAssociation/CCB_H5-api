@@ -25,6 +25,16 @@ public class Channel {
 
     private Integer weight;
 
+    private String cover;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
     public Integer getWeight() {
         return weight;
     }
