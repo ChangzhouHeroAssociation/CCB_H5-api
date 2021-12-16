@@ -38,6 +38,8 @@
     select
     <include refid="Base_Column_List"/>
     from video
+    where
+    status = 1
     ORDER BY create_time desc
     LIMIT 1
   </select>
@@ -45,6 +47,8 @@
     select
     <include refid="Base_Column_List"/>
     from video
+    where
+      status = 1
     ORDER BY views desc
     LIMIT 3
   </select>
@@ -54,12 +58,14 @@
       <include refid="Base_Column_List"/>
       from video
       where is_recommend = 1
+        and status = 1
     </if>
     <if test="flag == 0">
       select
       <include refid="Base_Column_List"/>
       from video
       where is_recommend = 0
+        and status = 1
     </if>
   </select>
   <select id="selectByTitle" resultType="com.yulaw.ccbapi.model.pojo.Video">
@@ -67,6 +73,7 @@
     <include refid="Base_Column_List"/>
     from video
     WHERE video_title LIKE concat('%',#{title},'%')
+      and status = 1
   </select>
   <select id="selectByTeacher" resultType="com.yulaw.ccbapi.model.pojo.Video">
     select
@@ -75,7 +82,8 @@
     from
         video v, video_teacher_relation vt, teacher t
     WHERE
-        v.id = vt.video_id
+        v.status = 1
+        and v.id = vt.video_id
         AND t.id = vt.teacher_id
         AND t.teacher_name LIKE concat('%',#{keywords},'%')
 
@@ -87,9 +95,11 @@
     from
       video v, video_teacher_relation vt, teacher t
     WHERE
-      v.id = vt.video_id
+      v.status = 1
+      and v.id = vt.video_id
       AND t.id = vt.teacher_id
       AND t.id = #{id,jdbcType=BIGINT}
+
 
   </select>
   <select id="selectByChannelId" resultType="com.yulaw.ccbapi.model.pojo.Video">
@@ -98,7 +108,8 @@
     from
     video
     WHERE
-    channel_id = #{channelId,jdbcType=BIGINT}
+    status = 1
+    and channel_id = #{channelId,jdbcType=BIGINT}
     ORDER by create_time desc
 
   </select>
@@ -110,6 +121,7 @@
       video
       WHERE
       channel_id = #{channelId,jdbcType=BIGINT}
+      and status = 1
     </if>
     <if test="categoryId != null">
       select
