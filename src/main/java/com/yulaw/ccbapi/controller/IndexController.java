@@ -54,7 +54,7 @@ public class IndexController {
     public BaseResponse getHomePagePart2(@RequestParam(required = false, defaultValue = "1") Integer npageNum,
                                          @RequestParam(required = false, defaultValue = "4") Integer npageSize,
                                          @RequestParam(required = false, defaultValue = "1") Integer tpageNum,
-                                         @RequestParam(required = false, defaultValue = "10") Integer tpageSize,
+                                         @RequestParam(required = false, defaultValue = "100") Integer tpageSize,
                                          @RequestParam(required = false, defaultValue = "1") Integer rpageNum,
                                          @RequestParam(required = false, defaultValue = "4") Integer rpageSize
                                          ){
