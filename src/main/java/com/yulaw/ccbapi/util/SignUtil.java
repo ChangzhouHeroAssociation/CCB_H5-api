@@ -20,8 +20,8 @@ public class SignUtil {
 
     private static RedisTemplate redisTemplate ;
 
-    public static String APP_ID="wxe514b4e491dedf9d";//在controller中初始化
-    public static String APP_SECRET="1dcf0e77b3be82205614fff3f8554224";
+    public static String APP_ID="wxe59d5de1d2ceb663";//在controller中初始化
+    public static String APP_SECRET="b2f175310a60cf248f24ed4e8f596613";
 
 
     @Resource(name="redisTemplate")
