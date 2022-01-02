@@ -86,9 +86,9 @@
             <appender-ref ref="RollingFileError"/>
         </root>
         <!--打印sql-->
-        <!--<logger name="org.mybatis" level="DEBUG" additivity="true"/>-->
-        <!--<logger name="com.holderzone.saas.store.order.mapper" level="DEBUG" additivity="true">-->
-        <!--<appender-ref ref="Console"/>-->
-        <!--</logger>-->
+        <logger name="org.mybatis" level="DEBUG" additivity="true"/>
+        <logger name="com.holderzone.saas.store.order.mapper" level="DEBUG" additivity="true">
+        <appender-ref ref="Console"/>
+        </logger>
     </loggers>
 </configuration>

@@ -36,6 +36,9 @@ public class VideoServiceImpl implements VideoService {
     CategoryMapper categoryMapper;
 
     @Autowired
+    DistributionMapper distributionMapper;
+
+    @Autowired
     AdvertisementService advertisementService;
 
     @Autowired
@@ -297,5 +300,15 @@ public class VideoServiceImpl implements VideoService {
             tinyVideoVOS.add(tinyVideoVO);
         }
         return tinyVideoVOS;
+    }
+
+    @Override
+    public Distribution getDistribution(String url){
+        Distribution distribution = null;
+        distribution = distributionMapper.selectByUrl(url);
+        if (distribution == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }
+        return distribution;
     }
 }

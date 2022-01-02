@@ -1,6 +1,7 @@
 package com.yulaw.ccbapi.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yulaw.ccbapi.model.pojo.Distribution;
 import com.yulaw.ccbapi.model.pojo.Video;
 import com.yulaw.ccbapi.model.vo.HotVideoVO;
 import com.yulaw.ccbapi.model.vo.NewVideoVO;
@@ -31,4 +32,6 @@ public interface VideoService {
     VideoVO getNextVideoById(Long id);
 
     List<TinyVideoVO> searchVideo(String title);
+
+    Distribution getDistribution(String url);
 }

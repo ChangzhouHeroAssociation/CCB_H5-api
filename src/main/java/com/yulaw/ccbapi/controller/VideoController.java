@@ -5,6 +5,7 @@ import com.yulaw.ccbapi.common.ApiRestResponse;
 import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
+import com.yulaw.ccbapi.model.pojo.Distribution;
 import com.yulaw.ccbapi.model.vo.ChannelVO;
 import com.yulaw.ccbapi.model.vo.TinyVideoVO;
 import com.yulaw.ccbapi.model.vo.VideoVO;
@@ -14,11 +15,9 @@ import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -86,5 +85,13 @@ public class VideoController {
     public BaseResponse searchVideo(@RequestParam String title){
         List<TinyVideoVO> tinyVideoVOS = videoService.searchVideo(title);
         return ApiRestResponse.success(tinyVideoVOS);
+    }
+
+    @GetMapping("/distribution")
+    @ResponseBody
+    public BaseResponse getDistributionID(HttpServletRequest request){
+        String serverName = request.getServerName();
+        Distribution distribution = videoService.getDistribution(serverName);
+        return ApiRestResponse.success(distribution);
     }
 }
