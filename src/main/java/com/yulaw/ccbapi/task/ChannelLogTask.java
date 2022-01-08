@@ -14,7 +14,7 @@ public class ChannelLogTask {
     @Autowired
     ChannelLogService channelLogService;
 
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void updateVideoData(){
         channelLogService.task();
         System.out.println("更新频道统计！");

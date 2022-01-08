@@ -13,7 +13,7 @@ public class IndexLogTask {
     @Autowired
     IndexLogService indexLogService;
 
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void updateIndexLog(){
         indexLogService.task();
         System.out.println("更新首页统计！");
