@@ -2,6 +2,12 @@ package com.yulaw.ccbapi.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yulaw.ccbapi.exception.CcbException;
+import com.yulaw.ccbapi.exception.CcbExceptionEnum;
+import com.yulaw.ccbapi.model.dao.DistributionMapper;
+import com.yulaw.ccbapi.model.pojo.Distribution;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -12,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+@Component
 public class HttpUtil {
 
     public static JsonNode get(String tokenUrl) throws Exception {
@@ -73,4 +80,5 @@ public class HttpUtil {
 
         return jsonNode;
     }
+
 }

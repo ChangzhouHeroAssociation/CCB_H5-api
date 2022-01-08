@@ -51,7 +51,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     @Cacheable(value = "getChannelById")
-    public ChannelVO getChannelById(Long id) {
+    public ChannelVO getChannelById(Long id,Integer distributionId) {
         ChannelVO channelVO = new ChannelVO();
         Channel channel = channelMapper.selectByPrimaryKey(id);
         if(channel == null){
@@ -60,17 +60,9 @@ public class ChannelServiceImpl implements ChannelService {
         BeanUtils.copyProperties(channel,channelVO);
 
         // 将channel访问量记录到缓存
-        BoundHashOperations<String,String,Integer> hashKey = redisTemplate.boundHashOps("channel");
-
-        if(hashKey.hasKey(channelVO.getChannelName())){
-            //FIXME : 实现自增 BoundHashOperations.increament 报错
-            Integer value2 = hashKey.get(channelVO.getChannelName());
-            value2 = value2 + 1;
-            hashKey.put(channelVO.getChannelName(), value2);
-        }else {
-            hashKey.put(channelVO.getChannelName(), 1);
-        }
+        //使用'-'符号拼接名称和distributionId作为key value为访问量
+        String keyName = channelVO.getChannelName() + "-" + distributionId.toString();
+        redisTemplate.opsForHash().increment("channel", keyName, 1);
         return channelVO;
     }
-
 }

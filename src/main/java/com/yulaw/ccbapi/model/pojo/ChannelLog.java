@@ -11,6 +11,8 @@ public class ChannelLog {
 
     private Date createTime;
 
+    private Integer distributionId;
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class ChannelLog {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getDistributionId() {
+        return distributionId;
+    }
+
+    public void setDistributionId(Integer distributionId) {
+        this.distributionId = distributionId;
     }
 }

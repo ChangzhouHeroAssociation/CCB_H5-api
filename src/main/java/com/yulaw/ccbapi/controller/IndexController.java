@@ -4,12 +4,14 @@ import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
 import com.yulaw.ccbapi.common.BaseResponse;
 import com.yulaw.ccbapi.exception.CcbException;
+import com.yulaw.ccbapi.model.dao.IndexLogMapper;
 import com.yulaw.ccbapi.model.pojo.HomePage;
 import com.yulaw.ccbapi.model.pojo.Video;
 import com.yulaw.ccbapi.model.vo.*;
 import com.yulaw.ccbapi.service.*;
 import com.yulaw.ccbapi.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,9 @@ public class IndexController {
 
     @Autowired
     ChannelService channelService;
+
+    @Autowired
+    IndexLogService indexLogService;
 
     @GetMapping("/homePagePart1")
     @ResponseBody
@@ -80,5 +85,14 @@ public class IndexController {
     public BaseResponse share(@RequestParam(required = false) String url){
         Map<String, String> token = SignUtil.getResult(url);
         return ApiRestResponse.success(token);
+    }
+
+    @GetMapping("/addViewCount")
+    @ResponseBody
+    public BaseResponse addViewCount(){
+
+        indexLogService.addIndexViewCount();
+        return ApiRestResponse.success();
+
     }
 }

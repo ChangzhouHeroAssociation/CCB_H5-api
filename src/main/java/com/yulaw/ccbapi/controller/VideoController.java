@@ -3,17 +3,13 @@ package com.yulaw.ccbapi.controller;
 import com.github.pagehelper.PageInfo;
 import com.yulaw.ccbapi.common.ApiRestResponse;
 import com.yulaw.ccbapi.common.BaseResponse;
-import com.yulaw.ccbapi.exception.CcbException;
 import com.yulaw.ccbapi.exception.CcbExceptionEnum;
 import com.yulaw.ccbapi.model.pojo.Distribution;
-import com.yulaw.ccbapi.model.vo.ChannelVO;
 import com.yulaw.ccbapi.model.vo.TinyVideoVO;
 import com.yulaw.ccbapi.model.vo.VideoVO;
 import com.yulaw.ccbapi.service.VideoService;
-import org.apache.ibatis.exceptions.TooManyResultsException;
-import org.mybatis.spring.MyBatisSystemException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,30 +50,39 @@ public class VideoController {
 
     @GetMapping("/video")
     @ResponseBody
-    public BaseResponse getVideoById(@RequestParam Long id){
+    public BaseResponse getVideoById(@RequestParam Long id,HttpServletRequest request){
+        String serverName = request.getServerName();
+        Distribution distribution = videoService.getDistribution(serverName);
 
         VideoVO video = videoService.getVideoById(id);
         //播放，只要调取视频详情接口就可以计入一次播放
-        videoService.addStarById(id,3);
+        videoService.addStarById(id,3,distribution.getId());
         return ApiRestResponse.success(video);
 
     }
 
     @PostMapping("/video/add")
     @ResponseBody
-    public BaseResponse addStar(@RequestParam Long id,@RequestParam Integer type){
-        videoService.addStarById(id, type);
+    public BaseResponse addStar(@RequestParam Long id, @RequestParam Integer type,HttpServletRequest request){
+        String serverName = request.getServerName();
+        Distribution distribution = videoService.getDistribution(serverName);
+
+        videoService.addStarById(id, type, distribution.getId());
         return new BaseResponse(200,"SUCCESS");
 
     }
 
     @GetMapping("/video/next")
     @ResponseBody
-    public BaseResponse nextVideo(@RequestParam Long id){
+    public BaseResponse nextVideo(@RequestParam Long id,HttpServletRequest request){
 
         VideoVO video = videoService.getNextVideoById(id);
         //播放，只要调取视频详情接口就可以计入一次播放
-        videoService.addStarById(video.getId(),3);
+
+        String serverName = request.getServerName();
+        Distribution distribution = videoService.getDistribution(serverName);
+
+        videoService.addStarById(video.getId(),3,distribution.getId());
         return ApiRestResponse.success(video);
     }
     @GetMapping("/video/search")
@@ -87,11 +92,5 @@ public class VideoController {
         return ApiRestResponse.success(tinyVideoVOS);
     }
 
-    @GetMapping("/distribution")
-    @ResponseBody
-    public BaseResponse getDistributionID(HttpServletRequest request){
-        String serverName = request.getServerName();
-        Distribution distribution = videoService.getDistribution(serverName);
-        return ApiRestResponse.success(distribution);
-    }
+
 }

@@ -11,6 +11,8 @@ public class TeacherLog {
 
     private Date createTime;
 
+    private Integer distributionId;
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class TeacherLog {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getDistributionId() {
+        return distributionId;
+    }
+
+    public void setDistributionId(Integer distributionId) {
+        this.distributionId = distributionId;
     }
 }

@@ -29,12 +29,16 @@ public class ChannelLogServiceImpl implements ChannelLogService {
     @Override
     @Transactional
     public void task() {
-        BoundHashOperations<String,String,Integer> hashChannel = redisTemplate.boundHashOps("channel");
-        Map<String,Integer> channelMap = hashChannel.entries();
-        for (Map.Entry<String, Integer> entry : channelMap.entrySet()) {
+        /*BoundHashOperations<String,String,Integer> hashChannel = redisTemplate.boundHashOps("channel");
+        Map<String,Integer> channelMap = hashChannel.entries();*/
+        Map<String,String> map = redisTemplate.opsForHash().entries("channel");
+        for (Map.Entry<String,String> entry : map.entrySet()) {
             ChannelLog channelLog = new ChannelLog();
-            channelLog.setChannelName(entry.getKey());
-            channelLog.setCount(entry.getValue());
+            String nameAndDistId = entry.getKey();
+            String[] arr = nameAndDistId.split("-");
+            channelLog.setChannelName(arr[0]);
+            channelLog.setDistributionId(Integer.parseInt(arr[1]));
+            channelLog.setCount(Integer.parseInt(entry.getValue()));
             channelLog.setCreateTime(new Date());
             channelLogMapper.insertSelective(channelLog);
         }

@@ -34,22 +34,26 @@ public class VideoLogServiceImpl implements VideoLogService {
     @Override
     @Transactional
     public void task() {
-        BoundHashOperations<String,Long,Integer> hashView = redisTemplate.boundHashOps("video_view");
-        BoundHashOperations<String,Long,Integer> hashShare = redisTemplate.boundHashOps("video_share");
+        BoundHashOperations<String,String,Integer> hashView = redisTemplate.boundHashOps("video_view");
+        BoundHashOperations<String,String,Integer> hashShare = redisTemplate.boundHashOps("video_share");
 
-        Map<Long,Integer> viewMap = hashView.entries();
+        Map<String,String> map = redisTemplate.opsForHash().entries("video_view");
 
-        for (Map.Entry<Long, Integer> entry : viewMap.entrySet()) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
             VideoLog videoLog = new VideoLog();
+            String vidAndDistId = entry.getKey();
+            String[] arr = vidAndDistId.split("-");
             videoLog.setCreateTime(new Date());
-            videoLog.setViewCount(entry.getValue());
-            if(hashShare.hasKey(entry.getKey())){
-                videoLog.setShareCount(hashShare.get(entry.getKey()));
+            videoLog.setViewCount(Integer.parseInt(entry.getValue()));
+            videoLog.setDistributionId(Integer.parseInt(arr[1]));
+            if(redisTemplate.opsForHash().hasKey("video_share",vidAndDistId)){
+                videoLog.setShareCount(Integer.parseInt((String) redisTemplate.opsForHash().get("video_share",vidAndDistId)));
             }else {
                 videoLog.setShareCount(0);
             }
-            Video video = videoMapper.selectByPrimaryKey(entry.getKey());
+            Video video = videoMapper.selectByPrimaryKey(Long.parseLong(arr[0]));
             if(video == null){
+                redisTemplate.opsForHash().delete("video_view",vidAndDistId);
                 throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
             }
             videoLog.setVideoName(video.getVideoTitle());
@@ -62,23 +66,21 @@ public class VideoLogServiceImpl implements VideoLogService {
     @Override
     @Transactional
     public void update() {
-        BoundHashOperations<String,Long,Integer> share = redisTemplate.boundHashOps("share_count");
-        BoundHashOperations<String,Long,Integer> view = redisTemplate.boundHashOps("view_count");
-        BoundHashOperations<String,Long,Integer> enjoy = redisTemplate.boundHashOps("enjoy_count");
 
-        Map<Long,Integer> viewMap = view.entries();
+        Map<String,String> map = redisTemplate.opsForHash().entries("view_count");
 
-        for (Map.Entry<Long, Integer> entry : viewMap.entrySet()) {
-            Video video = videoMapper.selectByPrimaryKey(entry.getKey());
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            Video video = videoMapper.selectByPrimaryKey(Long.parseLong(entry.getKey()));
             if(video == null){
+                redisTemplate.opsForHash().delete("view_count",entry.getKey());
                 throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
             }
-            video.setViews(video.getViews() + entry.getValue());
-            if(share.hasKey(video.getId())){
-                video.setShareCount(video.getShareCount() + share.get(video.getId()));
+            video.setViews(video.getViews() + Integer.parseInt(entry.getValue()));
+            if(redisTemplate.opsForHash().hasKey("share_count",video.getId().toString())){
+                video.setShareCount(video.getShareCount() + Integer.parseInt((String) redisTemplate.opsForHash().get("share_count",video.getId().toString())));
             }
-            if(enjoy.hasKey(video.getId())){
-                video.setEnjoyCount(video.getEnjoyCount() + enjoy.get(video.getId()));
+            if(redisTemplate.opsForHash().hasKey("enjoy_count",video.getId().toString())){
+                video.setEnjoyCount(video.getEnjoyCount() + Integer.parseInt((String) redisTemplate.opsForHash().get("enjoy_count",video.getId().toString())));
             }
             videoMapper.updateByPrimaryKeySelective(video);
         }

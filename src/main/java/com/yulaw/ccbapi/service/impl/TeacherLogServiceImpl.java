@@ -30,12 +30,14 @@ public class TeacherLogServiceImpl implements TeacherLogService {
     @Override
     @Transactional
     public void task() {
-        BoundHashOperations<String,String,Integer> hashTeacher = redisTemplate.boundHashOps("teacher");
-        Map<String,Integer> teacherMap = hashTeacher.entries();
-        for (Map.Entry<String, Integer> entry : teacherMap.entrySet()) {
+        Map<String,String> map = redisTemplate.opsForHash().entries("teacher");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
             TeacherLog teacherLog = new TeacherLog();
-            teacherLog.setTeacherName(entry.getKey());
-            teacherLog.setCount(entry.getValue());
+            String nameAndDistId = entry.getKey();
+            String[] arr = nameAndDistId.split("-");
+            teacherLog.setTeacherName(arr[0]);
+            teacherLog.setDistributionId(Integer.parseInt(arr[1]));
+            teacherLog.setCount(Integer.parseInt(entry.getValue()));
             teacherLog.setCreateTime(new Date());
             teacherLogMapper.insertSelective(teacherLog);
         }

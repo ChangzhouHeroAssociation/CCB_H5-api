@@ -27,7 +27,7 @@ public interface VideoService {
 
     VideoVO getVideoById(Long id);
 
-    void addStarById(Long id, Integer type);
+    void addStarById(Long id, Integer type, Integer distributionId);
 
     VideoVO getNextVideoById(Long id);
 
