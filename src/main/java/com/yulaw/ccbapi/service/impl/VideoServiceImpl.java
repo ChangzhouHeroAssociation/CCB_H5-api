@@ -264,6 +264,11 @@ public class VideoServiceImpl implements VideoService {
         return tinyVideoVOS;
     }
 
+    /**
+     * 查询数据库的域名对应的分发渠道
+     * @param url
+     * @return
+     */
     @Override
     public Distribution getDistribution(String url){
         Distribution distribution = null;

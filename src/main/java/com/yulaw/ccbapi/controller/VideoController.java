@@ -65,11 +65,12 @@ public class VideoController {
     @ResponseBody
     public BaseResponse addStar(@RequestParam Long id, @RequestParam Integer type,HttpServletRequest request){
         String serverName = request.getServerName();
+        for (int i = 0; i < 10; i++) {
+            System.out.println(serverName);
+        }
         Distribution distribution = videoService.getDistribution(serverName);
-
         videoService.addStarById(id, type, distribution.getId());
         return new BaseResponse(200,"SUCCESS");
-
     }
 
     @GetMapping("/video/next")
