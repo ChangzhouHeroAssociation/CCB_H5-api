@@ -269,8 +269,7 @@ public class VideoServiceImpl implements VideoService {
         Distribution distribution = null;
         distribution = distributionMapper.selectByUrl(url);
         if (distribution == null){
-            distribution=0;
-           //throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+           throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
         return distribution;
     }
