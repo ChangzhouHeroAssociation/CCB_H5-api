@@ -271,11 +271,19 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public Distribution getDistribution(String url){
-        Distribution distribution = null;
+        Distribution distribution = new Distribution();
+        /* 查询mysql的方式获取distributionid
         distribution = distributionMapper.selectByUrl(url);
         if (distribution == null){
            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+        }*/
+        // 查询redis的方式获取distributionid
+        String id = (String) redisTemplate.opsForHash().get("distribution", url);
+        if(id == null){
+            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
+        distribution.setId(Integer.parseInt(id));
+        distribution.setUrl(url);
         return distribution;
     }
 }

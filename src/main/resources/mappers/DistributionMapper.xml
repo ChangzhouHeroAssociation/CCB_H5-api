@@ -15,4 +15,9 @@
         from distribution
         where url = #{url,jdbcType=VARCHAR}
     </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from distribution
+    </select>
 </mapper>

@@ -65,6 +65,7 @@ public class VideoController {
     @ResponseBody
     public BaseResponse addStar(@RequestParam Long id, @RequestParam Integer type,HttpServletRequest request){
         String serverName = request.getServerName();
+        //FIXME 正在调试。。。
         for (int i = 0; i < 10; i++) {
             System.out.println(serverName);
         }
