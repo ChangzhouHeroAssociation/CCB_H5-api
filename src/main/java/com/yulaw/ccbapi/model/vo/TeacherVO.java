@@ -15,7 +15,17 @@ public class TeacherVO implements Serializable {
 
     private String description;
 
+    private String video;
+
     private String teacherPhoto;
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
 
     public Long getId() {
         return id;

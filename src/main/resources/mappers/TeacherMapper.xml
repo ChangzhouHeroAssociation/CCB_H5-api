@@ -11,9 +11,10 @@
     <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, teacher_name, description, teacher_photo, status, job, weight, create_time, update_time
+    id, teacher_name, description, teacher_photo, status, job, weight, create_time, update_time, video
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -41,7 +42,7 @@
   </select>
   <select id="selectByVideoId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
-      t.id, t.teacher_name, t.description, t.teacher_photo, t.`status`, t.job, t.weight, t.create_time, t.update_time
+      t.id, t.teacher_name, t.description, t.teacher_photo, t.`status`, t.job, t.weight, t.create_time, t.update_time, t.video
     from
       video v, video_teacher_relation vt, teacher t
     WHERE
@@ -49,50 +50,5 @@
       AND v.id = vt.video_id
       AND t.id = vt.teacher_id
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from teacher
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yulaw.ccbapi.model.pojo.Teacher">
-    update teacher
-    <set>
-      <if test="teacherName != null">
-        teacher_name = #{teacherName,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="teacherPhoto != null">
-        teacher_photo = #{teacherPhoto,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        "status" = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="job != null">
-        job = #{job,jdbcType=VARCHAR},
-      </if>
-      <if test="weight != null">
-        weight = #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yulaw.ccbapi.model.pojo.Teacher">
-    update teacher
-    set teacher_name = #{teacherName,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      teacher_photo = #{teacherPhoto,jdbcType=VARCHAR},
-      "status" = #{status,jdbcType=TINYINT},
-      job = #{job,jdbcType=VARCHAR},
-      weight = #{weight,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
 </mapper>

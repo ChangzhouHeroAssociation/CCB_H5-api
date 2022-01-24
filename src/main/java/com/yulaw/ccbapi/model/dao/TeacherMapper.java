@@ -7,13 +7,8 @@ import java.util.List;
 
 @Repository
 public interface TeacherMapper {
-    int deleteByPrimaryKey(Long id);
 
     Teacher selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(Teacher record);
-
-    int updateByPrimaryKey(Teacher record);
 
     List<Teacher> findAll();
 

@@ -251,6 +251,11 @@ public class VideoServiceImpl implements VideoService {
         return videoVO;
     }
 
+    /**
+     * 模糊查找
+     * @param title
+     * @return
+     */
     @Override
     @Cacheable(value = "searchVideoById")
     public List<TinyVideoVO> searchVideo(String title){
@@ -271,6 +276,7 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public Distribution getDistribution(String url){
+
         Distribution distribution = new Distribution();
         /* 查询mysql的方式获取distributionid
         distribution = distributionMapper.selectByUrl(url);
@@ -280,7 +286,10 @@ public class VideoServiceImpl implements VideoService {
         // 查询redis的方式获取distributionid
         String id = (String) redisTemplate.opsForHash().get("distribution", url);
         if(id == null){
-            throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
+            distribution.setId(0);
+            distribution.setUrl("");
+            return distribution;
+            //throw new CcbException(CcbExceptionEnum.NO_POINT_EXCEPTION);
         }
         distribution.setId(Integer.parseInt(id));
         distribution.setUrl(url);
