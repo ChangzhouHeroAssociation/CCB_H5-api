@@ -25,10 +25,14 @@ public class TeacherController {
 
     @GetMapping("/teacher")
     @ResponseBody
-    public BaseResponse getTeacherById(@RequestParam Long id, HttpServletRequest request){
-        String serverName = request.getServerName();
-        Distribution distribution = videoService.getDistribution(serverName);
-        TeacherVO teacher = teacherService.getTeacherById(id,distribution.getId());
+    public BaseResponse getTeacherById(@RequestParam Long id, HttpServletRequest request,
+                                       @RequestParam(required = false,defaultValue = "1") Integer distributionId){
+        //String serverName = request.getServerName();
+        //String referName = request.getHeader("Origin");
+        //System.out.println(referName);
+        //Distribution distribution = videoService.getDistribution(serverName);
+        TeacherVO teacher = teacherService.getTeacherById(id,distributionId);
+        teacherService.addTeacherView(distributionId,teacher.getTeacherName());
         return ApiRestResponse.success(teacher);
     }
 }

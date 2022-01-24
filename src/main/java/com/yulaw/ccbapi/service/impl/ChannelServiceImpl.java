@@ -59,10 +59,15 @@ public class ChannelServiceImpl implements ChannelService {
         }
         BeanUtils.copyProperties(channel,channelVO);
 
-        // 将channel访问量记录到缓存
-        //使用'-'符号拼接名称和distributionId作为key value为访问量
-        String keyName = channelVO.getChannelName() + "-" + distributionId.toString();
-        redisTemplate.opsForHash().increment("channel", keyName, 1);
         return channelVO;
     }
+
+    @Override
+    public void addChannelView(Integer distributionId,String channelName) {
+        // 将channel访问量记录到缓存
+        //使用'-'符号拼接名称和distributionId作为key value为访问量
+        String keyName = channelName + "-" + distributionId.toString();
+        redisTemplate.opsForHash().increment("channel", keyName, 1);
+    }
+
 }

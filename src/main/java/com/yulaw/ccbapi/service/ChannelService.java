@@ -15,4 +15,6 @@ public interface ChannelService {
 
     ChannelVO getChannelById(Long id,Integer distributionId);
 
+    void addChannelView(Integer distributionId,String channelName);
+
 }

@@ -13,4 +13,6 @@ public interface TeacherService {
 
     TeacherVO getTeacherById(Long id,Integer distributionId);
 
+    void addTeacherView(Integer distributionId,String teacherName);
+
 }

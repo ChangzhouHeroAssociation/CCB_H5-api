@@ -32,10 +32,12 @@ public class ChannelController {
 
     @GetMapping("/channel")
     @ResponseBody
-    public BaseResponse getChannelById(@RequestParam Long id, HttpServletRequest request){
-        String serverName = request.getServerName();
-        Distribution distribution = videoService.getDistribution(serverName);
-        ChannelVO channel = channelService.getChannelById(id,distribution.getId());
+    public BaseResponse getChannelById(@RequestParam Long id, HttpServletRequest request,
+                                       @RequestParam(required = false,defaultValue = "1") Integer distributionId){
+        //String serverName = request.getServerName();
+        //Distribution distribution = videoService.getDistribution(serverName);
+        ChannelVO channel = channelService.getChannelById(id,distributionId);
+        channelService.addChannelView(distributionId,channel.getChannelName());
         return ApiRestResponse.success(channel);
     }
 

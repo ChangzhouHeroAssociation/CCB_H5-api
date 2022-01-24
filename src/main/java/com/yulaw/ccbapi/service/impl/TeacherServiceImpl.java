@@ -73,10 +73,15 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherVO teacherVO = new TeacherVO();
         BeanUtils.copyProperties(teacher, teacherVO);
 
+
+        return teacherVO;
+    }
+
+    @Override
+    public void addTeacherView(Integer distributionId,String teacherName){
         // 将teacher访问量记录到缓存
         //使用'-'符号拼接姓名和distributionId作为key value为访问量
-        String keyName = teacherVO.getTeacherName() + "-" + distributionId.toString();
+        String keyName = teacherName + "-" + distributionId.toString();
         redisTemplate.opsForHash().increment("teacher", keyName, 1);
-        return teacherVO;
     }
 }

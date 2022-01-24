@@ -50,41 +50,44 @@ public class VideoController {
 
     @GetMapping("/video")
     @ResponseBody
-    public BaseResponse getVideoById(@RequestParam Long id,HttpServletRequest request){
-        String serverName = request.getServerName();
-        Distribution distribution = videoService.getDistribution(serverName);
+    public BaseResponse getVideoById(@RequestParam Long id,HttpServletRequest request,
+                                     @RequestParam(required = false,defaultValue = "1") Integer distributionId){
+        //String serverName = request.getServerName();
+        //Distribution distribution = videoService.getDistribution(serverName);
 
         VideoVO video = videoService.getVideoById(id);
         //播放，只要调取视频详情接口就可以计入一次播放
-        videoService.addStarById(id,3,distribution.getId());
+        videoService.addStarById(id,3,distributionId);
         return ApiRestResponse.success(video);
 
     }
 
     @PostMapping("/video/add")
     @ResponseBody
-    public BaseResponse addStar(@RequestParam Long id, @RequestParam Integer type,HttpServletRequest request){
-        String serverName = request.getServerName();
+    public BaseResponse addStar(@RequestParam Long id, @RequestParam Integer type,HttpServletRequest request,
+                                @RequestParam(required = false,defaultValue = "1") Integer distributionId){
+        /*String serverName = request.getServerName();
         //FIXME 正在调试。。。
         for (int i = 0; i < 10; i++) {
             System.out.println(serverName);
-        }
-        Distribution distribution = videoService.getDistribution(serverName);
-        videoService.addStarById(id, type, distribution.getId());
+        }*/
+        //Distribution distribution = videoService.getDistribution(serverName);
+        videoService.addStarById(id, type, distributionId);
         return new BaseResponse(200,"SUCCESS");
     }
 
     @GetMapping("/video/next")
     @ResponseBody
-    public BaseResponse nextVideo(@RequestParam Long id,HttpServletRequest request){
+    public BaseResponse nextVideo(@RequestParam Long id,HttpServletRequest request,
+                                  @RequestParam(required = false,defaultValue = "1") Integer distributionId){
 
         VideoVO video = videoService.getNextVideoById(id);
         //播放，只要调取视频详情接口就可以计入一次播放
 
-        String serverName = request.getServerName();
-        Distribution distribution = videoService.getDistribution(serverName);
+        //String serverName = request.getServerName();
+        //Distribution distribution = videoService.getDistribution(serverName);
 
-        videoService.addStarById(video.getId(),3,distribution.getId());
+        videoService.addStarById(video.getId(),3,distributionId);
         return ApiRestResponse.success(video);
     }
     @GetMapping("/video/search")
