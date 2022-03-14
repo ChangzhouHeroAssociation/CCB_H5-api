@@ -12,9 +12,10 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="video" jdbcType="VARCHAR" property="video" />
+    <result column="cover" jdbcType="VARCHAR" property="cover" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, teacher_name, description, teacher_photo, status, job, weight, create_time, update_time, video
+    id, teacher_name, description, teacher_photo, status, job, weight, create_time, update_time, video, cover
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -42,7 +43,7 @@
   </select>
   <select id="selectByVideoId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
-      t.id, t.teacher_name, t.description, t.teacher_photo, t.`status`, t.job, t.weight, t.create_time, t.update_time, t.video
+      t.id, t.teacher_name, t.description, t.teacher_photo, t.`status`, t.job, t.weight, t.create_time, t.update_time, t.video, t.cover
     from
       video v, video_teacher_relation vt, teacher t
     WHERE

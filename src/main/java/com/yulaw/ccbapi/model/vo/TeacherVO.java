@@ -17,6 +17,8 @@ public class TeacherVO implements Serializable {
 
     private String video;
 
+    private String cover;
+
     private String teacherPhoto;
 
     public String getVideo() {
@@ -65,5 +67,13 @@ public class TeacherVO implements Serializable {
 
     public void setJob(String job) {
         this.job = job;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }

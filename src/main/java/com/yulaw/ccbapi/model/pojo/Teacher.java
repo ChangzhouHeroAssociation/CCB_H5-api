@@ -23,6 +23,8 @@ public class Teacher {
 
     private String video;
 
+    private String cover;
+
     public String getVideo() {
         return video;
     }
@@ -101,5 +103,13 @@ public class Teacher {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }
