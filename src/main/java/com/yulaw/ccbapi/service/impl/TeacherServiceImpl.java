@@ -42,7 +42,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    @Cacheable(value = "getTeacherListForHome")
+    //@Cacheable(value = "getTeacherListForHome")
     public PageInfo getTeacherListForHome(Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         ArrayList<TeacherForHomeVO> teacherForHomeVOs = new ArrayList<>();
@@ -62,7 +62,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    @Cacheable(value = "getTeacherById")
+    //@Cacheable(value = "getTeacherById")
     public TeacherVO getTeacherById(Long id, Integer distributionId) {
 
         Teacher teacher = teacherMapper.selectByPrimaryKey(id);
