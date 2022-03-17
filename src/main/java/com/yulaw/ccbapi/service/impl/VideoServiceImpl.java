@@ -87,7 +87,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    @Cacheable(value = "getPageList")
+    //@Cacheable(value = "getPageList")
     public PageInfo getPageList(Integer pageNum, Integer pageSize, String orderBy,
                                 Long channelId, Long categoryId, String keywords, Long teacherId){
 
@@ -115,7 +115,7 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     @Override
-    @Cacheable(value = "getNewVideoList")
+    //@Cacheable(value = "getNewVideoList")
     public PageInfo getNewVideoList(Integer pageNum, Integer pageSize){
         return getPageList(pageNum,pageSize,"create_time",null,null,null,null);
     }
@@ -127,7 +127,7 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     @Override
-    @Cacheable(value = "getRecommendVideoList")
+    //@Cacheable(value = "getRecommendVideoList")
     public PageInfo getRecommendVideoList(Integer pageNum, Integer pageSize,Integer isRecommend) {
         ArrayList<HotVideoVO> recommendList;
         PageHelper.startPage(pageNum, pageSize, "create_time desc");
@@ -151,7 +151,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    @Cacheable(value = "getVideoById")
+    //@Cacheable(value = "getVideoById")
     public VideoVO getVideoById(Long id) {
 
 
@@ -228,7 +228,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    @Cacheable(value = "getNextVideoById")
+    //@Cacheable(value = "getNextVideoById")
     public VideoVO getNextVideoById(Long id) {
         Video video = videoMapper.selectByPrimaryKey(id);
         if(video == null){
@@ -262,7 +262,7 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     @Override
-    @Cacheable(value = "searchVideoById")
+    //@Cacheable(value = "searchVideoById")
     public List<TinyVideoVO> searchVideo(String title){
         List<Video> videos = videoMapper.selectByChannelIdCategoryIdAndName(null, null, title);
         ArrayList<TinyVideoVO> tinyVideoVOS = new ArrayList<>();
