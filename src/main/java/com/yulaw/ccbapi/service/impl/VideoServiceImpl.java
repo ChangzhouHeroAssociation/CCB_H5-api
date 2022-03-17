@@ -9,6 +9,7 @@ import com.yulaw.ccbapi.model.pojo.*;
 import com.yulaw.ccbapi.model.vo.*;
 import com.yulaw.ccbapi.service.AdvertisementService;
 import com.yulaw.ccbapi.service.QuestionService;
+import com.yulaw.ccbapi.service.VideoLogService;
 import com.yulaw.ccbapi.service.VideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     AdvertisementService advertisementService;
+
+    @Autowired
+    VideoLogService videoLogService;
 
     @Autowired
     QuestionService questionService;
@@ -201,6 +205,7 @@ public class VideoServiceImpl implements VideoService {
         if(type == 1){
             //增加一个点赞量到redis
             redisTemplate.opsForHash().increment("enjoy_count", id.toString(), 1);
+            videoLogService.update();
         }
         if (type == 2){
             //增加一个分享量到redis

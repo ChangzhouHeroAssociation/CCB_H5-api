@@ -20,9 +20,9 @@ public class VideoLogTask {
         System.out.println("更新视频日志！");
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0/5 * * * * ?")
     public void updateVideoData(){
         videoLogService.update();
-        System.out.println("更新视频统计！");
+        //System.out.println("更新视频统计！");
     }
 }

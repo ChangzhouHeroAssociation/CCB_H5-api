@@ -67,26 +67,43 @@ public class VideoLogServiceImpl implements VideoLogService {
     @Transactional
     public void update() {
 
-        Map<String,String> map = redisTemplate.opsForHash().entries("view_count");
+        Map<String, String> map1 = redisTemplate.opsForHash().entries("enjoy_count");
+        Map<String, String> map2 = redisTemplate.opsForHash().entries("share_count");
+        Map<String, String> map3 = redisTemplate.opsForHash().entries("view_count");
+        Video video = null;
 
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            Video video = videoMapper.selectByPrimaryKey(Long.parseLong(entry.getKey()));
-            if(video == null){
-                redisTemplate.opsForHash().delete("view_count",entry.getKey());
+        for (Map.Entry<String, String> entry : map3.entrySet()) {
+            video = videoMapper.selectByPrimaryKey(Long.parseLong(entry.getKey()));
+            if (video == null) {
+                redisTemplate.opsForHash().delete("view_count", entry.getKey());
                 throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
             }
             video.setViews(video.getViews() + Integer.parseInt(entry.getValue()));
-            if(redisTemplate.opsForHash().hasKey("share_count",video.getId().toString())){
-                video.setShareCount(video.getShareCount() + Integer.parseInt((String) redisTemplate.opsForHash().get("share_count",video.getId().toString())));
-            }
-            if(redisTemplate.opsForHash().hasKey("enjoy_count",video.getId().toString())){
-                video.setEnjoyCount(video.getEnjoyCount() + Integer.parseInt((String) redisTemplate.opsForHash().get("enjoy_count",video.getId().toString())));
-            }
             videoMapper.updateByPrimaryKeySelective(video);
-        }
 
-        redisTemplate.delete("share_count");
+        }
+        for (Map.Entry<String, String> entry : map1.entrySet()) {
+            video = videoMapper.selectByPrimaryKey(Long.parseLong(entry.getKey()));
+            if (video == null) {
+                redisTemplate.opsForHash().delete("enjoy_count", entry.getKey());
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
+            video.setEnjoyCount(video.getEnjoyCount() + Integer.parseInt(entry.getValue()));
+            videoMapper.updateByPrimaryKeySelective(video);
+
+        }
+        for (Map.Entry<String, String> entry : map2.entrySet()) {
+            video = videoMapper.selectByPrimaryKey(Long.parseLong(entry.getKey()));
+            if (video == null) {
+                redisTemplate.opsForHash().delete("share_count", entry.getKey());
+                throw new CcbException(CcbExceptionEnum.DATA_NOT_FOUND);
+            }
+            video.setShareCount(video.getShareCount() + Integer.parseInt(entry.getValue()));
+            videoMapper.updateByPrimaryKeySelective(video);
+
+        }
         redisTemplate.delete("view_count");
         redisTemplate.delete("enjoy_count");
+        redisTemplate.delete("share_count");
     }
 }
